@@ -1,28 +1,23 @@
 package com.lvrmrc.moneybook.ui.core.components
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
 import com.lvrmrc.moneybook.ui.core.theme.MoneyBookTheme
 import com.lvrmrc.moneybook.ui.navigation.NavGraph
-import com.lvrmrc.moneybook.ui.screens.Screen
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppLayout() {
     val snackBarHostState = remember { SnackbarHostState() }
@@ -32,46 +27,15 @@ fun AppLayout() {
         modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
     ) {
         Scaffold(
-            modifier = Modifier.fillMaxSize(),
-            bottomBar = { AppNavBar(navController = navController) },
             snackbarHost = {
-                SnackbarHost(snackBarHostState) { data ->
-                    Snackbar(
-                        modifier = Modifier
-                            .padding(12.dp)
-                    ) {
-                        Text(data.visuals.message)
-                    }
-                }
+                SnackbarHost(hostState = snackBarHostState)
             },
-            floatingActionButtonPosition = FabPosition.Center,
-            floatingActionButton = {
-                FloatingActionButton(
-                    modifier = Modifier.offset(0.dp, 50.dp),
-                    shape = CircleShape,
-                    onClick = {
-                        navController.navigate(Screen.Transaction.route) {
-
-                        navController.graph.startDestinationRoute?.let { route ->
-                            popUpTo(route) {
-                                saveState = true
-                            }
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    } },
-                    elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
-                ) {
-                    Icon(Screen.Transaction.icon, Screen.Transaction.label)
-                }
-            }
         ) {
+
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues = it),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 NavGraph(navController = navController)
             }

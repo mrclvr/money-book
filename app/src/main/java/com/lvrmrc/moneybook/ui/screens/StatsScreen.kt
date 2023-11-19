@@ -7,14 +7,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import com.lvrmrc.moneybook.ui.core.components.NavbarLayout
 
 @Composable
 fun StatsScreen(
-    navController: NavController
+    navController: NavHostController
 ) {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text(text = "Stats",
-            modifier = Modifier.clickable { navController.navigate(route = Screen.Stats.route) })
-    }
+    NavbarLayout(navController, content = {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Text(text = "Stats",
+                modifier = Modifier.clickable { navController.navigate(route = Screen.Stats.route) })
+        }
+    })
 }
