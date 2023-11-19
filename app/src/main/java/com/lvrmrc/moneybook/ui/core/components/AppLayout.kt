@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
 import com.lvrmrc.moneybook.ui.core.theme.MoneyBookTheme
 import com.lvrmrc.moneybook.ui.navigation.NavGraph
+import com.lvrmrc.moneybook.ui.screens.Screen
 
 @Composable
 fun AppLayout() {
@@ -48,11 +49,20 @@ fun AppLayout() {
                 FloatingActionButton(
                     modifier = Modifier.offset(0.dp, 50.dp),
                     shape = CircleShape,
-                    onClick = { /* do something */ },
-                    containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
+                    onClick = {
+                        navController.navigate(Screen.Transaction.route) {
+
+                        navController.graph.startDestinationRoute?.let { route ->
+                            popUpTo(route) {
+                                saveState = true
+                            }
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    } },
                     elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
                 ) {
-                    Icon(Icons.Filled.Add, "Add")
+                    Icon(Screen.Transaction.icon, Screen.Transaction.label)
                 }
             }
         ) {

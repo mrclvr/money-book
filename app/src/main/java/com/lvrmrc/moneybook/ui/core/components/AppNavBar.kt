@@ -3,14 +3,18 @@ package com.lvrmrc.moneybook.ui.core.components
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemColors
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.lvrmrc.moneybook.ui.core.theme.MoneyBookTheme
 import com.lvrmrc.moneybook.ui.screens.Screen
 
 @Composable
@@ -24,10 +28,10 @@ fun AppNavBar(navController: NavHostController) {
             val navBackStackEntry by navController.currentBackStackEntryAsState()
             val currentRoute = navBackStackEntry?.destination
 
-            screensList.forEach { menuItem ->
+            screensList.forEach { screen ->
                 NavigationBarItem(
                     onClick = {
-                        navController.navigate(menuItem.route) {
+                        navController.navigate(screen.route) {
 
                             navController.graph.startDestinationRoute?.let { route ->
                                 popUpTo(route) {
@@ -38,9 +42,13 @@ fun AppNavBar(navController: NavHostController) {
                             restoreState = true
                         }
                     },
-                    selected =  currentRoute?.hierarchy?.any { it.route == it.route } == true,
-                    icon = { Icon(imageVector = menuItem.icon, contentDescription = menuItem.label) },
-                    label = { Text(text = menuItem.label, fontSize = 9.sp) }
+                    colors = NavigationBarItemDefaults.colors(
+                        selectedIconColor = Color.DarkGray,
+                        indicatorColor = Color.LightGray
+                    ),
+                    selected = currentRoute?.hierarchy?.any { it.route == screen.route } == true,
+                    icon = { Icon(imageVector = screen.icon, contentDescription = screen.label) },
+                    label = { Text(text = screen.label, fontSize = 9.sp) }
                 )
 //                        IconButton(onClick = { /* do something */ }) {
 //                        Icon(
@@ -56,7 +64,9 @@ fun AppNavBar(navController: NavHostController) {
 @Preview(showBackground = true)
 @Composable
 fun AppNavBarPreview() {
-     AppNavBar(navController = rememberNavController())
+    MoneyBookTheme {
+        AppNavBar(navController = rememberNavController())
+    }
 }
 
 

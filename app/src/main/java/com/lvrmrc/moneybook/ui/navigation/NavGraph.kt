@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import com.lvrmrc.moneybook.ui.screens.HomeScreen
 import com.lvrmrc.moneybook.ui.screens.Screen
 import com.lvrmrc.moneybook.ui.screens.StatsScreen
+import com.lvrmrc.moneybook.ui.screens.TransactionScreen
 
 @Composable
 fun NavGraph(navController: NavHostController) {
@@ -16,6 +17,9 @@ fun NavGraph(navController: NavHostController) {
         }
         composable(route = Screen.Stats.route) {
             StatsScreen(navController = navController)
+        }
+        composable(route = Screen.Transaction.route) {
+            TransactionScreen(navController = navController)
         }
     }
 }
