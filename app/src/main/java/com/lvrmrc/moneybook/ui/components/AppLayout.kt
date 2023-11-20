@@ -1,9 +1,8 @@
-package com.lvrmrc.moneybook.ui.core.components
+package com.lvrmrc.moneybook.ui.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -14,10 +13,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
-import com.lvrmrc.moneybook.ui.core.theme.MoneyBookTheme
 import com.lvrmrc.moneybook.ui.navigation.NavGraph
+import com.lvrmrc.moneybook.ui.theme.MoneyBookTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppLayout() {
     val snackBarHostState = remember { SnackbarHostState() }

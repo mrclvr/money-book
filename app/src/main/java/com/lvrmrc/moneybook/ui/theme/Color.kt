@@ -1,4 +1,4 @@
-package com.lvrmrc.moneybook.ui.core.theme
+package com.lvrmrc.moneybook.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

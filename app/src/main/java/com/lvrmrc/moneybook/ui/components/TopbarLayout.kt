@@ -1,4 +1,4 @@
-package com.lvrmrc.moneybook.ui.core.components
+package com.lvrmrc.moneybook.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,11 +21,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.lvrmrc.moneybook.ui.core.theme.MoneyBookTheme
+import com.lvrmrc.moneybook.ui.theme.MoneyBookTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopbarLayout(
+fun TopBarLayout(
     navController: NavHostController, title: String = "", content: @Composable() () -> Unit = {}
 ) {
     Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
@@ -67,8 +67,8 @@ fun TopbarLayout(
 
 @Preview(showBackground = true)
 @Composable
-fun TopbarLayoutPreview() {
+fun TopBarLayoutPreview() {
     MoneyBookTheme {
-        TopbarLayout(rememberNavController())
+        TopBarLayout(rememberNavController())
     }
 }
