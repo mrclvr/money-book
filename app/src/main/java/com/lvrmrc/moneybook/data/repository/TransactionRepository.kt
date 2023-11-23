@@ -14,18 +14,9 @@ import javax.inject.Singleton
 @Singleton
 class TransactionRepository @Inject constructor(private val transactionDao: TransactionDao) {
 
-    fun getAll(): List<Transaction> {
-        return listOf(
-            Transaction(id = 123, amount = 5.55, notes = "Food", timestamp = 0),
-            Transaction(id = 345, amount = 5.55, notes = "Health", timestamp = 1),
-            Transaction(id = 999, amount = 5.55, notes = "Cinema", timestamp = 2)
-        )
-    }
+    suspend fun getAll(): List<Transaction> = transactionDao.getAll()
 
-    fun getPeriodTotal(): Double = 0.01
-//    fun getPeriodTotal() = transactionDao.getPeriodTotal()
-
-//    fun getTransaction(transactionId: String) = transactionDao.getTransaction(transactionId)
+    suspend fun getPeriodTotal(): Double = transactionDao.getPeriodTotal()
 
 
     companion object {

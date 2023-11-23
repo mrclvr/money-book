@@ -1,15 +1,15 @@
-package com.lvrmrc.moneybook.ui.components
+package com.lvrmrc.moneybook.ui.layouts
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Menu
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FabPosition
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.lvrmrc.moneybook.ui.screens.Screen
 import com.lvrmrc.moneybook.ui.theme.MoneyBookTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -37,21 +38,30 @@ fun TopBarLayout(
             title = {
                 Text(title)
             },
-            navigationIcon = {
-                IconButton(onClick = { navController.popBackStack() }) {
-                    Icon(
-                        imageVector = Icons.Filled.ArrowBack, contentDescription = "ArrowBack"
-                    )
-                }
-            },
-            actions = {
-                IconButton(onClick = { /* do something */ }) {
-                    Icon(
-                        imageVector = Icons.Filled.Menu, contentDescription = "Menu"
-                    )
-                }
-            },
+
+//            navigationIcon = {
+//                IconButton(onClick = { navController.popBackStack() }) {
+//                    Icon(
+//                        imageVector = Icons.Filled.ArrowBack, contentDescription = "ArrowBack"
+//                    )
+//                }
+//            },
+//            actions = {
+//                IconButton(onClick = { /* do something */ }) {
+//                    Icon(
+//                        imageVector = Icons.Filled.Menu, contentDescription = "Menu"
+//                    )
+//                }
+//            },
         )
+    }, floatingActionButtonPosition = FabPosition.Center, floatingActionButton = {
+        FloatingActionButton(
+            shape = CircleShape, onClick = {
+                //ricarica conto
+            }, elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
+        ) {
+            Icon(Screen.Transaction.icon, Screen.Transaction.label)
+        }
     }) {
         Column(
             modifier = Modifier

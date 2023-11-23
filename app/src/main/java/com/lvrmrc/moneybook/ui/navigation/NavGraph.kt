@@ -1,5 +1,7 @@
 package com.lvrmrc.moneybook.ui.navigation
 
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -18,8 +20,18 @@ fun NavGraph(navController: NavHostController) {
         composable(route = Screen.Stats.route) {
             StatsScreen(navController = navController)
         }
-        composable(route = Screen.Transaction.route) {
+        composable(route = Screen.Transaction.route, enterTransition = {
+            slideIntoContainer(towards = AnimatedContentTransitionScope.SlideDirection.Companion.Up, animationSpec = tween(700))
+        }, popExitTransition = {
+            slideOutOfContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.Companion.Down, animationSpec = tween(700)
+            )
+        }) {
             TransactionScreen(navController = navController)
         }
     }
+
 }
+
+
+

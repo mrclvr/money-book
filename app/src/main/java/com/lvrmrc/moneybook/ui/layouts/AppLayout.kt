@@ -1,4 +1,4 @@
-package com.lvrmrc.moneybook.ui.components
+package com.lvrmrc.moneybook.ui.layouts
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize

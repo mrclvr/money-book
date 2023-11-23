@@ -15,14 +15,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.lvrmrc.moneybook.data.entity.Transaction
-import com.lvrmrc.moneybook.ui.components.TopBarLayout
+import com.lvrmrc.moneybook.ui.layouts.TopBarLayout
 import com.lvrmrc.moneybook.viewmodels.TransactionViewModel
+import java.time.LocalDateTime
 
 @Composable
 fun TransactionScreen(
     viewModel: TransactionViewModel = hiltViewModel(), navController: NavHostController
 ) {
-    TransactionScreen(navController = navController, transactions = viewModel.transactions)
+    TransactionScreen(navController = navController, transactions = viewModel.transactions.value)
 }
 
 @Composable
@@ -30,8 +31,8 @@ private fun TransactionScreen(navController: NavHostController, transactions: Li
     TopBarLayout(navController, Screen.Transaction.label, content = {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Column {
-                transactions.forEach { t ->
-                    Text(text = t.notes, modifier = Modifier.clickable { navController.navigate(route = Screen.Transaction.route) })
+                transactions?.forEach { t ->
+                    Text(text = t.title, modifier = Modifier.clickable { navController.navigate(route = Screen.Transaction.route) })
                 }
             }
 
@@ -51,9 +52,9 @@ private class TransactionScreenPreviewParamProvider : PreviewParameterProvider<L
 
     override val values: Sequence<List<Transaction>> = sequenceOf(
         listOf(
-            Transaction(id = 123, amount = 5.55, notes = "Food", timestamp = 0),
-            Transaction(id = 345, amount = 5.55, notes = "Health", timestamp = 1),
-            Transaction(id = 999, amount = 5.55, notes = "Cinema", timestamp = 2)
+            Transaction(id = 123, amount = 5.55, title = "Food", date = LocalDateTime.now(), type = "Expense"),
+            Transaction(id = 345, amount = 5.55, title = "Health", date = LocalDateTime.now(), type = "Expense"),
+            Transaction(id = 999, amount = 5.55, title = "Cinema", date = LocalDateTime.now(), type = "Expense")
         )
     )
 }

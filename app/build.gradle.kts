@@ -11,12 +11,16 @@ android {
 
     defaultConfig {
         applicationId = "com.lvrmrc.moneybook"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        ksp {
+            arg("room.schemaLocation", "$projectDir/schemas")
+        }
     }
 
     buildTypes {
@@ -50,6 +54,7 @@ dependencies {
     val navVersion = "2.7.5"
     val roomVersion = "2.6.0"
     val hiltVersion = "2.48.1"
+    val activity_version = "1.8.1"
 
     implementation(composeBom)
     implementation("androidx.navigation:navigation-compose:$navVersion")
@@ -57,12 +62,15 @@ dependencies {
     implementation("androidx.compose.material:material-icons-core")
     implementation("androidx.compose.material:material-icons-extended")
     implementation("androidx.compose.ui:ui-tooling-preview-android:1.5.4")
+    implementation("androidx.activity:activity-ktx:$activity_version")
+    implementation("androidx.compose.foundation:foundation:1.5.4")
     implementation("com.google.dagger:hilt-android:$hiltVersion")
     implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
     ksp("com.google.dagger:hilt-android-compiler:$hiltVersion")
 
     //Room
     implementation("androidx.room:room-runtime:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
     annotationProcessor("androidx.room:room-compiler:$roomVersion")
     ksp("androidx.room:room-compiler:$roomVersion")
 
@@ -82,8 +90,10 @@ dependencies {
 //    implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
 //    implementation("androidx.compose.material3:material3-window-size-class")
 //    implementation("androidx.activity:activity-compose:1.7.2")
-//    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
-//    implementation("androidx.compose.runtime:runtime-livedata")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
+    implementation("androidx.compose.runtime:runtime-livedata")
+
 //    implementation("androidx.compose.runtime:runtime-rxjava2")
 //    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 //    androidTestImplementation("androidx.compose.ui:ui-test-junit4")

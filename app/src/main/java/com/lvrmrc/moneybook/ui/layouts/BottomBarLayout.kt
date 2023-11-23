@@ -1,6 +1,7 @@
-package com.lvrmrc.moneybook.ui.components
+package com.lvrmrc.moneybook.ui.layouts
 
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
@@ -11,6 +12,7 @@ import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -19,12 +21,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.lvrmrc.moneybook.ui.components.AppNavBar
 import com.lvrmrc.moneybook.ui.screens.Screen
 import com.lvrmrc.moneybook.ui.theme.MoneyBookTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NavBarLayout(navController: NavHostController, content: @Composable() () -> Unit) {
+fun BottomBarLayout(navController: NavHostController, content: @Composable() () -> Unit) {
     Scaffold(modifier = Modifier.fillMaxSize(),
         bottomBar = { AppNavBar(navController = navController) },
         floatingActionButtonPosition = FabPosition.Center,
@@ -46,14 +49,20 @@ fun NavBarLayout(navController: NavHostController, content: @Composable() () -> 
                 Icon(Screen.Transaction.icon, Screen.Transaction.label)
             }
         }) {
-        Column(
+        Box(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues = it),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+                .padding(paddingValues = it)
+                .background(colorScheme.primary),
         ) {
-            content()
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(
+                        25.dp, 50.dp
+                    ), horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                content()
+            }
         }
     }
 }
@@ -62,6 +71,6 @@ fun NavBarLayout(navController: NavHostController, content: @Composable() () -> 
 @Composable
 fun NavBarLayoutPreview() {
     MoneyBookTheme {
-        NavBarLayout(rememberNavController(), content = {})
+        BottomBarLayout(rememberNavController(), content = {})
     }
 }
