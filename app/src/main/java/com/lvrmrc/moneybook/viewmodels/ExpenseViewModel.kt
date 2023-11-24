@@ -1,8 +1,8 @@
 package com.lvrmrc.moneybook.viewmodels
 
 import androidx.compose.runtime.State
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -22,16 +22,26 @@ class ExpenseViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle, private val repository: TransactionRepository
 ) : ViewModel() {
 
-    private var period: String = "month"
+    private val _period = mutableStateOf<String>("day")
+    val total = derivedStateOf { _transactions.value.sumOf { it.amount } }
+
+
     private val _transactions = mutableStateOf<List<Transaction>>(emptyList())
     val transactions: State<List<Transaction>> = _transactions
 
-    private val _total = mutableDoubleStateOf(0.0)
-    val total: State<Double> = _total
+    val periodTabIndex = derivedStateOf {
+        when (_period.value) {
+            "day" -> 0
+            "month" -> 1
+            "year" -> 2
+            else -> {
+                0
+            }
+        }
+    }
 
     private val _pippo = mutableStateListOf<List<Transaction>>(emptyList())
     val pippo: SnapshotStateList<List<Transaction>> = _pippo
-
 
     private var _onLoading by mutableStateOf(false)
     val onLoading: Boolean
@@ -43,7 +53,8 @@ class ExpenseViewModel @Inject constructor(
 
     private fun loadTransactions() {
         viewModelScope.launch {
-            _transactions.value = repository.getAll().reversed()
+            getByPeriod(_period.value)
+
 //            _pippo.clear()
 //            _pippo.addAll(listOf(repository.getAll()))
         }
@@ -61,31 +72,29 @@ class ExpenseViewModel @Inject constructor(
     suspend fun getByPeriod(
         period: String, date: LocalDate = LocalDate.now()
     ) {
-        println("DATE $date")
+        _period.value = period
+        var result: List<Transaction> = emptyList()
+
         viewModelScope.launch {
-            when (period) {
+            when (_period.value) {
                 "day" -> {
-                    val trans = repository.getDayTransactions(date)
-                    println("DAY $trans")
-                    _transactions.value = trans
+                    result = repository.getDayTransactions(date)
                 }
 
                 "month" -> {
-                    val trans = repository.getMonthTransactions(date.monthValue, date.year)
-                    println("ALL $trans")
-                    _transactions.value = trans
+                    result = repository.getMonthTransactions(date.monthValue, date.year)
                 }
 
                 "year" -> {
-                    val trans = repository.getYearTransactions(date.year)
-                    println("YEAR $trans")
-                    _transactions.value = trans
+                    result = repository.getYearTransactions(date.year)
                 }
 
                 else -> {
 
                 }
             }
+            _transactions.value = result.reversed()
+
         }
     }
 //

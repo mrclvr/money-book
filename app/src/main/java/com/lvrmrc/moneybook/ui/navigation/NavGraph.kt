@@ -15,16 +15,16 @@ import com.lvrmrc.moneybook.ui.screens.TransactionScreen
 fun NavGraph(navController: NavHostController) {
     NavHost(navController = navController, startDestination = Screen.Home.route) {
         composable(route = Screen.Home.route) {
-            ExpenseScreen(navController = navController)
+            ExpenseScreen()
         }
         composable(route = Screen.Stats.route) {
             IncomeScreen(navController = navController)
         }
         composable(route = Screen.Transaction.route, enterTransition = {
-            slideIntoContainer(towards = AnimatedContentTransitionScope.SlideDirection.Companion.Up, animationSpec = tween(700))
+            slideIntoContainer(towards = AnimatedContentTransitionScope.SlideDirection.Companion.Up, animationSpec = tween(300))
         }, popExitTransition = {
             slideOutOfContainer(
-                towards = AnimatedContentTransitionScope.SlideDirection.Companion.Down, animationSpec = tween(700)
+                towards = AnimatedContentTransitionScope.SlideDirection.Companion.Down, animationSpec = tween(300)
             )
         }) {
             TransactionScreen(navController = navController)

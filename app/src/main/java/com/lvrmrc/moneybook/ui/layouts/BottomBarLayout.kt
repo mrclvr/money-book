@@ -2,7 +2,6 @@ package com.lvrmrc.moneybook.ui.layouts
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -13,69 +12,87 @@ import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
+import androidx.navigation.NavDestination
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.lvrmrc.moneybook.data.entity.Transaction
-import com.lvrmrc.moneybook.ui.components.AppNavBar
+import com.lvrmrc.moneybook.ui.components.AnimatedAppNavBar
+import com.lvrmrc.moneybook.ui.navigation.NavGraph
 import com.lvrmrc.moneybook.ui.screens.Screen
 import com.lvrmrc.moneybook.ui.theme.MoneyBookTheme
-import com.lvrmrc.moneybook.viewmodels.ExpenseViewModel
-import kotlinx.coroutines.launch
 
 
 @Composable
-fun BottomBarLayout(navController: NavHostController, viewModel: ExpenseViewModel = hiltViewModel(), content: @Composable() () -> Unit) {
-    val coroutineScope = rememberCoroutineScope()
+fun BottomBarLayout(
+    content: @Composable() () -> Unit = {}
+) {
+    val navController = rememberNavController()
+    val snackBarHostState = remember { SnackbarHostState() }
+//    val coroutineScope = rememberCoroutineScope()
+    val screensList = arrayListOf<Screen>()
+    screensList.add(Screen.Home)
+    screensList.add(Screen.Stats)
 
-    Scaffold(modifier = Modifier.fillMaxSize(),
-        bottomBar = { AppNavBar(navController = navController) },
-        floatingActionButtonPosition = FabPosition.Center,
-        floatingActionButton = {
-            FloatingActionButton(
-                modifier = Modifier.offset(0.dp, 50.dp), shape = CircleShape, onClick = {
-                    coroutineScope.launch {
-                        viewModel.addExpense(
-                            Transaction(
-                                amount = 5.55, title = "Pippo", type = "Expense"
-                            )
-                        )
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute: NavDestination? = navBackStackEntry?.destination
+    var bottomBarVisible = true
 
-                    }
-//                    navController.navigate(Screen.Transaction.route) {
+    if (navBackStackEntry?.destination?.route != null) {
+        bottomBarVisible = Screen.hasNavbar(currentRoute?.route)
+    }
+    println("VISIBLE" + bottomBarVisible)
+
+    Surface(
+        modifier = Modifier.fillMaxSize(), color = colorScheme.background
+    ) {
+        Scaffold(
+            modifier = Modifier.fillMaxSize(),
+            bottomBar = { AnimatedAppNavBar(navController, screensList, bottomBarVisible) },
+            floatingActionButtonPosition = FabPosition.Center,
+            floatingActionButton = {
+                FloatingActionButton(
+                    modifier = Modifier.offset(0.dp, 50.dp), shape = CircleShape, onClick = {
+//                    coroutineScope.launch {
+//                        viewModel.addExpense(
+//                            Transaction(
+//                                amount = 5.55, title = "Pippo", type = "Expense"
+//                            )
+//                        )
 //
-//                        navController.graph.startDestinationRoute?.let { route ->
-//                            popUpTo(route) {
-//                                saveState = true
-//                            }
-//                        }
-//                        launchSingleTop = true
-//                        restoreState = true
 //                    }
-                }, elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
-            ) {
-                Icon(Screen.Transaction.icon, Screen.Transaction.label)
-            }
-        }) {
-        Box(
-            modifier = Modifier
-                .padding(paddingValues = it)
-                .background(colorScheme.primary),
+                        navController.navigate(Screen.Transaction.route) {
+
+                            navController.graph.route?.let { route ->
+                                popUpTo(route) {
+                                    saveState = true
+                                }
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    }, elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
+                ) {
+                    Icon(Screen.Transaction.icon, Screen.Transaction.label)
+                }
+            },
+            snackbarHost = {
+                SnackbarHost(hostState = snackBarHostState)
+            },
         ) {
-            Column(
+            Box(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(
-                        25.dp, 50.dp
-                    ), horizontalAlignment = Alignment.CenterHorizontally
+                    .padding(paddingValues = it)
+                    .background(colorScheme.primary),
             ) {
-                content()
+                NavGraph(navController = navController)
             }
         }
     }
@@ -83,8 +100,8 @@ fun BottomBarLayout(navController: NavHostController, viewModel: ExpenseViewMode
 
 @Preview(showBackground = true)
 @Composable
-fun NavBarLayoutPreview() {
+fun BottomBarLayoutPreview() {
     MoneyBookTheme {
-        BottomBarLayout(rememberNavController(), content = {})
+        BottomBarLayout()
     }
 }

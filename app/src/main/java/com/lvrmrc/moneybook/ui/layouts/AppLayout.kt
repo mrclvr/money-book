@@ -24,6 +24,7 @@ fun AppLayout() {
     Surface(
         modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
     ) {
+
         Scaffold(
             snackbarHost = {
                 SnackbarHost(hostState = snackBarHostState)
