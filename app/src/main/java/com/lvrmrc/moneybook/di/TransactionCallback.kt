@@ -8,33 +8,33 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
+import java.time.LocalDate
 import javax.inject.Provider
 
 
 class TransactionCallback(
-    private val provider: Provider<TransactionDao>
+    private val transactionProvider: Provider<TransactionDao>
 ) : RoomDatabase.Callback() {
 
     private val applicationScope = CoroutineScope(SupervisorJob())
 
     override fun onCreate(db: SupportSQLiteDatabase) {
         super.onCreate(db)
-        applicationScope.launch(Dispatchers.IO) {
-            seed()
-        }
+        seed()
     }
 
     private fun seed() {
         val transactions = arrayOf(
             Transaction(
-                id = 123, amount = 5.55, title = "Food", date = LocalDateTime.now(), type = "Expense"
+                amount = 5.55, title = "Food", type = "Expense", date = LocalDate.of(2018, 2, 14)
             ), Transaction(
-                id = 345, amount = 5.55, title = "Health", date = LocalDateTime.now(), type = "Expense"
+                amount = 5.55, title = "Health", type = "Expense", date = LocalDate.of(1991, 8, 25)
             ), Transaction(
-                id = 999, amount = 5.55, title = "Cinema", date = LocalDateTime.now(), type = "Expense"
+                amount = 5.55, title = "Cinema", type = "Expense", date = LocalDate.of(2023, 11, 24)
             )
         )
-        provider.get().insert(*transactions)
+        applicationScope.launch(Dispatchers.IO) {
+            transactionProvider.get().insert(*transactions)
+        }
     }
 }

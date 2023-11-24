@@ -2,6 +2,7 @@ package com.lvrmrc.moneybook.data.repository
 
 import com.lvrmrc.moneybook.data.dao.TransactionDao
 import com.lvrmrc.moneybook.data.entity.Transaction
+import java.time.LocalDate
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -14,7 +15,13 @@ import javax.inject.Singleton
 @Singleton
 class TransactionRepository @Inject constructor(private val transactionDao: TransactionDao) {
 
+    suspend fun insert(transaction: Transaction) = transactionDao.insert(transaction)
     suspend fun getAll(): List<Transaction> = transactionDao.getAll()
+
+    suspend fun getDayTransactions(day: LocalDate): List<Transaction> = transactionDao.getDayTransactions(day)
+
+    suspend fun getMonthTransactions(month: Int, year: Int): List<Transaction> = transactionDao.getMonthTransactions(month, year)
+    suspend fun getYearTransactions(year: Int): List<Transaction> = transactionDao.getYearTransactions(year)
 
     suspend fun getPeriodTotal(): Double = transactionDao.getPeriodTotal()
 

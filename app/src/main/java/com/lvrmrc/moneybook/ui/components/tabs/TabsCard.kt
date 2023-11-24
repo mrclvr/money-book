@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun TabsCard(height: Dp, content: @Composable() () -> Unit = {}) {
+fun TabsCard(height: Dp, tabs: List<TabItem>) {
 
     val pagerState = rememberPagerState(initialPage = 0, initialPageOffsetFraction = 0f, pageCount = { tabs.size })
     val coroutineScope = rememberCoroutineScope()
@@ -52,7 +52,12 @@ fun TabsCard(height: Dp, content: @Composable() () -> Unit = {}) {
                         selected = index == pagerState.currentPage,
                         text = { Text(text = tab.title) },
                         icon = { Icon(tab.icon, "") },
-                        onClick = { coroutineScope.launch { pagerState.animateScrollToPage(index) } },
+                        onClick = {
+                            coroutineScope.launch {
+                                pagerState.animateScrollToPage(index)
+                            }
+                            tab.onClick()
+                        },
                     )
                 }
             }
@@ -72,10 +77,7 @@ fun TabsCard(height: Dp, content: @Composable() () -> Unit = {}) {
 private fun TabsCardPreview() {
     MoneyBookTheme {
         TabsCard(
-            400.dp
-        ) {
-
-        }
-
+            400.dp, tabsList
+        )
     }
 }

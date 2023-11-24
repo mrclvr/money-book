@@ -11,7 +11,7 @@ import androidx.navigation.NavHostController
 import com.lvrmrc.moneybook.ui.layouts.BottomBarLayout
 
 @Composable
-fun StatsScreen(
+fun IncomeScreen(
     navController: NavHostController
 ) {
     BottomBarLayout(navController, content = {
