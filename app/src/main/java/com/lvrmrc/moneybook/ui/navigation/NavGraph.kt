@@ -18,7 +18,7 @@ fun NavGraph(navController: NavHostController) {
             ExpenseScreen()
         }
         composable(route = Screen.Stats.route) {
-            IncomeScreen(navController = navController)
+            IncomeScreen()
         }
         composable(route = Screen.Transaction.route, enterTransition = {
             slideIntoContainer(towards = AnimatedContentTransitionScope.SlideDirection.Companion.Up, animationSpec = tween(300))

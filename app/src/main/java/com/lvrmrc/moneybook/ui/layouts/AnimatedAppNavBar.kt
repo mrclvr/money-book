@@ -1,14 +1,15 @@
-package com.lvrmrc.moneybook.ui.components
+package com.lvrmrc.moneybook.ui.layouts
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -22,8 +23,8 @@ import com.lvrmrc.moneybook.ui.theme.MoneyBookTheme
 fun AnimatedAppNavBar(navController: NavHostController, screens: ArrayList<Screen>, showBottomBar: Boolean) {
 
     AnimatedVisibility(visible = showBottomBar,
-        enter = slideInVertically(initialOffsetY = { it }),
-        exit = slideOutVertically(targetOffsetY = { it }),
+        enter = expandVertically(initialHeight = { 0 }, expandFrom = Alignment.Bottom),
+        exit = shrinkVertically(targetHeight = { it }, shrinkTowards = Alignment.Top),
         content = {
             AppNavBar(navController, screens)
         })
@@ -31,10 +32,10 @@ fun AnimatedAppNavBar(navController: NavHostController, screens: ArrayList<Scree
 
 @Composable
 fun AppNavBar(navController: NavHostController, screens: ArrayList<Screen>) {
-    BottomAppBar(actions = {
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val currentRoute = navBackStackEntry?.destination
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination
 
+    BottomAppBar(actions = {
         screens.forEach { screen ->
             NavigationBarItem(onClick = {
                 navController.navigate(screen.route) {
@@ -51,12 +52,6 @@ fun AppNavBar(navController: NavHostController, screens: ArrayList<Screen>) {
                 selected = currentRoute?.hierarchy?.any { it.route == screen.route } == true,
                 icon = { Icon(imageVector = screen.icon, contentDescription = screen.label) },
                 label = { Text(text = screen.label, fontSize = 9.sp) })
-//                        IconButton(onClick = { /* do something */ }) {
-//                        Icon(
-//                            Icons.Filled.Edit,
-//                            contentDescription = "Localized description",
-//                        )
-//                    }
         }
     })
 }
@@ -65,7 +60,7 @@ fun AppNavBar(navController: NavHostController, screens: ArrayList<Screen>) {
 @Composable
 fun AppNavBarPreview() {
     MoneyBookTheme {
-        AppNavBar(navController = rememberNavController(), arrayListOf())
+        AnimatedAppNavBar(rememberNavController(), arrayListOf(Screen.Home, Screen.Stats), true)
     }
 }
 

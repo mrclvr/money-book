@@ -22,7 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import com.lvrmrc.moneybook.data.mockPeriodTabs
 import com.lvrmrc.moneybook.ui.theme.MoneyBookTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -81,8 +81,7 @@ fun TabsCard(
 @Preview
 @Composable
 private fun TabsCardPreview() {
-
     MoneyBookTheme {
-        TabsCard(transactionPeriodTabs(hiltViewModel()))
+        TabsCard(mockPeriodTabs)
     }
 }

@@ -20,10 +20,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.lvrmrc.moneybook.data.entity.Transaction
+import com.lvrmrc.moneybook.data.mockTransactions
 import com.lvrmrc.moneybook.ui.theme.MoneyBookTheme
 
 @Composable
-fun ExpensesList(transactions: List<Transaction> = listOf()) {
+fun ExpensesList(transactions: List<Transaction>) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -47,10 +48,10 @@ fun ExpensesList(transactions: List<Transaction> = listOf()) {
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun ExpensesListPreview() {
     MoneyBookTheme {
-        ExpensesList()
+        ExpensesList(mockTransactions)
     }
 }
