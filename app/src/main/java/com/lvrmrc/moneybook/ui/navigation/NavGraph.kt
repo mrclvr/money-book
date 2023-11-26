@@ -13,11 +13,19 @@ import com.lvrmrc.moneybook.ui.screens.TransactionScreen
 
 @Composable
 fun NavGraph(navController: NavHostController) {
+    val rootRoute = "ROOT"
+
     NavHost(navController = navController, startDestination = Screen.Home.route) {
-        composable(route = Screen.Home.route) {
+//        navigation(startDestination = Screen.Home.route, route = rootRoute) {
+        composable(route = Screen.Home.route) { entry ->
+
+//            val appViewModel = entry.appViewModel<AppViewModel>(navController)
+
+
             ExpenseScreen()
         }
-        composable(route = Screen.Stats.route) {
+        composable(route = Screen.Stats.route) { entry ->
+//            val appViewModel = entry.appViewModel<AppViewModel>(navController)
             IncomeScreen()
         }
         composable(route = Screen.Transaction.route, enterTransition = {
@@ -26,12 +34,23 @@ fun NavGraph(navController: NavHostController) {
             slideOutOfContainer(
                 towards = AnimatedContentTransitionScope.SlideDirection.Companion.Down, animationSpec = tween(300)
             )
-        }) {
-            TransactionScreen(navController = navController)
+        }) { entry ->
+//            val appViewModel = entry.appViewModel<AppViewModel>(navController)
+            TransactionScreen(navController)
         }
+//        }
     }
 
 }
 
+//@Composable
+//inline fun <reified T : ViewModel> NavBackStackEntry.appViewModel(navController: NavHostController): T {
+//    val navGraphRoute = destination.parent?.route ?: return hiltViewModel()
+//    val parentEntry = remember(this) {
+//        navController.getBackStackEntry(navGraphRoute)
+//    }
+//
+//    return hiltViewModel(parentEntry)
+//}
 
 

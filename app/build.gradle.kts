@@ -53,12 +53,13 @@ dependencies {
     val composeBom = platform("androidx.compose:compose-bom:2023.10.01")
     val navVersion = "2.7.5"
     val roomVersion = "2.6.0"
+    val materialVersion = "1.1.2"
     val hiltVersion = "2.48.1"
     val activity_version = "1.8.1"
 
     implementation(composeBom)
     implementation("androidx.navigation:navigation-compose:$navVersion")
-    implementation("androidx.compose.material3:material3")
+    implementation("androidx.compose.material3:material3:$materialVersion")
     implementation("androidx.compose.material:material-icons-core")
     implementation("androidx.compose.material:material-icons-extended")
     implementation("androidx.compose.ui:ui-tooling-preview-android:1.5.4")

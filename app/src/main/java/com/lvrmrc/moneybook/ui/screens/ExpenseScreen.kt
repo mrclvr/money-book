@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,13 +24,15 @@ import com.lvrmrc.moneybook.viewmodels.ExpenseViewModel
 
 
 @Composable
-fun ExpenseScreen(viewModel: ExpenseViewModel = hiltViewModel()) {
+fun ExpenseScreen(vm: ExpenseViewModel = hiltViewModel()) {
 
-    val tabs = transactionPeriodTabs(viewModel)
-    val transactions = viewModel.transactions.value
-    val tabIndex = viewModel.periodTabIndex.value
+    LaunchedEffect(Unit) {
+        vm.loadTransactions()
+    }
 
-    ExpenseScreen(transactions, tabs, tabIndex)
+    ExpenseScreen(
+        tabs = transactionPeriodTabs(vm), transactions = vm.transactions.value, tabIndex = vm.periodTabIndex.value
+    )
 }
 
 @Composable

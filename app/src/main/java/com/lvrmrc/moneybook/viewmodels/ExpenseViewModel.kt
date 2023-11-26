@@ -3,13 +3,12 @@ package com.lvrmrc.moneybook.viewmodels
 import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.lvrmrc.moneybook.data.AppState
 import com.lvrmrc.moneybook.data.entity.Transaction
 import com.lvrmrc.moneybook.data.repository.TransactionRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ExpenseViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle, private val repository: TransactionRepository
+    savedStateHandle: SavedStateHandle, private val repository: TransactionRepository, private val appState: AppState
 ) : ViewModel() {
 
     private val _period = mutableStateOf<String>("day")
@@ -40,20 +39,24 @@ class ExpenseViewModel @Inject constructor(
         }
     }
 
-    private val _pippo = mutableStateListOf<List<Transaction>>(emptyList())
-    val pippo: SnapshotStateList<List<Transaction>> = _pippo
+//    private val _pippo = mutableStateListOf<List<Transaction>>(emptyList())
+//    val pippo: SnapshotStateList<List<Transaction>> = _pippo
 
     private var _onLoading by mutableStateOf(false)
     val onLoading: Boolean
         get() = _onLoading
 
-    init {
-        loadTransactions()
-    }
+//    init {
+//        loadTransactions()
+//        println("LOADED")
+//    }
 
-    private fun loadTransactions() {
+
+    fun loadTransactions() {
         viewModelScope.launch {
+            appState.setLoading(true)
             getByPeriod(_period.value)
+            appState.setLoading(false)
 
 //            _pippo.clear()
 //            _pippo.addAll(listOf(repository.getAll()))
