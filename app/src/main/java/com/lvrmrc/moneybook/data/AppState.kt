@@ -10,13 +10,12 @@ class AppState private constructor() {
     val loading: Boolean
         get() = _loading
 
-    init {
-        setLoading(false)
-    }
+//    init {
+//        setLoading(false)
+//    }
 
     fun setLoading(value: Boolean) {
         _loading = value
-        println("LOADING $value")
     }
 
     companion object {

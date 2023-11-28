@@ -29,14 +29,16 @@ fun BottomBarLayout(
     navController: NavHostController = rememberNavController(), content: @Composable () -> Unit
 ) {
     val bottomBarVisible = rememberSaveable { (mutableStateOf(true)) }
+    val fabVisible = rememberSaveable { (mutableStateOf(true)) }
     val snackBarHostState = remember { SnackbarHostState() }
-    val screensList = arrayListOf(Screen.Home, Screen.Stats)
+    val screensList = arrayListOf(Screen.Expense, Screen.Income)
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute: NavDestination? = navBackStackEntry?.destination
 //    var bottomBarVisible = true
 
 //    if (navBackStackEntry?.destination?.route != null) {
-//        bottomBarVisible = Screen.hasNavbar(currentRoute?.route)
+//        fabVisible.value = Screen.hasFAB(currentRoute?.route)
+////        bottomBarVisible = Screen.hasNavbar(currentRoute?.route)
 //    }
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -46,7 +48,7 @@ fun BottomBarLayout(
         },
         floatingActionButtonPosition = FabPosition.Center,
         floatingActionButton = {
-            AnimatedAppFAB(navController, bottomBarVisible.value)
+            AnimatedAppFAB(navController, fabVisible.value)
         },
         snackbarHost = {
             SnackbarHost(hostState = snackBarHostState)
@@ -64,6 +66,7 @@ fun BottomBarLayout(
 
     navController.addOnDestinationChangedListener { _, destination, _ ->
         bottomBarVisible.value = Screen.hasNavbar(destination.route)
+        fabVisible.value = Screen.hasFAB(destination.route)
     }
 }
 

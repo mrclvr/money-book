@@ -15,16 +15,16 @@ import com.lvrmrc.moneybook.ui.screens.TransactionScreen
 fun NavGraph(navController: NavHostController) {
     val rootRoute = "ROOT"
 
-    NavHost(navController = navController, startDestination = Screen.Home.route) {
+    NavHost(navController = navController, startDestination = Screen.Expense.route) {
 //        navigation(startDestination = Screen.Home.route, route = rootRoute) {
-        composable(route = Screen.Home.route) { entry ->
+        composable(route = Screen.Expense.route) { entry ->
 
 //            val appViewModel = entry.appViewModel<AppViewModel>(navController)
 
 
             ExpenseScreen()
         }
-        composable(route = Screen.Stats.route) { entry ->
+        composable(route = Screen.Income.route) { entry ->
 //            val appViewModel = entry.appViewModel<AppViewModel>(navController)
             IncomeScreen()
         }

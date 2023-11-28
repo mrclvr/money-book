@@ -26,7 +26,6 @@ class AppViewModel @Inject constructor(
 
     fun setLoading(value: Boolean) {
         _loading = value
-        println("LOADING $value")
     }
 
 

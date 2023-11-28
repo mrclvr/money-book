@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lvrmrc.moneybook.data.AppState
 import com.lvrmrc.moneybook.data.entity.Transaction
+import com.lvrmrc.moneybook.data.entity.TransactionType
 import com.lvrmrc.moneybook.data.repository.TransactionRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -47,7 +48,7 @@ class TransactionViewModel @Inject constructor(
                 Transaction(
                     amount = amount.value,
                     title = "TEST",
-                    type = "Expense",
+                    type = TransactionType.EXPENSE,
                     date = LocalDate.parse(date.value, DateTimeFormatter.BASIC_ISO_DATE)
                 )
             )

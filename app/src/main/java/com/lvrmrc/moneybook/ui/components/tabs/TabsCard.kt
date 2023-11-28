@@ -30,7 +30,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TabsCard(
-    tabs: List<TabItem>, initialPage: Int = 0
+    tabs: List<TabItem>, initialPage: Int = 0, onTabRowClick: (String) -> Unit = {}, cardContent: @Composable () -> Unit = {}
 ) {
     val pagerState = rememberPagerState(initialPage, initialPageOffsetFraction = 0f, pageCount = { tabs.size })
 
@@ -54,24 +54,25 @@ fun TabsCard(
             ) {
 
                 tabs.forEachIndexed { index, tab ->
-                    Tab(
-                        selected = index == pagerState.currentPage,
+                    Tab(selected = index == pagerState.currentPage,
                         text = { Text(text = tab.title) },
                         icon = { Icon(tab.icon, "") },
                         onClick = {
                             cardScope.launch {
-                                tab.onClick()
                                 pagerState.animateScrollToPage(index)
                             }
-                        },
-                    )
+                            onTabRowClick(tab.title)
+                        })
                 }
             }
             HorizontalPager(
                 state = pagerState, modifier = Modifier.fillMaxSize()
             ) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    tabs[pagerState.currentPage].content()
+                    when (cardContent) {
+                        {} -> tabs[pagerState.currentPage].content()
+                        else -> cardContent()
+                    }
                 }
             }
         }

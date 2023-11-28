@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lvrmrc.moneybook.data.AppState
 import com.lvrmrc.moneybook.data.entity.Transaction
+import com.lvrmrc.moneybook.data.entity.TransactionType
 import com.lvrmrc.moneybook.data.repository.TransactionRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -21,18 +22,18 @@ class ExpenseViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle, private val repository: TransactionRepository, private val appState: AppState
 ) : ViewModel() {
 
-    private val _period = mutableStateOf<String>("day")
-    val total = derivedStateOf { _transactions.value.sumOf { it.amount } }
-
+    private val transType = mutableStateOf(TransactionType.EXPENSE)
+    val total by derivedStateOf { _transactions.value.sumOf { it.amount } }
+    private val _period = mutableStateOf("Day")
 
     private val _transactions = mutableStateOf<List<Transaction>>(emptyList())
     val transactions: State<List<Transaction>> = _transactions
 
     val periodTabIndex = derivedStateOf {
         when (_period.value) {
-            "day" -> 0
-            "month" -> 1
-            "year" -> 2
+            "Day" -> 0
+            "Month" -> 1
+            "Year" -> 2
             else -> {
                 0
             }
@@ -48,11 +49,15 @@ class ExpenseViewModel @Inject constructor(
 
 //    init {
 //        loadTransactions()
-//        println("LOADED")
 //    }
 
 
-    fun loadTransactions() {
+    fun setTransType(type: TransactionType) {
+        transType.value = type
+        loadTransactions()
+    }
+
+    private fun loadTransactions() {
         viewModelScope.launch {
             appState.setLoading(true)
             getByPeriod(_period.value)
@@ -80,23 +85,22 @@ class ExpenseViewModel @Inject constructor(
 
         viewModelScope.launch {
             when (_period.value) {
-                "day" -> {
-                    result = repository.getDayTransactions(date)
+                "Day" -> {
+                    result = repository.getDayTransactions(transType.value, date)
                 }
 
-                "month" -> {
-                    result = repository.getMonthTransactions(date.monthValue, date.year)
+                "Month" -> {
+                    result = repository.getMonthTransactions(transType.value, date.monthValue, date.year)
                 }
 
-                "year" -> {
-                    result = repository.getYearTransactions(date.year)
+                "Year" -> {
+                    result = repository.getYearTransactions(transType.value, date.year)
                 }
 
-                else -> {
-
-                }
+                else -> {}
             }
             _transactions.value = result.reversed()
+            println("TOTAL $total")
 
         }
     }

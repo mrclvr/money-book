@@ -13,7 +13,6 @@ fun getFormattedNowTime(): String {
 }
 
 fun dateFromTimestamp(timestamp: Long): String {
-    println(Date(timestamp).toString())
     return Date(timestamp).toString()
 
 }

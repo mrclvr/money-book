@@ -45,7 +45,7 @@ fun AppNavBar(navController: NavHostController, screens: ArrayList<Screen>) {
                             saveState = true
                         }
                     }
-                    launchSingleTop = true
+//                    launchSingleTop = true
                     restoreState = true
                 }
             },
@@ -60,7 +60,7 @@ fun AppNavBar(navController: NavHostController, screens: ArrayList<Screen>) {
 @Composable
 fun AppNavBarPreview() {
     MoneyBookTheme {
-        AnimatedAppNavBar(rememberNavController(), arrayListOf(Screen.Home, Screen.Stats), true)
+        AnimatedAppNavBar(rememberNavController(), arrayListOf(Screen.Expense, Screen.Income), true)
     }
 }
 
