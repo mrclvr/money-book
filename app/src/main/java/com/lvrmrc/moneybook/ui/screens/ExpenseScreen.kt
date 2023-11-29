@@ -17,11 +17,12 @@ import com.lvrmrc.moneybook.data.entity.Transaction
 import com.lvrmrc.moneybook.data.entity.TransactionType
 import com.lvrmrc.moneybook.data.mockPeriodTabs
 import com.lvrmrc.moneybook.data.mockTransactions
+import com.lvrmrc.moneybook.ui.components.DonutChart
 import com.lvrmrc.moneybook.ui.components.ExpensesList
-import com.lvrmrc.moneybook.ui.components.PieChart
 import com.lvrmrc.moneybook.ui.components.tabs.TabItem
 import com.lvrmrc.moneybook.ui.components.tabs.TabsCard
 import com.lvrmrc.moneybook.ui.components.tabs.periodTabs
+import com.lvrmrc.moneybook.ui.components.viewData
 import com.lvrmrc.moneybook.ui.layouts.AppLayout
 import com.lvrmrc.moneybook.ui.layouts.TabsLayout
 import com.lvrmrc.moneybook.ui.theme.MoneyBookTheme
@@ -72,19 +73,19 @@ private fun ExpenseScreen(
             horizontalAlignment = Alignment.CenterHorizontally
 
         ) {
-            TabsCard(tabs, tabIndex, onTabRowClick = {
+            TabsCard(tabs, initialPage = tabIndex, currentPage = tabIndex, onTabRowClick = {
                 onTabRowClick(it)
             }, cardContent = {
-                PieChart(
-                    data = mapOf(
-                        Pair("Sample-1", 150),
-                        Pair("Sample-2", 120),
-                        Pair("Sample-3", 110),
-                        Pair("Sample-4", 170),
-                        Pair("Sample-5", 120),
-                    ),
-                    text = total.toString()
-                )
+                DonutChart(data = viewData)
+//                PieChart(
+//                    data = mapOf(
+//                        Pair("Sample-1", 150),
+//                        Pair("Sample-2", 120),
+//                        Pair("Sample-3", 110),
+//                        Pair("Sample-4", 170),
+//                        Pair("Sample-5", 120),
+//                    ), text = total.toString()
+//                )
             })
             ExpensesList(transactions)
         }

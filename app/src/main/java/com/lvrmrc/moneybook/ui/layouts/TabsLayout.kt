@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -27,7 +28,6 @@ import com.lvrmrc.moneybook.ui.theme.MoneyBookTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-//@OptIn(ExperimentalFoundationApi::class)
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TabsLayout(
@@ -39,7 +39,6 @@ fun TabsLayout(
     val bottomBarVisible = rememberSaveable { (mutableStateOf(true)) }
     val pagerState = rememberPagerState(initialPage, initialPageOffsetFraction = 0f, pageCount = { transactionsTabs.size })
 //    val transType = remember { mutableStateOf(TransactionType.EXPENSE) }
-
 //    val navBackStackEntry by navController.currentBackStackEntryAsState()
 //    val currentRoute: NavDestination? = navBackStackEntry?.destination
 
@@ -72,14 +71,17 @@ fun TabsLayout(
                 .fillMaxSize()
                 .padding(paddingValues = it)
                 .background(MaterialTheme.colorScheme.primary)
-//                .background(colorScheme.primary)
         ) {
 
-//            HorizontalPager(
-//                state = pagerState
-//            ) {
-            content()
-//            }
+            HorizontalPager(
+                state = pagerState
+            ) {
+//                when (pagerState.currentPage) {
+//                    0 -> content()
+//                    1 -> content()
+//                }
+                content()
+            }
         }
     }
 

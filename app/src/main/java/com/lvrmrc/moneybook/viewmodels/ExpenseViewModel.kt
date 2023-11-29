@@ -4,7 +4,6 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -40,48 +39,34 @@ class ExpenseViewModel @Inject constructor(
         }
     }
 
-//    private val _pippo = mutableStateListOf<List<Transaction>>(emptyList())
-//    val pippo: SnapshotStateList<List<Transaction>> = _pippo
+//    private var _onLoading by mutableStateOf(false)
+//    val onLoading: Boolean
+//        get() = _onLoading
 
-    private var _onLoading by mutableStateOf(false)
-    val onLoading: Boolean
-        get() = _onLoading
-
-//    init {
-//        loadTransactions()
-//    }
+    init {
+        loadTransactions()
+    }
 
 
     fun setTransType(type: TransactionType) {
+        println("TAB ${_period.value}")
         transType.value = type
         loadTransactions()
     }
 
     private fun loadTransactions() {
-        viewModelScope.launch {
-            appState.setLoading(true)
-            getByPeriod(_period.value)
-            appState.setLoading(false)
-
-//            _pippo.clear()
-//            _pippo.addAll(listOf(repository.getAll()))
-        }
-    }
-
-    suspend fun addExpense(transaction: Transaction) {
-        viewModelScope.launch {
-            _onLoading = true
-            repository.insert(transaction)
-            loadTransactions()
-            _onLoading = false
+        appState.execWithLoading {
+            viewModelScope.launch {
+                getByPeriod(_period.value)
+            }
         }
     }
 
     suspend fun getByPeriod(
         period: String, date: LocalDate = LocalDate.now()
     ) {
-        _period.value = period
         var result: List<Transaction> = emptyList()
+        _period.value = period
 
         viewModelScope.launch {
             when (_period.value) {
@@ -100,16 +85,11 @@ class ExpenseViewModel @Inject constructor(
                 else -> {}
             }
             _transactions.value = result.reversed()
-            println("TOTAL $total")
+//            println("RESULT")
+//            println(_transactions.value)
 
         }
+
     }
-//
-//    fun deleteTask(task: Task) {
-//        viewModelScope.launch {
-//            repository.deleteTask(task)
-//            _tasks.value = repository.getAllTask()
-//        }
-//    }
 
 }
