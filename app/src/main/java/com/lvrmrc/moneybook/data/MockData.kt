@@ -4,29 +4,115 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.EditCalendar
 import androidx.compose.material.icons.filled.Today
-import com.lvrmrc.moneybook.data.entity.Transaction
-import com.lvrmrc.moneybook.data.entity.TransactionType
-import com.lvrmrc.moneybook.ui.components.tabs.TabItem
-import java.time.LocalDate
+import com.lvrmrc.moneybook.data.source.db.entity.CategoryEntity
+import com.lvrmrc.moneybook.data.source.db.entity.TransactionEntity
+import com.lvrmrc.moneybook.domain.model.CategoryWithTransactions
+import com.lvrmrc.moneybook.domain.model.ColorValue
+import com.lvrmrc.moneybook.domain.model.LabeledIcon
+import com.lvrmrc.moneybook.domain.model.Transaction
+import com.lvrmrc.moneybook.domain.model.TransactionType
+import com.lvrmrc.moneybook.presentation.ui.compose.components.tabs.TabItem
+import java.time.LocalDateTime
+import java.util.UUID
+
+val mockCategories = listOf(
+    CategoryEntity(
+        id = UUID.randomUUID(),
+        label = "School",
+        icon = LabeledIcon.Label.School,
+        type = TransactionType.EXPENSE,
+        color = ColorValue.Name.TEAL
+    ),
+    CategoryEntity(
+        id = UUID.randomUUID(),
+        label = "Test",
+        icon = LabeledIcon.Label.School,
+        type = TransactionType.EXPENSE,
+        color = ColorValue.Name.PURPLE
+    ),
+)
+
+val mockCategoryEntities = mockCategories.map { it.toDomain() }
+
+val mockCatTransactions = listOf(
+    CategoryWithTransactions(
+        mockCategoryEntities[0].label, mockCategoryEntities[0].icon, mockCategoryEntities[0].color, listOf(
+            Transaction(
+                amount = 1.0, notes = "Food 1", type = TransactionType.EXPENSE, date = LocalDateTime.of(
+                    2023, 2, 14, 12, 1
+                )
+            ), Transaction(
+                amount = 2.0, notes = "Health 2", type = TransactionType.EXPENSE, date = LocalDateTime.of(2023, 8, 25, 13, 1)
+            ), Transaction(
+                amount = 3.0, notes = "Cinema 3", type = TransactionType.EXPENSE, date = LocalDateTime.of(2023, 11, 22, 14, 1)
+            )
+        )
+    ), CategoryWithTransactions(
+        mockCategoryEntities[1].label, mockCategoryEntities[1].icon, mockCategoryEntities[1].color, listOf(
+            Transaction(
+                amount = 1.0, notes = "Food 1", type = TransactionType.EXPENSE, date = LocalDateTime.of(
+                    2023, 2, 14, 12, 1
+                )
+            ),
+            Transaction(
+                amount = 2.0, notes = "Health 2", type = TransactionType.EXPENSE, date = LocalDateTime.of(2023, 8, 25, 13, 1)
+            ),
+            Transaction(
+                amount = 3.0, notes = "Cinema 3", type = TransactionType.EXPENSE, date = LocalDateTime.of(2023, 11, 22, 14, 1)
+            ),
+            Transaction(
+                amount = 4.0, notes = "Food 4", type = TransactionType.EXPENSE, date = LocalDateTime.of(2023, 11, 23, 15, 1)
+            ),
+            Transaction(
+                amount = 5.0, notes = "Health 5", type = TransactionType.EXPENSE, date = LocalDateTime.of(2023, 11, 24, 16, 1)
+            ),
+            Transaction(
+                amount = 6.0, notes = "Cinema 6", type = TransactionType.EXPENSE, date = LocalDateTime.of(2023, 11, 24, 17, 1)
+            ),
+        )
+    )
+)
 
 val mockTransactions = listOf(
-    Transaction(
-        amount = 1.0, title = "Food 1", type = TransactionType.EXPENSE, date = LocalDate.of(2023, 2, 14)
+    TransactionEntity(
+        amount = 1.0, notes = "Food 1", type = TransactionType.EXPENSE, date = LocalDateTime.of(
+            2023, 2, 14, 12, 1
+        ), categoryId = UUID.randomUUID()
     ),
-    Transaction(
-        amount = 2.0, title = "Health 2", type = TransactionType.EXPENSE, date = LocalDate.of(2023, 8, 25)
+    TransactionEntity(
+        amount = 2.0,
+        notes = "Health 2",
+        type = TransactionType.EXPENSE,
+        date = LocalDateTime.of(2023, 8, 25, 13, 1),
+        categoryId = UUID.randomUUID()
     ),
-    Transaction(
-        amount = 3.0, title = "Cinema 3", type = TransactionType.EXPENSE, date = LocalDate.of(2023, 11, 22)
+    TransactionEntity(
+        amount = 3.0,
+        notes = "Cinema 3",
+        type = TransactionType.EXPENSE,
+        date = LocalDateTime.of(2023, 11, 22, 14, 1),
+        categoryId = UUID.randomUUID()
     ),
-    Transaction(
-        amount = 4.0, title = "Food 4", type = TransactionType.EXPENSE, date = LocalDate.of(2023, 11, 23)
+    TransactionEntity(
+        amount = 4.0,
+        notes = "Food 4",
+        type = TransactionType.EXPENSE,
+        date = LocalDateTime.of(2023, 11, 23, 15, 1),
+        categoryId = UUID.randomUUID()
     ),
-    Transaction(
-        amount = 5.0, title = "Health 5", type = TransactionType.EXPENSE, date = LocalDate.of(2023, 11, 24)
+    TransactionEntity(
+        amount = 5.0,
+        notes = "Health 5",
+        type = TransactionType.EXPENSE,
+        date = LocalDateTime.of(2023, 11, 24, 16, 1),
+        categoryId = UUID.randomUUID()
     ),
-    Transaction(
-        amount = 6.0, title = "Cinema 6", type = TransactionType.EXPENSE, date = LocalDate.of(2023, 11, 24)
+    TransactionEntity(
+        amount = 6.0,
+        notes = "Cinema 6",
+        type = TransactionType.EXPENSE,
+        date = LocalDateTime.of(2023, 11, 24, 17, 1),
+        categoryId = UUID.randomUUID()
     ),
 )
 
