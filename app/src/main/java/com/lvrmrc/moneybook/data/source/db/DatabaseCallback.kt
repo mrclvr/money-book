@@ -30,10 +30,10 @@ class DatabaseCallback(
     }
 
     private suspend fun seedCategories() {
-        categoryProvider.get().insert(*defaultCategories)
+        categoryProvider.get().insert(*mockCategoryEntities.toTypedArray())
     }
 
     private suspend fun seedTransactions() {
-        transactionProvider.get().insert(*defaultTransactions)
+        transactionProvider.get().insert(*mockTransactionEntities.toTypedArray())
     }
 }

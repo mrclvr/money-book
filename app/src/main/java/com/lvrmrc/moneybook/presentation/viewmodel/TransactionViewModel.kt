@@ -7,8 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lvrmrc.moneybook.data.AppState
 import com.lvrmrc.moneybook.data.repository.TransactionRepositoryImpl
-import com.lvrmrc.moneybook.data.source.db.defaultCategories
 import com.lvrmrc.moneybook.data.source.db.entity.TransactionEntity
+import com.lvrmrc.moneybook.data.source.db.mockCategoryEntities
 import com.lvrmrc.moneybook.domain.model.TransactionType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -51,7 +51,7 @@ class TransactionViewModel @Inject constructor(
                     notes = "TEST",
                     type = TransactionType.EXPENSE,
                     date = LocalDateTime.parse(date.value, DateTimeFormatter.BASIC_ISO_DATE),
-                    categoryId = defaultCategories[0].id
+                    categoryId = mockCategoryEntities[0].id
                 )
             )
         }

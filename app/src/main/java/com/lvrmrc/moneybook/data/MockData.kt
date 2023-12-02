@@ -1,4 +1,4 @@
-package com.lvrmrc.moneybook.data
+package com.lvrmrc.moneybook.data.source.db
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarMonth
@@ -15,7 +15,7 @@ import com.lvrmrc.moneybook.presentation.ui.compose.components.tabs.TabItem
 import java.time.LocalDateTime
 import java.util.UUID
 
-val mockCategories = listOf(
+val mockCategoryEntities = listOf(
     CategoryEntity(
         id = UUID.randomUUID(),
         label = "School",
@@ -32,11 +32,11 @@ val mockCategories = listOf(
     ),
 )
 
-val mockCategoryEntities = mockCategories.map { it.toDomain() }
+val mockCategories = mockCategoryEntities.map { it.toDomain() }
 
 val mockCatTransactions = listOf(
     CategoryWithTransactions(
-        mockCategoryEntities[0].label, mockCategoryEntities[0].icon, mockCategoryEntities[0].color, listOf(
+        mockCategories[0].label, mockCategories[0].icon, mockCategories[0].color, listOf(
             Transaction(
                 amount = 1.0, notes = "Food 1", type = TransactionType.EXPENSE, date = LocalDateTime.of(
                     2023, 2, 14, 12, 1
@@ -48,7 +48,7 @@ val mockCatTransactions = listOf(
             )
         )
     ), CategoryWithTransactions(
-        mockCategoryEntities[1].label, mockCategoryEntities[1].icon, mockCategoryEntities[1].color, listOf(
+        mockCategories[1].label, mockCategories[1].icon, mockCategories[1].color, listOf(
             Transaction(
                 amount = 1.0, notes = "Food 1", type = TransactionType.EXPENSE, date = LocalDateTime.of(
                     2023, 2, 14, 12, 1
@@ -73,7 +73,7 @@ val mockCatTransactions = listOf(
     )
 )
 
-val mockTransactions = listOf(
+val mockTransactionEntities = listOf(
     TransactionEntity(
         amount = 1.0, notes = "Food 1", type = TransactionType.EXPENSE, date = LocalDateTime.of(
             2023, 2, 14, 12, 1
@@ -115,6 +115,8 @@ val mockTransactions = listOf(
         categoryId = UUID.randomUUID()
     ),
 )
+
+val mockTransactions = mockTransactionEntities.map { it.toDomain() }
 
 val mockPeriodTabs = listOf(
     TabItem(title = "Day", icon = Icons.Filled.Today),
