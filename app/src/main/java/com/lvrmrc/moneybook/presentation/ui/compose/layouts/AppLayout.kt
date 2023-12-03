@@ -46,7 +46,7 @@ fun AppLayout(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues = it)
-                    .background(MaterialTheme.colorScheme.primary)
+                    .background(MaterialTheme.colorScheme.background)
             ) {
                 content()
             }

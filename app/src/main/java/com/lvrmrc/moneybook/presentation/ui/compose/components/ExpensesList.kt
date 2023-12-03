@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.lvrmrc.moneybook.data.source.db.mockCatTransactions
+import com.lvrmrc.moneybook.data.mockCatTransactions
 import com.lvrmrc.moneybook.domain.model.CategoryWithTransactions
 import com.lvrmrc.moneybook.presentation.ui.theme.MoneyBookTheme
 
@@ -33,17 +33,18 @@ fun ExpensesList(catTransactions: List<CategoryWithTransactions>) {
         ) {
 
         items(catTransactions) { cat ->
+            val textColor = if (cat.lightText) colorScheme.background else colorScheme.onBackground
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(50.dp)
                     .clip(shape = RoundedCornerShape(8.dp))
-                    .background(colorScheme.primaryContainer)
-                    .padding(10.dp), content = {
-                    Text(text = cat.label)
-                    Text(text = "${cat.transactions.sumOf { it.amount }} €")
-                }, horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically
-            )
+                    .background(cat.color)
+                    .padding(10.dp), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(text = cat.label, color = textColor)
+                Text(text = "${cat.total} €", color = textColor)
+            }
         }
 
     }

@@ -24,11 +24,7 @@ data class TransactionEntity constructor(
 
     fun toDomain(): Transaction {
         return Transaction(
-            notes = notes,
-            amount = amount,
-            date = date,
-            type = type,
-//            category = category.toDomain()
+            notes = notes, amount = amount, date = date, type = type
         )
     }
 

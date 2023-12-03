@@ -8,6 +8,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,7 +28,11 @@ fun AnimatedAppFAB(navController: NavHostController, showFAB: Boolean) {
 @Composable
 fun AppFAB(navController: NavHostController) {
     FloatingActionButton(
-        modifier = Modifier.offset(y = (-24).dp), shape = CircleShape, onClick = {
+        modifier = Modifier.offset(y = (-24).dp),
+        containerColor = colorScheme.primary,
+        contentColor = colorScheme.onPrimary,
+        shape = CircleShape,
+        onClick = {
             navController.navigate(Screen.Transaction.route) {
 
                 navController.graph.route?.let { route ->
@@ -38,7 +43,8 @@ fun AppFAB(navController: NavHostController) {
                 launchSingleTop = true
                 restoreState = true
             }
-        }, elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
+        },
+        elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
     ) {
         Icon(Screen.Transaction.icon, Screen.Transaction.label)
     }

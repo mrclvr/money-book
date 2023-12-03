@@ -1,6 +1,7 @@
 package com.lvrmrc.moneybook.presentation.ui.compose.components
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material3.DatePicker
@@ -18,7 +19,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -32,7 +35,7 @@ fun DialogDatePicker(onDateSelected: (String) -> Unit = {}) {
     }
 
     Box(contentAlignment = Alignment.Center) {
-        IconButton(colors = IconButtonDefaults.filledTonalIconButtonColors(), onClick = {
+        IconButton(modifier = Modifier.size(56.dp), colors = IconButtonDefaults.filledIconButtonColors(), onClick = {
             datePickerOpen = true
         }) {
             Icon(imageVector = Icons.Filled.CalendarMonth, contentDescription = "Open date picker")

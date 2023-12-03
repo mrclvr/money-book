@@ -1,4 +1,4 @@
-package com.lvrmrc.moneybook.presentation.ui.compose.layouts
+package com.lvrmrc.moneybook.presentation.ui.compose.layouts.deprecated
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -20,6 +20,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.lvrmrc.moneybook.presentation.ui.compose.layouts.AnimatedAppFAB
 import com.lvrmrc.moneybook.presentation.ui.compose.screens.Screen
 import com.lvrmrc.moneybook.presentation.ui.theme.MoneyBookTheme
 
@@ -30,7 +31,7 @@ fun BottomBarLayout(
     val bottomBarVisible = rememberSaveable { (mutableStateOf(true)) }
     val fabVisible = rememberSaveable { (mutableStateOf(true)) }
     val snackBarHostState = remember { SnackbarHostState() }
-    val screensList = arrayListOf(Screen.Expense, Screen.Income)
+    val screensList = arrayListOf(Screen.Home, Screen.Transaction)
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute: NavDestination? = navBackStackEntry?.destination
 //    var bottomBarVisible = true
@@ -57,7 +58,7 @@ fun BottomBarLayout(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues = it)
-                .background(colorScheme.primary),
+                .background(colorScheme.background),
         ) {
             content()
         }

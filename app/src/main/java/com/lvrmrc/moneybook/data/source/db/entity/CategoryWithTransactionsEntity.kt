@@ -10,7 +10,7 @@ data class CategoryWithTransactionsEntity(
     ) val transactions: List<TransactionEntity>
 ) {
     fun toDomain(): CategoryWithTransactions {
-        val (label, icon, color) = category.toDomain()
-        return CategoryWithTransactions(label, icon, color, transactions.map { it.toDomain() })
+        val (label, icon, color, lightText) = category.toDomain()
+        return CategoryWithTransactions(label, icon, color, lightText, transactions.map { it.toDomain() }, transactions.sumOf { it.amount })
     }
 }

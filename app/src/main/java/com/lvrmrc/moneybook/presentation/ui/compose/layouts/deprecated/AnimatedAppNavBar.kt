@@ -1,10 +1,11 @@
-package com.lvrmrc.moneybook.presentation.ui.compose.layouts
+package com.lvrmrc.moneybook.presentation.ui.compose.layouts.deprecated
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,6 +19,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.lvrmrc.moneybook.presentation.ui.compose.screens.Screen
 import com.lvrmrc.moneybook.presentation.ui.theme.MoneyBookTheme
+
 
 @Composable
 fun AnimatedAppNavBar(navController: NavHostController, screens: ArrayList<Screen>, showBottomBar: Boolean) {
@@ -35,7 +37,7 @@ fun AppNavBar(navController: NavHostController, screens: ArrayList<Screen>) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination
 
-    BottomAppBar(actions = {
+    BottomAppBar(containerColor = colorScheme.surfaceVariant, contentColor = colorScheme.onSurfaceVariant, actions = {
         screens.forEach { screen ->
             NavigationBarItem(onClick = {
                 navController.navigate(screen.route) {
@@ -60,7 +62,7 @@ fun AppNavBar(navController: NavHostController, screens: ArrayList<Screen>) {
 @Composable
 fun AppNavBarPreview() {
     MoneyBookTheme {
-        AnimatedAppNavBar(rememberNavController(), arrayListOf(Screen.Expense, Screen.Income), true)
+        AnimatedAppNavBar(rememberNavController(), arrayListOf(Screen.Home, Screen.Home), true)
     }
 }
 

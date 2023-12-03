@@ -8,4 +8,5 @@ interface CategoryInterface {
     val label: String
     val icon: ImageVector
     val color: Color
+    val lightText: Boolean
 }

@@ -45,6 +45,7 @@ fun TabsLayout(
     Scaffold(modifier = Modifier.fillMaxSize(), bottomBar = {
         TabRow(
             selectedTabIndex = pagerState.currentPage,
+            containerColor = MaterialTheme.colorScheme.primaryContainer, contentColor = MaterialTheme.colorScheme.onPrimaryContainer
         ) {
             val tabRowScope: CoroutineScope = rememberCoroutineScope()
 
@@ -70,7 +71,7 @@ fun TabsLayout(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues = it)
-                .background(MaterialTheme.colorScheme.primary)
+                .background(MaterialTheme.colorScheme.background)
         ) {
 
             HorizontalPager(

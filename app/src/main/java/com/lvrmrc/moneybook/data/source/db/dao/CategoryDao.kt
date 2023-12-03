@@ -6,23 +6,31 @@ import androidx.room.Transaction
 import com.lvrmrc.moneybook.data.source.db.entity.CategoryEntity
 import com.lvrmrc.moneybook.data.source.db.entity.CategoryWithTransactionsEntity
 import com.lvrmrc.moneybook.domain.model.TransactionType
+import java.time.LocalDateTime
 
 @Dao
 interface CategoryDao : BaseDao<CategoryEntity> {
     @Query("SELECT * FROM categories")
     suspend fun getAll(): List<CategoryEntity>
 
-//    @Transaction
+    //    @Transaction
 //    @Query("SELECT * FROM categories WHERE id IN (:categoryId)")
 //    fun getCategoryWithTransactions(categoryId: UUID): List<CategoryWithTransactionsEntity>
 //
 //    @Transaction
 //    @Query("SELECT * FROM categories")
 //    fun getCategoriesWithTransactions(): List<CategoryWithTransactionsEntity>
+    @Transaction
+    @Query("SELECT c.* FROM categories c JOIN (SELECT * FROM transactions WHERE date = :day AND type = :type) t ON c.id = t.categoryId GROUP BY c.id")
+    suspend fun getDayCategoriesWithTransactions(type: TransactionType, day: LocalDateTime): List<CategoryWithTransactionsEntity>
+
+    @Transaction
+    @Query("SELECT c.* FROM categories c JOIN (SELECT * FROM transactions WHERE $filterByMonthYearType) t ON c.id = t.categoryId  GROUP BY c.id")
+    suspend fun getMonthCategoriesWithTransactions(type: TransactionType, month: Int, year: Int): List<CategoryWithTransactionsEntity>
 
     @Transaction
     @Query(
-        "SELECT c.* FROM categories c LEFT JOIN transactions t ON c.id = t.categoryId AND $filterByYearType GROUP BY c.id"
+        "SELECT c.* FROM categories c JOIN (SELECT * FROM transactions WHERE $filterByYearType) t ON c.id = t.categoryId GROUP BY c.id"
     )
     suspend fun getYearCategoriesWithTransactions(type: TransactionType, year: Int): List<CategoryWithTransactionsEntity>
 

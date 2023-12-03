@@ -16,11 +16,12 @@ data class CategoryEntity constructor(
     @ColumnInfo(name = "icon") val icon: LabeledIcon.Label,
     @ColumnInfo(name = "type") val type: TransactionType,
     @ColumnInfo(name = "color") val color: ColorValue.Name,
+    @ColumnInfo(name = "lightText") val lightText: Boolean,
     @ColumnInfo(name = "deleted") val deleted: Boolean = false
 ) {
     fun toDomain(): Category {
         return Category(
-            label = label, icon = LabeledIcon.getIcon(icon), color = ColorValue.getColorValue(color)
+            label = label, icon = LabeledIcon.getIcon(icon), color = ColorValue.getColorValue(color), lightText = lightText
         )
     }
 }

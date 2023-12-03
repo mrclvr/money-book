@@ -13,8 +13,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.lvrmrc.moneybook.data.source.db.mockCatTransactions
-import com.lvrmrc.moneybook.data.source.db.mockPeriodTabs
+import com.lvrmrc.moneybook.data.mockCatTransactions
+import com.lvrmrc.moneybook.data.mockPeriodTabs
 import com.lvrmrc.moneybook.domain.model.CategoryWithTransactions
 import com.lvrmrc.moneybook.domain.model.TransactionType
 import com.lvrmrc.moneybook.presentation.ui.compose.components.DonutChartData
@@ -88,7 +88,7 @@ private fun ExpenseScreen(
 
                 val donutChartData = DonutChartDataList((catTransactions.map {
                     DonutChartData(
-                        it.transactions.sumOf { t -> t.amount }, it.color, it.label
+                        it.total, it.color, it.label
                     )
                 }))
 //                DonutChart(data = donutChartData, animLaunched = animLaunched, onAnimLaunched = onAnimLaunched)

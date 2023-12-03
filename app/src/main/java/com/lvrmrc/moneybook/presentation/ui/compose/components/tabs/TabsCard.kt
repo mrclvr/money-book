@@ -12,7 +12,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
@@ -22,7 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.lvrmrc.moneybook.data.source.db.mockPeriodTabs
+import com.lvrmrc.moneybook.data.mockPeriodTabs
 import com.lvrmrc.moneybook.presentation.ui.theme.MoneyBookTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -43,7 +43,7 @@ fun TabsCard(
             .defaultMinSize(300.dp)
             .fillMaxWidth()
             .aspectRatio(1f),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
+        colors = CardDefaults.cardColors(containerColor = colorScheme.surfaceVariant, contentColor = colorScheme.onSurfaceVariant),
         elevation = CardDefaults.cardElevation(
             defaultElevation = 10.dp
         )
@@ -55,7 +55,10 @@ fun TabsCard(
         Column() {
             TabRow(
                 selectedTabIndex = currentPage ?: pagerState.currentPage,
-            ) {
+                containerColor = colorScheme.primaryContainer,
+                contentColor = colorScheme.onPrimaryContainer,
+
+                ) {
 
                 tabs.forEachIndexed { index, tab ->
                     Tab(selected = index == pagerState.currentPage,

@@ -21,48 +21,22 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.lvrmrc.moneybook.presentation.ui.theme.MoneyBookTheme
 
-//@Composable
-//fun TopBarLayout(
-//    navController: NavHostController = rememberNavController(), content: @Composable() () -> Unit = {}
-//) {
-//    TopBarLayout(navController) {
-//        content()
-//    }
-//}
-
 @Composable
-fun TopBarLayout(
+fun FABLayout(
     onFabAction: () -> Unit = {}, fabEnabled: Boolean = false, content: @Composable() () -> Unit = {}
 ) {
     val coroutineScope = rememberCoroutineScope()
 
-    Scaffold(modifier = Modifier.fillMaxSize(),
-//        topBar = {
-//            TopAppBar(colors = topAppBarColors(
-//                containerColor = MaterialTheme.colorScheme.primaryContainer,
-//                titleContentColor = MaterialTheme.colorScheme.primary,
-//            ), title = {
-//                Text(title)
-//            },
-//
-//                navigationIcon = {
-//                    IconButton(onClick = { navController.popBackStack() }) {
-//                        Icon(
-//                            imageVector = Icons.Filled.ArrowBack, contentDescription = "ArrowBack"
-//                        )
-//                    }
-//                })
-//        },
-        floatingActionButtonPosition = FabPosition.End, floatingActionButton = {
-            Button(
-                onClick = {
-                    onFabAction()
-                }, modifier = Modifier.defaultMinSize(minWidth = 56.dp, minHeight = 56.dp), enabled = fabEnabled, shape = CircleShape
+    Scaffold(modifier = Modifier.fillMaxSize(), floatingActionButtonPosition = FabPosition.End, floatingActionButton = {
+        Button(
+            onClick = {
+                onFabAction()
+            }, modifier = Modifier.defaultMinSize(minWidth = 56.dp, minHeight = 56.dp), enabled = fabEnabled, shape = CircleShape
 
-            ) {
-                Text(text = "Add")
-                Icon(Icons.Filled.ArrowForward, contentDescription = "Add transaction")
-            }
+        ) {
+            Text(text = "Add")
+            Icon(Icons.Filled.ArrowForward, contentDescription = "Add transaction")
+        }
 //            ExtendedFloatingActionButton(
 //                shape = CircleShape,
 //                onClick =
@@ -78,14 +52,14 @@ fun TopBarLayout(
 //                },
 //                text = { Text(text = "Add") },
 //            )
-        }
+    }
 
     ) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues = it)
-                .background(MaterialTheme.colorScheme.primary),
+                .background(MaterialTheme.colorScheme.background),
         ) {
             content()
         }
@@ -95,8 +69,8 @@ fun TopBarLayout(
 
 @Preview
 @Composable
-fun TopBarLayoutPreview() {
+fun FABLayoutPreview() {
     MoneyBookTheme {
-        TopBarLayout()
+        FABLayout()
     }
 }
