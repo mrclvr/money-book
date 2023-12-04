@@ -46,13 +46,13 @@ fun ExpenseScreen(vm: ExpenseViewModel = hiltViewModel()) {
         tabIndex = vm.periodTabIndex.value,
         total = vm.total,
         animLaunched = vm.animationLaunched.value,
-        onTabRowClick = {
+        setPeriod = {
             expenseScreenScope.launch {
-                vm.getByPeriod(it)
+                vm.loadTransactions(it)
             }
         },
         onLayoutNavClick = {
-            vm.setTransType(it)
+            vm.appState.setTransType(it)
         },
         onAnimLaunched = {
             vm.setAnimLaunched()
@@ -67,7 +67,7 @@ private fun ExpenseScreen(
     tabIndex: Int = 0,
     total: Double = 0.0,
     animLaunched: Boolean = false,
-    onTabRowClick: (String) -> Unit = {},
+    setPeriod: (String) -> Unit = {},
     onLayoutNavClick: (TransactionType) -> Unit = {},
     onAnimLaunched: () -> Unit = {}
 ) {
@@ -83,7 +83,7 @@ private fun ExpenseScreen(
 
         ) {
             TabsCard(tabs, initialPage = tabIndex, currentPage = tabIndex, onTabRowClick = {
-                onTabRowClick(it)
+                setPeriod(it)
             }, cardContent = {
 
                 val donutChartData = DonutChartDataList((catTransactions.map {
