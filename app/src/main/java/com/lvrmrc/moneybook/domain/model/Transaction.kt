@@ -4,7 +4,7 @@ import java.time.LocalDateTime
 
 
 data class Transaction(
-    val notes: String, val amount: Double, val date: LocalDateTime, val type: TransactionType
-)
+    override val notes: String, override val amount: Double, override val date: LocalDateTime, override val type: TransactionType
+) : TransactionInterface
 
 

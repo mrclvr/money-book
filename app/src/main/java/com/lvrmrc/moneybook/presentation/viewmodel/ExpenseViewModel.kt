@@ -7,20 +7,22 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lvrmrc.moneybook.data.AppState
-import com.lvrmrc.moneybook.data.repository.CategoryRepositoryImpl
-import com.lvrmrc.moneybook.data.source.db.entity.TransactionEntity
+import com.lvrmrc.moneybook.data.repository.TransactionRepositoryImpl
 import com.lvrmrc.moneybook.domain.model.CategoryWithTransactions
 import com.lvrmrc.moneybook.domain.model.TransactionType
+import com.lvrmrc.moneybook.domain.model.TransactionWithCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 @HiltViewModel
 class ExpenseViewModel @Inject constructor(
 //    savedStateHandle: SavedStateHandle,
-//    private val transactionRepo: TransactionRepositoryImpl,
-    private val categoryRepo: CategoryRepositoryImpl, private val appState: AppState
+    private val transactionRepo: TransactionRepositoryImpl,
+//    private val categoryRepo: CategoryRepositoryImpl,
+    private val appState: AppState
 ) : ViewModel() {
 
     val animationLaunched = mutableStateOf(false)
@@ -31,8 +33,8 @@ class ExpenseViewModel @Inject constructor(
     val total by derivedStateOf { _catTransactions.value.sumOf { it.total } }
     private val _period = mutableStateOf("Day")
 
-    private val _transactions = mutableStateOf<List<TransactionEntity>>(emptyList())
-    val transactions: State<List<TransactionEntity>> = _transactions
+    private val _transactions = mutableStateOf<List<TransactionWithCategory>>(emptyList())
+    val transactions: State<List<TransactionWithCategory>> = _transactions
 
     private val _catTransactions = mutableStateOf<List<CategoryWithTransactions>>(emptyList())
     val catTransactions: State<List<CategoryWithTransactions>> = _catTransactions
@@ -74,32 +76,48 @@ class ExpenseViewModel @Inject constructor(
         }
     }
 
+    private fun groupTransactionsByCategory(transactions: List<TransactionWithCategory>): List<CategoryWithTransactions> {
+        val categories: ArrayList<CategoryWithTransactions> =
+            ArrayList(transactions.map { it.category.toCategoryWithTransactions() }.distinctBy { it.label })
+
+        transactions.forEach { trans ->
+            categories.first { it.label == trans.category.label }.transactions.add(trans.toTransaction())
+        }
+
+        categories.forEach {
+            it.total = it.transactions.sumOf { t -> t.amount }
+        }
+
+        return categories.toList()
+
+    }
+
     suspend fun getByPeriod(
         period: String, date: LocalDateTime = LocalDateTime.now()
     ) {
-        var result: List<CategoryWithTransactions> = emptyList()
+        var result: List<TransactionWithCategory> = emptyList()
         _period.value = period
 
         viewModelScope.launch {
             when (_period.value) {
                 "Day" -> {
-                    result = categoryRepo.getDayCategoriesWithTransactions(transType.value, date)
+                    result = transactionRepo.getDayTransactions(transType.value, date.format(DateTimeFormatter.BASIC_ISO_DATE))
                 }
 
                 "Month" -> {
-                    result = categoryRepo.getMonthCategoriesWithTransactions(transType.value, date.monthValue, date.year)
+                    result = transactionRepo.getMonthTransactions(transType.value, date.monthValue, date.year)
                 }
 
                 "Year" -> {
-                    result = categoryRepo.getYearCategoriesWithTransactions(transType.value, date.year)
+                    result = transactionRepo.getYearTransactions(transType.value, date.year)
                 }
 
                 else -> {}
             }
-            _catTransactions.value = result
+            _catTransactions.value = groupTransactionsByCategory(result)
 
             println("RESULTS")
-            println(result)
+            println(catTransactions)
         }
 
     }

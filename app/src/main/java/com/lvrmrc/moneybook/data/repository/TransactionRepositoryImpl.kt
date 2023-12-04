@@ -2,10 +2,9 @@ package com.lvrmrc.moneybook.data.repository
 
 import com.lvrmrc.moneybook.data.source.db.dao.TransactionDao
 import com.lvrmrc.moneybook.data.source.db.entity.TransactionEntity
-import com.lvrmrc.moneybook.data.source.db.entity.TransactionWithCategoryEntity
 import com.lvrmrc.moneybook.domain.model.TransactionType
+import com.lvrmrc.moneybook.domain.model.TransactionWithCategory
 import com.lvrmrc.moneybook.domain.repository.TransactionRepository
-import java.time.LocalDateTime
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -20,14 +19,14 @@ class TransactionRepositoryImpl @Inject constructor(private val transactionDao: 
 
     override suspend fun insert(transaction: TransactionEntity) = transactionDao.insert(transaction)
 
-    override suspend fun getDayTransactions(type: TransactionType, day: LocalDateTime): List<TransactionEntity> =
-        transactionDao.getDayTransactions(type, day)
+    override suspend fun getDayTransactions(type: TransactionType, day: String): List<TransactionWithCategory> =
+        transactionDao.getDayTransactions(type, day).map { it.toDomain() }
 
-    override suspend fun getMonthTransactions(type: TransactionType, month: Int, year: Int): List<TransactionEntity> =
-        transactionDao.getMonthTransactions(type, month, year)
+    override suspend fun getMonthTransactions(type: TransactionType, month: Int, year: Int): List<TransactionWithCategory> =
+        transactionDao.getMonthTransactions(type, month, year).map { it.toDomain() }
 
-    override suspend fun getYearTransactions(type: TransactionType, year: Int): List<TransactionWithCategoryEntity> =
-        transactionDao.getYearTransactions(type, year)
+    override suspend fun getYearTransactions(type: TransactionType, year: Int): List<TransactionWithCategory> =
+        transactionDao.getYearTransactions(type, year).map { it.toDomain() }
 
     companion object {
 

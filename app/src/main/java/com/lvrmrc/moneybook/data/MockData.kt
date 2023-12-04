@@ -36,9 +36,9 @@ val mockCategoryEntities = listOf(
 
 val mockCategories = mockCategoryEntities.map { it.toDomain() }
 
-val mockCatTransactions = listOf(
+val mockCatTransactions = arrayListOf(
     CategoryWithTransactions(
-        mockCategories[0].label, mockCategories[0].icon, mockCategories[0].color, mockCategories[0].lightText, listOf(
+        mockCategories[0].label, mockCategories[0].icon, mockCategories[0].color, mockCategories[0].lightText, arrayListOf(
             Transaction(
                 amount = 1.0, notes = "Food 1", type = TransactionType.EXPENSE, date = LocalDateTime.of(
                     2023, 2, 14, 12, 1
@@ -50,7 +50,7 @@ val mockCatTransactions = listOf(
             )
         ), 6.0
     ), CategoryWithTransactions(
-        mockCategories[1].label, mockCategories[1].icon, mockCategories[1].color, mockCategories[1].lightText, listOf(
+        mockCategories[1].label, mockCategories[1].icon, mockCategories[1].color, mockCategories[1].lightText, arrayListOf(
             Transaction(
                 amount = 1.0, notes = "Food 1", type = TransactionType.EXPENSE, date = LocalDateTime.of(
                     2023, 2, 14, 12, 1

@@ -26,7 +26,7 @@ import com.lvrmrc.moneybook.presentation.ui.compose.components.LabeledSection
 import com.lvrmrc.moneybook.presentation.ui.compose.layouts.FABLayout
 import com.lvrmrc.moneybook.presentation.ui.theme.MoneyBookTheme
 import com.lvrmrc.moneybook.presentation.viewmodel.TransactionViewModel
-import java.time.LocalDate
+import java.time.LocalDateTime
 
 @Composable
 fun TransactionScreen(navController: NavHostController = rememberNavController(), vm: TransactionViewModel = hiltViewModel()) {
@@ -48,10 +48,10 @@ fun TransactionScreen(navController: NavHostController = rememberNavController()
 private fun TransactionScreen(
     amount: Double,
     notes: String,
-    date: String,
+    date: LocalDateTime,
     setAmount: (Double) -> Unit = {},
     setNotes: (String) -> Unit = {},
-    setDate: (String) -> Unit = {},
+    setDate: (Long) -> Unit = {},
     onAddTransaction: () -> Unit = {},
 ) {
 
@@ -62,7 +62,7 @@ private fun TransactionScreen(
     FABLayout(
         onFabAction = {
             onAddTransaction()
-        }, fabEnabled = date.isNotBlank() && notes.isNotBlank()
+        }, fabEnabled = notes.isNotBlank()
     ) {
         Column(
             modifier = Modifier.fillMaxSize()
@@ -88,7 +88,8 @@ private fun TransactionScreen(
             LabeledSection(sectionTitle = "Category", horizontalArrangement = Arrangement.spacedBy(15.dp)) {
                 mockCategories.forEach { cat ->
                     IconButton(modifier = Modifier.size(56.dp), colors = IconButtonDefaults.filledTonalIconButtonColors(
-                        containerColor = cat.color, contentColor = if (cat.lightText) colorScheme.background else colorScheme.onBackground
+                        containerColor = cat.color,
+                        contentColor = if (cat.lightText) colorScheme.background else colorScheme.onBackground
                     ), onClick = { /* do something */ }) {
                         Icon(
                             cat.icon, contentDescription = "${cat.label} category"
@@ -99,9 +100,9 @@ private fun TransactionScreen(
             LabeledSection(
                 fillHeight = true, sectionTitle = "Date", horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                DialogDatePicker(onDateSelected = {
+                DialogDatePicker {
                     setDate(it)
-                })
+                }
             }
         }
 
@@ -114,7 +115,7 @@ private fun TransactionScreen(
 private fun TransactionScreenPreview(
 ) {
     MoneyBookTheme {
-        TransactionScreen(amount = 10.0, notes = "Notes", date = LocalDate.now().toString())
+        TransactionScreen(amount = 10.0, notes = "Notes", date = LocalDateTime.now())
 
     }
 }

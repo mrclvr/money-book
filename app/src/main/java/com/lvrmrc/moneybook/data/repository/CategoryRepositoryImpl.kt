@@ -5,7 +5,6 @@ import com.lvrmrc.moneybook.data.source.db.entity.CategoryEntity
 import com.lvrmrc.moneybook.domain.model.CategoryWithTransactions
 import com.lvrmrc.moneybook.domain.model.TransactionType
 import com.lvrmrc.moneybook.domain.repository.CategoryRepository
-import java.time.LocalDateTime
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -20,7 +19,7 @@ class CategoryRepositoryImpl @Inject constructor(private val categoryDao: Catego
 
     override suspend fun insert(category: CategoryEntity) = categoryDao.insert(category)
 
-    override suspend fun getDayCategoriesWithTransactions(type: TransactionType, day: LocalDateTime): List<CategoryWithTransactions> =
+    override suspend fun getDayCategoriesWithTransactions(type: TransactionType, day: String): List<CategoryWithTransactions> =
         categoryDao.getDayCategoriesWithTransactions(type, day).map { it.toDomain() }
 
     override suspend fun getMonthCategoriesWithTransactions(type: TransactionType, month: Int, year: Int): List<CategoryWithTransactions> =

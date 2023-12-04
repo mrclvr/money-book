@@ -22,13 +22,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Date
 
 
 @Composable
-fun DialogDatePicker(onDateSelected: (String) -> Unit = {}) {
+fun DialogDatePicker(onDateSelected: (Long) -> Unit = {}) {
 
     var datePickerOpen by remember {
         mutableStateOf(false)
@@ -50,13 +48,11 @@ fun DialogDatePicker(onDateSelected: (String) -> Unit = {}) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun DialogDatePicker(
-    onClose: () -> Unit, onDateSelected: (String) -> Unit
+    onClose: () -> Unit, onDateSelected: (Long) -> Unit
 ) {
     val calendar = Calendar.getInstance()
     val datePickerState = rememberDatePickerState(initialSelectedDateMillis = calendar.timeInMillis)
-    val selectedDate = datePickerState.selectedDateMillis?.let {
-        timestampToDate(it)
-    } ?: ""
+    val selectedDate = datePickerState.selectedDateMillis ?: System.currentTimeMillis()
 
     DatePickerDialog(onDismissRequest = { onClose() }, confirmButton = {
         TextButton(onClick = {
@@ -76,10 +72,10 @@ private fun DialogDatePicker(
     }
 }
 
-private fun timestampToDate(timestamp: Long): String {
-    val formatter = SimpleDateFormat("yyyyMMdd")
-    return formatter.format(Date(timestamp))
-}
+//private fun timestampToDate(timestamp: Long): String {
+//    val formatter = SimpleDateFormat("yyyyMMdd")
+//    return formatter.format(Date(timestamp))
+//}
 
 @Preview
 @Composable

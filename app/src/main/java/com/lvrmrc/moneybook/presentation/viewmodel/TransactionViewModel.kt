@@ -12,8 +12,9 @@ import com.lvrmrc.moneybook.data.source.db.entity.TransactionEntity
 import com.lvrmrc.moneybook.domain.model.TransactionType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.time.Instant
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
+import java.time.ZoneId
 import javax.inject.Inject
 
 
@@ -36,22 +37,25 @@ class TransactionViewModel @Inject constructor(
         _notes.value = value
     }
 
-    private val _date = mutableStateOf("")
-    val date: MutableState<String> = _date
+    private val _date = mutableStateOf(LocalDateTime.now())
+    val date: MutableState<LocalDateTime> = _date
 
-    fun setDate(value: String) {
-        _date.value = value
+    fun setDate(timestamp: Long) {
+//        val basicIsoFormat = DateTimeFormatter.ISO_LOCAL_DATE_TIME
+        val instant = Instant.ofEpochMilli(timestamp)
+        val zone = ZoneId.systemDefault()
+
+        _date.value = LocalDateTime.ofInstant(instant, zone)
+
     }
 
     fun addTransaction() {
         viewModelScope.launch {
             repository.insert(
                 TransactionEntity(
-                    amount = amount.value,
-                    notes = "TEST",
-                    type = TransactionType.EXPENSE,
-                    date = LocalDateTime.parse(date.value, DateTimeFormatter.BASIC_ISO_DATE),
-                    categoryId = mockCategoryEntities[0].id
+                    amount = amount.value, notes = "TEST", type = TransactionType.EXPENSE,
+//                    date = LocalDateTime.parse(date.value, DateTimeFormatter.ISO_LOCAL_DATE_TIME),
+                    date = date.value, categoryId = mockCategoryEntities[0].id
                 )
             )
         }
