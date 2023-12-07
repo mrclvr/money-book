@@ -28,9 +28,9 @@ fun AnimatedAppFAB(navController: NavHostController, showFAB: Boolean) {
 @Composable
 fun AppFAB(navController: NavHostController) {
     FloatingActionButton(
-        modifier = Modifier.offset(y = (-24).dp),
-        containerColor = colorScheme.primary,
-        contentColor = colorScheme.onPrimary,
+//        modifier = Modifier.offset(y = 8.dp),
+        containerColor = colorScheme.primaryContainer,
+        contentColor = colorScheme.onPrimaryContainer,
         shape = CircleShape,
         onClick = {
             navController.navigate(Screen.Transaction.route) {

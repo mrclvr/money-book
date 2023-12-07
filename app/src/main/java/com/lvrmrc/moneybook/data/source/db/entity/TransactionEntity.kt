@@ -11,21 +11,17 @@ import java.util.UUID
 @Entity(
     tableName = TransactionEntity.TABLE_NAME
 )
-data class TransactionEntity constructor(
+data class TransactionEntity(
     @PrimaryKey @ColumnInfo(name = "id") val id: UUID = UUID.randomUUID(),
     @ColumnInfo(name = "notes") val notes: String = "",
     @ColumnInfo(name = "amount") val amount: Double,
     @ColumnInfo(name = "date") val date: LocalDateTime = LocalDateTime.now(),
     @ColumnInfo(name = "type") val type: TransactionType,
     @ColumnInfo(name = "categoryId") val categoryId: UUID,
-    @ColumnInfo(name = "deleted") val deleted: Boolean = false,
-
-    ) {
+) {
 
     fun toDomain(): Transaction {
-        return Transaction(
-            notes = notes, amount = amount, date = date, type = type
-        )
+        return Transaction(id, notes, amount, date, type)
     }
 
     companion object {

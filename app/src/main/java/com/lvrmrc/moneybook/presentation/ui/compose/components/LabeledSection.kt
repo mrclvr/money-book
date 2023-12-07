@@ -1,6 +1,5 @@
 package com.lvrmrc.moneybook.presentation.ui.compose.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,36 +13,38 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.lvrmrc.moneybook.presentation.ui.compose.layouts.FABLayout
 import com.lvrmrc.moneybook.presentation.ui.theme.MoneyBookTheme
 
 @Composable
 fun LabeledSection(
     fillHeight: Boolean = false,
-    sectionTitle: String,
+    sectionTitle: String = "",
     horizontalArrangement: Arrangement.Horizontal = Arrangement.SpaceBetween,
     content: @Composable () -> Unit = {}
 ) {
 
     Column() {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(colorScheme.primary)
-                .padding(15.dp)
-        ) {
-            Text(sectionTitle, color = colorScheme.onPrimary)
+        if (sectionTitle.isNotBlank()) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+//                .background(colorScheme.primary)
+                    .padding(15.dp)
+            ) {
+                Text(sectionTitle, color = colorScheme.primary, fontWeight = FontWeight.Bold, fontSize = 20.sp)
+            }
         }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(colorScheme.primaryContainer)
+//                .background(colorScheme.primaryContainer)
                 .padding(15.dp)
-                .weight(1f, fillHeight),
-            horizontalArrangement,
-            verticalAlignment = Alignment.Top
+                .weight(1f, fillHeight), horizontalArrangement, verticalAlignment = Alignment.Top
         ) { content() }
 
     }

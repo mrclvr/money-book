@@ -11,8 +11,9 @@ data class CategoryWithTransactionsEntity(
 
 ) {
     fun toDomain(): CategoryWithTransactions {
-        val (label, icon, color, lightText) = category.toDomain()
-        return CategoryWithTransactions(label,
+        val (id, label, icon, color, lightText) = category.toDomain()
+        return CategoryWithTransactions(id,
+            label,
             icon,
             color,
             lightText,

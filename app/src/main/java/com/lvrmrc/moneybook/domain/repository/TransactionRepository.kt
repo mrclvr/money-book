@@ -1,7 +1,6 @@
 package com.lvrmrc.moneybook.domain.repository
 
 import com.lvrmrc.moneybook.data.source.db.dao.TransactionDao
-import com.lvrmrc.moneybook.data.source.db.entity.TransactionEntity
 import com.lvrmrc.moneybook.domain.model.TransactionType
 import com.lvrmrc.moneybook.domain.model.TransactionWithCategory
 import javax.inject.Singleton
@@ -15,7 +14,7 @@ import javax.inject.Singleton
 @Singleton
 interface TransactionRepository {
 
-    suspend fun insert(transaction: TransactionEntity)
+    suspend fun insert(transaction: TransactionWithCategory): Unit
 
     suspend fun getDayTransactions(type: TransactionType, day: String): List<TransactionWithCategory>
 

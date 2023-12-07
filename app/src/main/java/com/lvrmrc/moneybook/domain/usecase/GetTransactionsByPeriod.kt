@@ -19,7 +19,7 @@ class GetTransactionsByPeriod(
     suspend operator fun invoke(
         date: LocalDateTime = LocalDateTime.now()
     ): List<CategoryWithTransactions> = withContext(dispatcher) {
-        
+
         var result: List<TransactionWithCategory> = emptyList()
 
         when (appState.period) {
@@ -42,16 +42,16 @@ class GetTransactionsByPeriod(
     }
 
 
-    private fun groupTransactionsByCategory(transactions: List<TransactionWithCategory>): List<CategoryWithTransactions> {
+    private fun groupTransactionsByCategory(transactionWithCategories: List<TransactionWithCategory>): List<CategoryWithTransactions> {
         val categories: ArrayList<CategoryWithTransactions> =
-            ArrayList(transactions.map { it.category.toCategoryWithTransactions() }.distinctBy { it.label })
+            ArrayList(transactionWithCategories.map { it.category.toCategoryWithTransactions() }.distinctBy { it.label })
 
-        transactions.forEach { trans ->
-            categories.first { it.label == trans.category.label }.transactions.add(trans.toTransaction())
+        transactionWithCategories.forEach { trans ->
+            categories.first { it.label == trans.category.label }.transactionBases.add(trans.toTransaction())
         }
 
         categories.forEach {
-            it.total = it.transactions.sumOf { t -> t.amount }
+            it.total = it.transactionBases.sumOf { t -> t.amount }
         }
 
         return categories.toList()

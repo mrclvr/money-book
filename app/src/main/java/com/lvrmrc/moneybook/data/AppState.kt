@@ -11,6 +11,7 @@ class AppState {
     private var _loading by mutableStateOf(false)
     private var _period by mutableStateOf("Day")
     private var _transType by mutableStateOf(TransactionType.EXPENSE)
+    
     val loading: Boolean
         get() = _loading
     val period: String

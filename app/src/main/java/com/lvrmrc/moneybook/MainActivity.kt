@@ -3,9 +3,7 @@ package com.lvrmrc.moneybook
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.navigation.compose.rememberNavController
-import com.lvrmrc.moneybook.presentation.ui.compose.layouts.AppLayout
-import com.lvrmrc.moneybook.presentation.ui.compose.navigation.NavGraph
+import com.lvrmrc.moneybook.presentation.ui.compose.layouts.AppTabsLayout
 import com.lvrmrc.moneybook.presentation.ui.theme.MoneyBookTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -17,10 +15,7 @@ class MainActivity() : ComponentActivity() {
 
         setContent {
             MoneyBookTheme {
-                val navController = rememberNavController()
-                AppLayout(navController) {
-                    NavGraph(navController)
-                }
+                AppTabsLayout()
             }
         }
     }

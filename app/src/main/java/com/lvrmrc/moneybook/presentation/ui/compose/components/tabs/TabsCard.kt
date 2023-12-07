@@ -43,7 +43,7 @@ fun TabsCard(
             .defaultMinSize(300.dp)
             .fillMaxWidth()
             .aspectRatio(1f),
-        colors = CardDefaults.cardColors(containerColor = colorScheme.surfaceVariant, contentColor = colorScheme.onSurfaceVariant),
+        colors = CardDefaults.cardColors(containerColor = colorScheme.surface, contentColor = colorScheme.onSurface),
         elevation = CardDefaults.cardElevation(
             defaultElevation = 10.dp
         )
@@ -52,13 +52,12 @@ fun TabsCard(
 
         val cardScope: CoroutineScope = rememberCoroutineScope()
 
-        Column() {
+        Column {
             TabRow(
                 selectedTabIndex = currentPage ?: pagerState.currentPage,
-                containerColor = colorScheme.primaryContainer,
-                contentColor = colorScheme.onPrimaryContainer,
-
-                ) {
+//                containerColor = colorScheme.primary,
+//                contentColor = colorScheme.onPrimary
+            ) {
 
                 tabs.forEachIndexed { index, tab ->
                     Tab(selected = index == pagerState.currentPage,

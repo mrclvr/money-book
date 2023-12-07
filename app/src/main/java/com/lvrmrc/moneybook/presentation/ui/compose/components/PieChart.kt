@@ -51,7 +51,7 @@ fun PieChart(
     // For a detailed explanation check out the Medium Article.
     // The link is in the about section and readme file of this GitHub Repository
     data.forEachIndexed { index, cat ->
-        angleValues.add(index, 360 * cat.transactions.sumOf { it.amount }.toFloat() / totalSum.toFloat())
+        angleValues.add(index, 360 * cat.transactionBases.sumOf { it.amount }.toFloat() / totalSum.toFloat())
     }
 
     // add the colors as per the number of data(no. of pie chart entries)

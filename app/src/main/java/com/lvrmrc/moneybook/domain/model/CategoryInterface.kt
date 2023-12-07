@@ -2,9 +2,11 @@ package com.lvrmrc.moneybook.domain.model
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import java.util.UUID
 
 
 interface CategoryInterface {
+    val id: UUID
     val label: String
     val icon: ImageVector
     val color: Color
