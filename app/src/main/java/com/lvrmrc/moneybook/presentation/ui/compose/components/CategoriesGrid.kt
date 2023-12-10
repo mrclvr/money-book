@@ -26,7 +26,6 @@ fun CategoriesGrid(categories: List<Category>, selected: Category? = null, onSel
         items(categories.size) { idx ->
             val category: Category = categories[idx]
             val isSelected: Boolean = category.id == current.value?.id
-            println(isSelected)
             CategoryItem(category, isSelected, onClick = { onClick(category) })
         }
     }

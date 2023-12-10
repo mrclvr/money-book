@@ -48,7 +48,7 @@ fun BottomBarLayout(
         },
         floatingActionButtonPosition = FabPosition.Center,
         floatingActionButton = {
-            AnimatedAppFAB(navController, fabVisible.value)
+            AnimatedAppFAB(navController, true)
         },
         snackbarHost = {
             SnackbarHost(hostState = snackBarHostState)

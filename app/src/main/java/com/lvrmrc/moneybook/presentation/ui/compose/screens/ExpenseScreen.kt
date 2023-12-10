@@ -20,7 +20,6 @@ import com.lvrmrc.moneybook.presentation.ui.compose.components.PieChart
 import com.lvrmrc.moneybook.presentation.ui.compose.components.tabs.TabItem
 import com.lvrmrc.moneybook.presentation.ui.compose.components.tabs.TabsCard
 import com.lvrmrc.moneybook.presentation.ui.compose.components.tabs.periodTabs
-import com.lvrmrc.moneybook.presentation.ui.compose.layouts.AppLayout
 import com.lvrmrc.moneybook.presentation.ui.theme.MoneyBookTheme
 import com.lvrmrc.moneybook.presentation.viewmodel.ExpenseViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -92,8 +91,8 @@ private fun ExpenseScreen(
 @Composable
 private fun ExpenseScreenPreview() {
     MoneyBookTheme {
-        AppLayout {
-            ExpenseScreen(tabs = mockPeriodTabs, catTransactions = mockCatTransactions)
-        }
+//        AppTabsLayout {
+        ExpenseScreen(tabs = mockPeriodTabs, catTransactions = mockCatTransactions)
+//        }
     }
 }

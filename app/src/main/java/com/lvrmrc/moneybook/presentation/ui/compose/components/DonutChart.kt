@@ -182,14 +182,12 @@ fun DonutChart(
                         currentSelectedIndex = selectedIndex,
                         currentStrokeValues = animationTargetState.map { it.value.stroke.toPx() },
                         onItemSelected = { index ->
-                            println("Selected")
                             selectedIndex = index
                             animationTargetState[index].value = ArcState(
                                 ArcState.State.SELECTED
                             )
                         },
                         onItemDeselected = { index ->
-                            println("Selected")
                             animationTargetState[index].value = ArcState(
                                 ArcState.State.UNSELECTED
                             )

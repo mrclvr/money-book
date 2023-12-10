@@ -17,7 +17,7 @@ import java.util.UUID
 
 val mockCategoryEntities = listOf(
     CategoryEntity(
-        id = UUID.randomUUID(),
+        id = UUID.fromString("88cceb78-188d-4576-a96a-5f6eaa89b97c"),
         label = "School",
         icon = LabeledIcon.Label.School,
         type = TransactionType.EXPENSE,
@@ -25,7 +25,7 @@ val mockCategoryEntities = listOf(
         lightText = false,
     ),
     CategoryEntity(
-        id = UUID.randomUUID(),
+        id = UUID.fromString("74641143-4e1f-488c-ae2b-6b4de38faaad"),
         label = "Test",
         icon = LabeledIcon.Label.School,
         type = TransactionType.EXPENSE,
@@ -33,7 +33,7 @@ val mockCategoryEntities = listOf(
         lightText = true,
     ),
     CategoryEntity(
-        id = UUID.randomUUID(),
+        id = UUID.fromString("14d75d52-7450-489d-a882-6f9260ab37ff"),
         label = "School",
         icon = LabeledIcon.Label.School,
         type = TransactionType.EXPENSE,
@@ -41,7 +41,7 @@ val mockCategoryEntities = listOf(
         lightText = false,
     ),
     CategoryEntity(
-        id = UUID.randomUUID(),
+        id = UUID.fromString("b0dac7e2-c48a-4da5-816c-791e585cf43b"),
         label = "Test",
         icon = LabeledIcon.Label.School,
         type = TransactionType.EXPENSE,
@@ -49,7 +49,7 @@ val mockCategoryEntities = listOf(
         lightText = true,
     ),
     CategoryEntity(
-        id = UUID.randomUUID(),
+        id = UUID.fromString("cbeb67bc-8571-42bb-8d9c-7cdd8b57b04e"),
         label = "School",
         icon = LabeledIcon.Label.School,
         type = TransactionType.EXPENSE,
@@ -57,7 +57,7 @@ val mockCategoryEntities = listOf(
         lightText = false,
     ),
     CategoryEntity(
-        id = UUID.randomUUID(),
+        id = UUID.fromString("5757edd4-4ea0-4a5c-936b-d094c2a9bb26"),
         label = "Test",
         icon = LabeledIcon.Label.School,
         type = TransactionType.EXPENSE,

@@ -31,7 +31,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lvrmrc.moneybook.data.mockCatTransactions
 import com.lvrmrc.moneybook.domain.model.CategoryWithTransactions
-import com.lvrmrc.moneybook.presentation.ui.compose.layouts.AppLayout
 import com.lvrmrc.moneybook.presentation.ui.theme.MoneyBookTheme
 
 @Composable
@@ -211,10 +210,12 @@ fun DetailsPieChartItem(
 @Preview
 fun PieChartPreview() {
     MoneyBookTheme {
-        AppLayout {
-            PieChart(
-                mockCatTransactions
-            )
-        }
+//        ComposeLocalWrapper {
+//        AppTabsLayout {
+        PieChart(
+            mockCatTransactions
+        )
+//        }
+//        }
     }
 }
