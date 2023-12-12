@@ -12,6 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.lvrmrc.moneybook.data.mockCatTransactions
 import com.lvrmrc.moneybook.data.mockPeriodTabs
 import com.lvrmrc.moneybook.domain.model.CategoryWithTransactions
@@ -20,6 +22,7 @@ import com.lvrmrc.moneybook.presentation.ui.compose.components.PieChart
 import com.lvrmrc.moneybook.presentation.ui.compose.components.tabs.TabItem
 import com.lvrmrc.moneybook.presentation.ui.compose.components.tabs.TabsCard
 import com.lvrmrc.moneybook.presentation.ui.compose.components.tabs.periodTabs
+import com.lvrmrc.moneybook.presentation.ui.compose.layouts.TabsLayout
 import com.lvrmrc.moneybook.presentation.ui.theme.MoneyBookTheme
 import com.lvrmrc.moneybook.presentation.viewmodel.ExpenseViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -27,7 +30,9 @@ import kotlinx.coroutines.launch
 
 
 @Composable
-fun ExpenseScreen(vm: ExpenseViewModel = hiltViewModel()) {
+fun ExpenseScreen(
+    navController: NavHostController = rememberNavController(), vm: ExpenseViewModel = hiltViewModel()
+) {
     val expenseScreenScope: CoroutineScope = rememberCoroutineScope()
 
     SideEffect {
@@ -37,6 +42,7 @@ fun ExpenseScreen(vm: ExpenseViewModel = hiltViewModel()) {
     }
 
     ExpenseScreen(
+        navController = navController,
         tabs = periodTabs,
         catTransactions = vm.catTransactions.value,
         tabIndex = vm.periodTabIndex.value,
@@ -47,6 +53,9 @@ fun ExpenseScreen(vm: ExpenseViewModel = hiltViewModel()) {
                 vm.loadTransactions(it)
             }
         },
+        onSetCategory = {
+            vm.setCategory(it)
+        },
 //        onAnimLaunched = {
 //            vm.setAnimLaunched()
 //        }
@@ -55,23 +64,27 @@ fun ExpenseScreen(vm: ExpenseViewModel = hiltViewModel()) {
 
 @Composable
 private fun ExpenseScreen(
+    navController: NavHostController = rememberNavController(),
     catTransactions: List<CategoryWithTransactions>,
     tabs: List<TabItem>,
     tabIndex: Int = 0,
     total: Double = 0.0,
-    setPeriod: (String) -> Unit = {}
+    setPeriod: (String) -> Unit = {},
+    onSetCategory: (CategoryWithTransactions) -> Unit = {}
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(25.dp),
-        verticalArrangement = Arrangement.spacedBy(25.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+    TabsLayout(navController = navController) {
 
-    ) {
-        TabsCard(tabs, initialPage = tabIndex, currentPage = tabIndex, onTabRowClick = {
-            setPeriod(it)
-        }, cardContent = {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(25.dp),
+            verticalArrangement = Arrangement.spacedBy(25.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+
+        ) {
+            TabsCard(tabs, initialPage = tabIndex, currentPage = tabIndex, onTabRowClick = {
+                setPeriod(it)
+            }, cardContent = {
 
 //            val donutChartData = DonutChartDataList((catTransactions.map {
 //                DonutChartData(
@@ -79,11 +92,24 @@ private fun ExpenseScreen(
 //                )
 //            }))
 //                DonutChart(data = donutChartData, animLaunched = animLaunched, onAnimLaunched = onAnimLaunched)
-            PieChart(
-                data = catTransactions, text = total.toString()
-            )
-        })
-        ExpensesList(catTransactions)
+                PieChart(
+                    data = catTransactions, text = total.toString()
+                )
+            })
+            ExpensesList(catTransactions, onSetCategory = {
+                onSetCategory(it)
+                navController.navigate(Screen.TransactionsDetails.route) {
+
+                    navController.graph.route?.let { route ->
+                        popUpTo(route) {
+                            saveState = true
+                        }
+                    }
+                    launchSingleTop = true
+                    restoreState = true
+                }
+            })
+        }
     }
 }
 

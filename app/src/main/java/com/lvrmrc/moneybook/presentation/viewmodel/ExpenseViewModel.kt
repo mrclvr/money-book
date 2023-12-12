@@ -32,6 +32,9 @@ class ExpenseViewModel @Inject constructor(
     private val _catTransactions = mutableStateOf<List<CategoryWithTransactions>>(emptyList())
     val catTransactions: State<List<CategoryWithTransactions>> = _catTransactions
 
+    private val _selectedCategory = mutableStateOf<CategoryWithTransactions?>(null)
+    val selectedCategory: State<CategoryWithTransactions?> = _selectedCategory
+
     val periodTabIndex = derivedStateOf {
         when (appState.period) {
             "Day" -> 0
@@ -46,6 +49,10 @@ class ExpenseViewModel @Inject constructor(
 //    init {
 //        loadTransactions()
 //    }
+
+    fun setCategory(category: CategoryWithTransactions) {
+        _selectedCategory.value = category
+    }
 
     fun setAnimLaunched() {
         animationLaunched.value = true

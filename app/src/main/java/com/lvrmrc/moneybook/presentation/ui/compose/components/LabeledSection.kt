@@ -17,23 +17,23 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.lvrmrc.moneybook.presentation.ui.compose.layouts.AppLayout
 import com.lvrmrc.moneybook.presentation.ui.compose.layouts.FABLayout
-import com.lvrmrc.moneybook.presentation.ui.theme.MoneyBookTheme
 
 @Composable
 fun LabeledSection(
+    modifier: Modifier = Modifier,
     fillHeight: Boolean = false,
     sectionTitle: String = "",
     horizontalArrangement: Arrangement.Horizontal = Arrangement.SpaceBetween,
     content: @Composable () -> Unit = {}
 ) {
 
-    Column() {
+    Column(modifier) {
         if (sectionTitle.isNotBlank()) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-//                .background(colorScheme.primary)
                     .padding(15.dp)
             ) {
                 Text(sectionTitle, color = colorScheme.primary, fontWeight = FontWeight.Bold, fontSize = 20.sp)
@@ -42,9 +42,7 @@ fun LabeledSection(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-//                .background(colorScheme.primaryContainer)
-                .padding(15.dp)
-                .weight(1f, fillHeight), horizontalArrangement, verticalAlignment = Alignment.Top
+                .padding(15.dp), horizontalArrangement, verticalAlignment = Alignment.Top
         ) { content() }
 
     }
@@ -54,9 +52,9 @@ fun LabeledSection(
 @Composable
 fun LabeledSectionPreview(
 ) {
-    MoneyBookTheme {
+    AppLayout {
         FABLayout {
-            Column {
+            Column() {
                 LabeledSection(sectionTitle = "Section 1", content = {
                     Icon(Icons.Rounded.Home, "Test")
                 })

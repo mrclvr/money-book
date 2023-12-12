@@ -8,7 +8,7 @@ class NumberUtils {
         fun clean(input: String): String {
             val symbols: DecimalFormatSymbols = DecimalFormatSymbols.getInstance()
 //            val decimalSeparator = symbols.decimalSeparator
-            // val thousandsSeparator = symbols.groupingSeparator
+//            val thousandsSeparator = symbols.groupingSeparator
             val decimalSeparators = listOf(symbols.monetaryDecimalSeparator, symbols.groupingSeparator)
 
             if (input.matches("\\D".toRegex())) return ""

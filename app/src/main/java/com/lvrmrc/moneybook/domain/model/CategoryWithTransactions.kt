@@ -11,7 +11,7 @@ data class CategoryWithTransactions(
     override val icon: ImageVector,
     override val color: Color,
     override val lightText: Boolean,
-    var transactionBases: ArrayList<Transaction> = arrayListOf(),
+    var transactions: ArrayList<Transaction> = arrayListOf(),
     var total: Double = 0.0
 ) : CategoryInterface {
 

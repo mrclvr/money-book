@@ -1,6 +1,7 @@
 package com.lvrmrc.moneybook.presentation.ui.compose.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,7 +24,7 @@ import com.lvrmrc.moneybook.domain.model.CategoryWithTransactions
 import com.lvrmrc.moneybook.presentation.ui.theme.MoneyBookTheme
 
 @Composable
-fun ExpensesList(catTransactions: List<CategoryWithTransactions>) {
+fun ExpensesList(catTransactions: List<CategoryWithTransactions>, onSetCategory: (CategoryWithTransactions) -> Unit = {}) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
 //            .verticalScroll(rememberScrollState()),
@@ -40,7 +41,10 @@ fun ExpensesList(catTransactions: List<CategoryWithTransactions>) {
                     .height(50.dp)
                     .clip(shape = RoundedCornerShape(8.dp))
                     .background(cat.color)
-                    .padding(10.dp), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically
+                    .padding(10.dp)
+                    .clickable { onSetCategory(cat) },
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(text = cat.label, color = textColor)
                 Text(text = "${cat.total} €", color = textColor)

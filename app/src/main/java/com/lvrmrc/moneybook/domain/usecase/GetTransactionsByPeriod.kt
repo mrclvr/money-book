@@ -47,11 +47,11 @@ class GetTransactionsByPeriod(
             ArrayList(transactionWithCategories.map { it.category.toCategoryWithTransactions() }.distinctBy { it.label })
 
         transactionWithCategories.forEach { trans ->
-            categories.first { it.label == trans.category.label }.transactionBases.add(trans.toTransaction())
+            categories.first { it.label == trans.category.label }.transactions.add(trans.toTransaction())
         }
 
         categories.forEach {
-            it.total = it.transactionBases.sumOf { t -> t.amount }
+            it.total = it.transactions.sumOf { t -> t.amount }
         }
 
         return categories.toList()
