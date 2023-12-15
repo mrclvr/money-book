@@ -35,49 +35,48 @@ fun TransactionScreen(
     navController: NavHostController = rememberNavController(), vm: TransactionViewModel = hiltViewModel()
 ) {
     TransactionScreen(
-        onAddTransaction = {
+        amount = vm.amount,
+        notes = vm.notes,
+        date = vm.date,
+        category = vm.category,
+        fabEnabled = vm.fabEnabled.value,
+        onSetAmount = { vm.setAmount(it) },
+        onSetNotes = { vm.setNotes(it) },
+        onSetDate = { vm.setDate(it) },
+        onSetCategory = { vm.setCategory(it) },
+        onUpdate = {
             vm.addTransaction()
             navController.popBackStack()
         },
-        amount = vm.amount.value,
-        setAmount = vm::setAmount,
-        notes = vm.notes.value,
-        setNotes = vm::setNotes,
-        category = vm.category.value,
-        setCategory = vm::setCategory,
-        date = vm.date.value,
-        setDate = vm::setDate
     )
 }
 
 @Composable
 private fun TransactionScreen(
-    amount: String,
-    notes: String,
-    category: Category? = null,
+    amount: String = "",
+    notes: String = "",
     date: LocalDateTime = LocalDateTime.now(),
-    setAmount: (String) -> Unit = {},
-    setNotes: (String) -> Unit = {},
-    setDate: (Long) -> Unit = {},
-    setCategory: (Category) -> Unit = {},
-    onAddTransaction: () -> Unit = {}
+    category: Category? = null,
+    fabEnabled: Boolean = false,
+    onSetAmount: (Double) -> Unit = {},
+    onSetNotes: (String) -> Unit = {},
+    onSetDate: (LocalDateTime) -> Unit = {},
+    onSetCategory: (Category?) -> Unit = {},
+    onUpdate: () -> Unit = {}
 ) {
 
-    FABLayout(onFabAction = onAddTransaction, fabEnabled = notes.isNotBlank()) {
+    FABLayout(fabEnabled = fabEnabled, onFabAction = { onUpdate() }) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState()),
-//            verticalArrangement = Arrangement.spacedBy(25.dp),
-//            horizontalAlignment = Alignment.CenterHorizontally
-
         ) {
             LabeledSection(horizontalArrangement = Arrangement.Center) {
                 TextField(modifier = Modifier.fillMaxWidth(0.5f),
                     textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.End),
                     value = amount,
                     onValueChange = {
-                        setAmount(NumberUtils.clean(it))
+                        NumberUtils.clean(amount).toDoubleOrNull()?.let { onSetAmount(it) }
                     },
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Decimal
@@ -86,25 +85,29 @@ private fun TransactionScreen(
             }
             LabeledSection(
 //                modifier = Modifier.weight(1f, true),
-                sectionTitle = "Category",
-                horizontalArrangement = Arrangement.spacedBy(15.dp)
+                sectionTitle = "Category", horizontalArrangement = Arrangement.spacedBy(15.dp)
             ) {
-                CategoriesGrid(mockCategories, selected = category, onSelected = { setCategory(it) })
+
+                println(category)
+
+                CategoriesGrid(mockCategories, selected = category, onSelected = {
+                    onSetCategory(it)
+                })
 
             }
             LabeledSection(sectionTitle = "Notes") {
-                TextField(modifier = Modifier.fillMaxWidth(1f), singleLine = true, value = notes, onValueChange = { value ->
-                    setNotes(value)
+
+                TextField(modifier = Modifier.fillMaxWidth(1f), singleLine = true, value = notes, onValueChange = {
+                    onSetNotes(it)
                 })
 
             }
             LabeledSection(
                 sectionTitle = "Date", horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                DialogDatePicker {
-                    setDate(it)
+                DialogDatePicker(date) {
+                    onSetDate(it)
                 }
-
             }
         }
     }
@@ -117,6 +120,6 @@ private fun TransactionScreen(
 private fun TransactionScreenPreview(
 ) {
     AppLayout {
-        TransactionScreen(amount = "10.0", notes = "Notes")
+        TransactionScreen(amount = "10")
     }
 }

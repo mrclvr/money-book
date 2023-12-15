@@ -10,7 +10,7 @@ data class TransactionWithCategoryEntity(
     ) val category: CategoryEntity
 ) {
     fun toDomain(): TransactionWithCategory {
-        val (id, notes, amount, date, type) = transaction.toDomain()
-        return TransactionWithCategory(id, notes, amount, date, type, category.toDomain())
+        val (id, notes, amount, date, type, categoryId) = transaction.toDomain()
+        return TransactionWithCategory(id, notes, amount, date, type, categoryId, category.toDomain())
     }
 }

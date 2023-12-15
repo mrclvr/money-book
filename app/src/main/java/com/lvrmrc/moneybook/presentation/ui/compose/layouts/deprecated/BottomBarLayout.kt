@@ -57,8 +57,8 @@ fun BottomBarLayout(
         Box(
             modifier = Modifier
                 .fillMaxSize()
+                .background(colorScheme.background)
                 .padding(paddingValues = it)
-                .background(colorScheme.background),
         ) {
             content()
         }

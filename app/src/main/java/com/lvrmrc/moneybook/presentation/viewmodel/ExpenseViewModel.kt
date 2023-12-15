@@ -5,11 +5,12 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.lvrmrc.moneybook.data.AppState
 import com.lvrmrc.moneybook.domain.model.CategoryWithTransactions
 import com.lvrmrc.moneybook.domain.usecase.GetTransactionsByPeriod
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -61,7 +62,7 @@ class ExpenseViewModel @Inject constructor(
     fun loadTransactions(period: String = appState.period) {
         appState.setLoading(true)
 
-        viewModelScope.launch {
+        CoroutineScope(Dispatchers.IO).launch {
             appState.setPeriod(period)
             _catTransactions.value = getTransactionsByPeriod()
             appState.setLoading(false)

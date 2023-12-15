@@ -1,73 +1,117 @@
 package com.lvrmrc.moneybook.presentation.viewmodel
 
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lvrmrc.moneybook.data.AppState
-import com.lvrmrc.moneybook.data.mockCategories
+import com.lvrmrc.moneybook.data.repository.CategoryRepositoryImpl
 import com.lvrmrc.moneybook.data.repository.TransactionRepositoryImpl
 import com.lvrmrc.moneybook.domain.model.Category
-import com.lvrmrc.moneybook.domain.model.TransactionWithCategory
+import com.lvrmrc.moneybook.domain.model.Transaction
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import java.time.Instant
 import java.time.LocalDateTime
-import java.time.ZoneId
 import java.util.UUID
 import javax.inject.Inject
 
 
 @HiltViewModel
 class TransactionViewModel @Inject constructor(
-    val appState: AppState, private val transactionRepo: TransactionRepositoryImpl
+    savedStateHandle: SavedStateHandle,
+    val appState: AppState,
+    private val transactionRepo: TransactionRepositoryImpl,
+    private val categoryRepo: CategoryRepositoryImpl
 ) : ViewModel() {
 
-    private val _amount = mutableStateOf("")
-    val amount: MutableState<String> = _amount
+//    private val _drawerShouldBeOpened = MutableStateFlow(false)
+//    val drawerShouldBeOpened = _drawerShouldBeOpened.asStateFlow()
 
-    fun setAmount(value: String) {
-        _amount.value = value
+    private val transactionId: String? = savedStateHandle["transactionId"]
+
+    private val _transaction by mutableStateOf(
+        Transaction(
+            UUID.randomUUID(), "", 0.0, LocalDateTime.now(), appState.transType
+        )
+    )
+    val transaction: Transaction get() = _transaction
+
+    private var _category by mutableStateOf<Category?>(
+        null
+    )
+    val category: Category? get() = _category
+
+    fun setCategory(category: Category?) {
+        _category = category
     }
 
-    private val _notes = mutableStateOf("")
-    val notes: MutableState<String> = _notes
+    private var _amount by mutableStateOf(transaction.amount.toString())
+    val amount: String get() = _amount
 
-    fun setNotes(value: String) {
-        _notes.value = value
+    fun setAmount(amount: Double) {
+        _amount = amount.toString()
     }
 
-    private val _category: MutableState<Category?> = mutableStateOf(null)
-    val category: MutableState<Category?> = _category
-
-    fun setCategory(value: Category) {
-        _category.value = value
+    private var _notes by mutableStateOf(transaction.notes)
+    val notes: String get() = _notes
+    fun setNotes(notes: String) {
+        _notes = notes
     }
 
-    private val _date = mutableStateOf(LocalDateTime.now())
-    val date: MutableState<LocalDateTime> = _date
+    private var _date by mutableStateOf(transaction.date)
+    val date: LocalDateTime get() = _date
+    fun setDate(date: LocalDateTime) {
+        _date = date
+    }
 
-    fun setDate(timestamp: Long) {
-//        val basicIsoFormat = DateTimeFormatter.ISO_LOCAL_DATE_TIME
-        val instant = Instant.ofEpochMilli(timestamp)
-        val zone = ZoneId.systemDefault()
+    private val _hasChanges = derivedStateOf {
+        transaction.let {
+            amount.toDoubleOrNull() != it.amount || notes != it.notes || date != it.date || it.categoryId != category?.id
+        }
+    }
 
-        _date.value = LocalDateTime.ofInstant(instant, zone)
+    private val _areFieldsValid = derivedStateOf {
+        amount.isNotBlank() && notes.isNotBlank() && category !== null
+    }
+
+    val fabEnabled = derivedStateOf { _hasChanges.value && _areFieldsValid.value }
+
+
+    init {
+        initTransaction()
+    }
+
+    private fun initTransaction() {
+//        appState.setLoading(true)
+        if (transactionId != null) {
+            viewModelScope.launch {
+                val (_, notes, amount, date, _, categoryId) = transactionRepo.getById(UUID.fromString(transactionId))
+                _notes = notes
+                _amount = amount.toString()
+                _date = date
+                _category = categoryId?.let { categoryRepo.getById(it) }
+//            appState.setLoading(false)
+            }
+        }
+//            _transaction.value = appState.currentTransaction?.toTransaction() ?: Transaction(
+//                UUID.randomUUID(), "", 0.0, LocalDateTime.now(), appState.transType
+//            )
+//            _category.value = appState.currentTransaction?.category
     }
 
     fun addTransaction() {
         viewModelScope.launch {
-            transactionRepo.insert(
-                TransactionWithCategory(
-                    id = UUID.randomUUID(),
-                    amount = amount.value.toDouble(),
-                    notes = notes.value,
-                    type = appState.transType,
-                    date = date.value,
-                    category = category.value ?: mockCategories[0]
-//                    date = LocalDateTime.parse(date.value, DateTimeFormatter.ISO_LOCAL_DATE_TIME),
-                )
-            )
+            category.let {
+                when (it) {
+                    null -> println("No category was selected, please fill all the requested fields")
+                    else -> transactionRepo.insert(
+                        transaction.toTransactionWithCategory(it)
+                    )
+                }
+            }
         }
     }
 }

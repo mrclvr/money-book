@@ -21,7 +21,7 @@ data class TransactionEntity(
 ) {
 
     fun toDomain(): Transaction {
-        return Transaction(id, notes, amount, date, type)
+        return Transaction(id, notes, amount, date, type, categoryId)
     }
 
     companion object {

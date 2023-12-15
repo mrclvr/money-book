@@ -11,9 +11,11 @@ data class TransactionWithCategory(
     override val amount: Double,
     override val date: LocalDateTime,
     override val type: TransactionType,
-    val category: Category
+    override val categoryId: UUID?,
+    val category: Category,
 ) : TransactionInterface {
-    fun toTransaction() = Transaction(id, notes, amount, date, type)
+
+    fun toTransaction() = Transaction(id, notes, amount, date, type, categoryId)
     fun toEntity() = TransactionEntity(id, notes, amount, date, type, category.id)
 }
 

@@ -55,8 +55,8 @@ fun FABLayout(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues = it)
-                .background(MaterialTheme.colorScheme.background),
+                .background(MaterialTheme.colorScheme.background)
+                .padding(paddingValues = it),
         ) {
             content()
         }

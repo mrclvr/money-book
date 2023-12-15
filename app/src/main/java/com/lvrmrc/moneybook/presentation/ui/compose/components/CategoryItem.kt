@@ -1,17 +1,16 @@
 package com.lvrmrc.moneybook.presentation.ui.compose.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,17 +26,21 @@ fun CategoryItem(category: Category, selected: Boolean = true, onClick: (Boolean
 
     Box(
         modifier = Modifier
-            .fillMaxSize()
+            .aspectRatio(1f)
             .clip(shape = RoundedCornerShape(8.dp))
             .background(if (selected) category.color else Color.Transparent)
-            .aspectRatio(1f), contentAlignment = Alignment.Center
+            .clickable { onClick(!selected) }, contentAlignment = Alignment.Center
     ) {
-        IconButton(modifier = Modifier.size(56.dp), colors = IconButtonDefaults.filledTonalIconButtonColors(
-            containerColor = category.color,
-            contentColor = if (category.lightText) MaterialTheme.colorScheme.background else MaterialTheme.colorScheme.onBackground
-        ), onClick = { onClick(!selected) }) {
+        Box(
+            modifier = Modifier
+                .size(56.dp)
+                .clip(shape = CircleShape)
+                .background(category.color), contentAlignment = Alignment.Center
+        ) {
             Icon(
-                category.icon, contentDescription = "${category.label} category"
+                imageVector = category.icon,
+                contentDescription = "${category.label} category",
+                tint = if (category.lightText) colorScheme.background else colorScheme.onBackground
             )
         }
     }

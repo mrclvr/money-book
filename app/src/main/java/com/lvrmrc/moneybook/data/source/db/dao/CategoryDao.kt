@@ -6,6 +6,7 @@ import androidx.room.Transaction
 import com.lvrmrc.moneybook.data.source.db.entity.CategoryEntity
 import com.lvrmrc.moneybook.data.source.db.entity.CategoryWithTransactionsEntity
 import com.lvrmrc.moneybook.domain.model.TransactionType
+import java.util.UUID
 
 @Dao
 interface CategoryDao : BaseDao<CategoryEntity> {
@@ -19,6 +20,11 @@ interface CategoryDao : BaseDao<CategoryEntity> {
 //    @Transaction
 //    @Query("SELECT * FROM categories")
 //    fun getCategoriesWithTransactions(): List<CategoryWithTransactionsEntity>
+
+
+    @Query("SELECT * FROM categories WHERE id = :id")
+    override suspend fun getById(id: UUID): CategoryEntity
+
     @Transaction
     @Query("SELECT c.* FROM categories c INNER JOIN (SELECT * FROM transactions WHERE $filterByDayType) t ON c.id = t.categoryId GROUP BY c.id")
     suspend fun getDayCategoriesWithTransactions(type: TransactionType, day: String): List<CategoryWithTransactionsEntity>

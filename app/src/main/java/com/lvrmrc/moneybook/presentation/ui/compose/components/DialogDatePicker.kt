@@ -22,11 +22,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import java.util.Calendar
+import com.lvrmrc.moneybook.utils.DateTimeUtils
+import java.time.LocalDateTime
 
 
 @Composable
-fun DialogDatePicker(onDateSelected: (Long) -> Unit = {}) {
+fun DialogDatePicker(date: LocalDateTime = LocalDateTime.now(), onDateSelected: (LocalDateTime) -> Unit = {}) {
 
     var datePickerOpen by remember {
         mutableStateOf(false)
@@ -41,22 +42,23 @@ fun DialogDatePicker(onDateSelected: (Long) -> Unit = {}) {
     }
 
     if (datePickerOpen) {
-        DialogDatePicker(onDateSelected = { onDateSelected(it) }, onClose = { datePickerOpen = false })
+        DialogDatePicker(date = date, onDateSelected = { onDateSelected(it) }, onClose = { datePickerOpen = false })
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun DialogDatePicker(
-    onClose: () -> Unit, onDateSelected: (Long) -> Unit
+    date: LocalDateTime = LocalDateTime.now(), onClose: () -> Unit, onDateSelected: (LocalDateTime) -> Unit
 ) {
-    val calendar = Calendar.getInstance()
-    val datePickerState = rememberDatePickerState(initialSelectedDateMillis = calendar.timeInMillis)
+//    val calendar = Calendar.getInstance()
+//    val datePickerState = rememberDatePickerState(initialSelectedDateMillis = calendar.timeInMillis)
+    val datePickerState = rememberDatePickerState(initialSelectedDateMillis = DateTimeUtils.dateToTimestamp(date))
     val selectedDate = datePickerState.selectedDateMillis ?: System.currentTimeMillis()
 
     DatePickerDialog(onDismissRequest = { onClose() }, confirmButton = {
         TextButton(onClick = {
-            onDateSelected(selectedDate)
+            onDateSelected(DateTimeUtils.timestampToLocalDateTime(selectedDate))
             onClose()
         }) {
             Text("OK")
@@ -72,7 +74,8 @@ private fun DialogDatePicker(
     }
 }
 
-//private fun timestampToDate(timestamp: Long): String {
+
+//private fun dateToTimestamp(timestamp: Long): String {
 //    val formatter = SimpleDateFormat("yyyyMMdd")
 //    return formatter.format(Date(timestamp))
 //}

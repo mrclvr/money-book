@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,6 +25,7 @@ import com.lvrmrc.moneybook.presentation.ui.compose.layouts.TabsLayout
 import com.lvrmrc.moneybook.presentation.ui.theme.MoneyBookTheme
 import com.lvrmrc.moneybook.presentation.viewmodel.ExpenseViewModel
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
@@ -33,10 +33,9 @@ import kotlinx.coroutines.launch
 fun ExpenseScreen(
     navController: NavHostController = rememberNavController(), vm: ExpenseViewModel = hiltViewModel()
 ) {
-    val expenseScreenScope: CoroutineScope = rememberCoroutineScope()
 
     SideEffect {
-        expenseScreenScope.launch {
+        CoroutineScope(Dispatchers.IO).launch {
             vm.loadTransactions(vm.appState.period)
         }
     }
@@ -49,7 +48,7 @@ fun ExpenseScreen(
         total = vm.total,
 //        animLaunched = vm.animationLaunched.value,
         setPeriod = {
-            expenseScreenScope.launch {
+            CoroutineScope(Dispatchers.IO).launch {
                 vm.loadTransactions(it)
             }
         },

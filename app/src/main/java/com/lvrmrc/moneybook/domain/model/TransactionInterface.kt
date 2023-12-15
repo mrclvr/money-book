@@ -10,6 +10,7 @@ interface TransactionInterface {
     val amount: Double
     val date: LocalDateTime
     val type: TransactionType
+    val categoryId: UUID?
 }
 
 

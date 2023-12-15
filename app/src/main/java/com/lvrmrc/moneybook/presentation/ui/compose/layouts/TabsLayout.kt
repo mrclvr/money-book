@@ -9,7 +9,6 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -17,9 +16,6 @@ import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalDrawerSheet
-import androidx.compose.material3.ModalNavigationDrawer
-import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -39,11 +35,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.lvrmrc.moneybook.data.AppState
 import com.lvrmrc.moneybook.presentation.ui.compose.components.tabs.transactionsTabs
+import com.lvrmrc.moneybook.presentation.ui.compose.navigation.AppDrawer
 import com.lvrmrc.moneybook.presentation.ui.compose.screens.Screen
 import com.lvrmrc.moneybook.presentation.ui.theme.MoneyBookTheme
 import kotlinx.coroutines.CoroutineScope
@@ -70,14 +66,7 @@ fun TabsLayout(
     val pagerState = rememberPagerState(initialPage, initialPageOffsetFraction = 0f, pageCount = { transactionsTabs.size })
     val snackBarHostState = remember { SnackbarHostState() }
 
-    ModalNavigationDrawer(drawerState = drawerState, drawerContent = {
-        ModalDrawerSheet {
-            Text("Money Book", modifier = Modifier.padding(16.dp))
-            Divider()
-            NavigationDrawerItem(label = { Text(text = "Drawer Item") }, selected = false, onClick = { /*TODO*/ })
-        }
-    }) {
-
+    AppDrawer(navController, drawerState) {
         CompositionLocalProvider(LocalFabVisible provides fabVisible.value) {
             Scaffold(
                 modifier = Modifier.fillMaxSize(),
@@ -136,8 +125,8 @@ fun TabsLayout(
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(paddingValues = it)
                         .background(MaterialTheme.colorScheme.background)
+                        .padding(paddingValues = it)
                 ) {
 
                     HorizontalPager(

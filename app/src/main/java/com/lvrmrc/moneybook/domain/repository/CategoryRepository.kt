@@ -1,8 +1,10 @@
 package com.lvrmrc.moneybook.domain.repository
 
 import com.lvrmrc.moneybook.data.source.db.entity.CategoryEntity
+import com.lvrmrc.moneybook.domain.model.Category
 import com.lvrmrc.moneybook.domain.model.CategoryWithTransactions
 import com.lvrmrc.moneybook.domain.model.TransactionType
+import java.util.UUID
 import javax.inject.Singleton
 
 /**
@@ -15,6 +17,8 @@ import javax.inject.Singleton
 interface CategoryRepository {
 
     suspend fun insert(category: CategoryEntity)
+
+    suspend fun getById(id: UUID): Category
 
     suspend fun getDayCategoriesWithTransactions(type: TransactionType, day: String): List<CategoryWithTransactions>
 

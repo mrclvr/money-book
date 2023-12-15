@@ -3,16 +3,13 @@ package com.lvrmrc.moneybook.presentation.ui.compose.layouts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.lvrmrc.moneybook.presentation.ui.compose.screens.Screen
@@ -29,10 +26,7 @@ fun AnimatedAppFAB(navController: NavHostController, showFAB: Boolean) {
 fun AppFAB(navController: NavHostController) {
     FloatingActionButton(
 //        modifier = Modifier.offset(y = 8.dp),
-        containerColor = colorScheme.primaryContainer,
-        contentColor = colorScheme.onPrimaryContainer,
-        shape = CircleShape,
-        onClick = {
+        containerColor = colorScheme.primaryContainer, contentColor = colorScheme.onPrimaryContainer, shape = CircleShape, onClick = {
             navController.navigate(Screen.Transaction.route) {
 
                 navController.graph.route?.let { route ->
@@ -43,8 +37,7 @@ fun AppFAB(navController: NavHostController) {
                 launchSingleTop = true
                 restoreState = true
             }
-        },
-        elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
+        }, elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
     ) {
         Icon(Screen.Transaction.icon, Screen.Transaction.label)
     }

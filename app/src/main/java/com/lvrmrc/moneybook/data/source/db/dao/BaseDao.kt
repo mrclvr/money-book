@@ -4,8 +4,11 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Update
+import java.util.UUID
 
 interface BaseDao<T> {
+
+    suspend fun getById(id: UUID): T
 
     /**
      * Insert an object in the database.

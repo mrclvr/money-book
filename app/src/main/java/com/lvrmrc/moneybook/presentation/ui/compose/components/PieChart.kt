@@ -149,8 +149,8 @@ fun DetailsPieChart(
 ) {
     Column(
         modifier = Modifier
-            .padding(top = 80.dp)
             .fillMaxWidth()
+            .padding(top = 80.dp)
     ) {
         // create the data items
         data.values.forEachIndexed { index, value ->

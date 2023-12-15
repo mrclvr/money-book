@@ -1,9 +1,11 @@
 package com.lvrmrc.moneybook.data.repository
 
 import com.lvrmrc.moneybook.data.source.db.dao.TransactionDao
+import com.lvrmrc.moneybook.domain.model.Transaction
 import com.lvrmrc.moneybook.domain.model.TransactionType
 import com.lvrmrc.moneybook.domain.model.TransactionWithCategory
 import com.lvrmrc.moneybook.domain.repository.TransactionRepository
+import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -17,6 +19,8 @@ import javax.inject.Singleton
 class TransactionRepositoryImpl @Inject constructor(private val transactionDao: TransactionDao) : TransactionRepository {
 
     override suspend fun insert(transaction: TransactionWithCategory) = transactionDao.insert(transaction.toEntity())
+
+    override suspend fun getById(id: UUID): Transaction = transactionDao.getById(id).toDomain()
 
     override suspend fun getDayTransactions(type: TransactionType, day: String): List<TransactionWithCategory> =
         transactionDao.getDayTransactions(type, day).map { it.toDomain() }

@@ -2,9 +2,11 @@ package com.lvrmrc.moneybook.data.repository
 
 import com.lvrmrc.moneybook.data.source.db.dao.CategoryDao
 import com.lvrmrc.moneybook.data.source.db.entity.CategoryEntity
+import com.lvrmrc.moneybook.domain.model.Category
 import com.lvrmrc.moneybook.domain.model.CategoryWithTransactions
 import com.lvrmrc.moneybook.domain.model.TransactionType
 import com.lvrmrc.moneybook.domain.repository.CategoryRepository
+import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -18,6 +20,8 @@ import javax.inject.Singleton
 class CategoryRepositoryImpl @Inject constructor(private val categoryDao: CategoryDao) : CategoryRepository {
 
     override suspend fun insert(category: CategoryEntity) = categoryDao.insert(category)
+
+    override suspend fun getById(id: UUID): Category = categoryDao.getById(id).toDomain()
 
     override suspend fun getDayCategoriesWithTransactions(type: TransactionType, day: String): List<CategoryWithTransactions> =
         categoryDao.getDayCategoriesWithTransactions(type, day).map { it.toDomain() }

@@ -41,8 +41,8 @@ fun ExpensesList(catTransactions: List<CategoryWithTransactions>, onSetCategory:
                     .height(50.dp)
                     .clip(shape = RoundedCornerShape(8.dp))
                     .background(cat.color)
-                    .padding(10.dp)
-                    .clickable { onSetCategory(cat) },
+                    .clickable { onSetCategory(cat) }
+                    .padding(10.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {

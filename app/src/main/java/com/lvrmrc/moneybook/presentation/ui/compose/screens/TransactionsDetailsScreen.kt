@@ -1,47 +1,45 @@
 package com.lvrmrc.moneybook.presentation.ui.compose.screens
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.lvrmrc.moneybook.data.mockCatTransactions
 import com.lvrmrc.moneybook.domain.model.CategoryWithTransactions
 import com.lvrmrc.moneybook.domain.model.Transaction
-import com.lvrmrc.moneybook.presentation.ui.compose.components.LabeledSection
+import com.lvrmrc.moneybook.domain.model.TransactionWithCategory
+import com.lvrmrc.moneybook.presentation.ui.compose.components.TransactionsListItem
 import com.lvrmrc.moneybook.presentation.ui.compose.layouts.AppLayout
 import com.lvrmrc.moneybook.presentation.viewmodel.ExpenseViewModel
 
 @Composable
 fun TransactionsDetailsScreen(
-    vm: ExpenseViewModel = hiltViewModel()
+    navController: NavHostController = rememberNavController(), vm: ExpenseViewModel = hiltViewModel()
 ) {
-    TransactionsDetailsScreen(category = vm.selectedCategory.value)
+    TransactionsDetailsScreen(
+        navController = navController,
+        category = vm.selectedCategory.value,
+//        onSetTransaction = { vm.appState.setCurrentTransaction(it) }
+    )
 }
 
 @Composable
 private fun TransactionsDetailsScreen(
-    category: CategoryWithTransactions?
+    navController: NavHostController = rememberNavController(),
+    category: CategoryWithTransactions?,
+    onSetTransaction: (TransactionWithCategory) -> Unit = {}
 ) {
 
     if (category != null) {
@@ -63,38 +61,22 @@ private fun TransactionsDetailsScreen(
             }
 
             items(category.transactions.size) { idx ->
-                Box(modifier = Modifier.padding(10.dp)) {
 
-                    val transaction: Transaction = category.transactions[idx]
+                val transaction: Transaction = category.transactions[idx]
+                val cat = category.toCategory()
 
-                    LabeledSection(
-                        modifier = Modifier
-                            .clip(shape = RoundedCornerShape(16.dp))
-                            .background(colorScheme.primaryContainer),
-                        sectionTitle = transaction.date.toString()
-                    ) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                                IconButton(modifier = Modifier.size(32.dp), colors = IconButtonDefaults.filledTonalIconButtonColors(
-                                    containerColor = category.color,
-                                    contentColor = if (category.lightText) colorScheme.background else colorScheme.onBackground
-                                ), onClick = { }) {
-                                    Icon(
-                                        category.icon, contentDescription = "${category.label} category"
-                                    )
-                                }
-                                Text(text = transaction.notes)
+                TransactionsListItem(transaction, cat) {
+                    onSetTransaction(transaction.toTransactionWithCategory(cat))
+
+                    navController.navigate("${Screen.Transaction.route}?transactionId=${transaction.id}") {
+
+                        navController.graph.route?.let { route ->
+                            popUpTo(route) {
+                                saveState = true
                             }
-                            Text(
-                                text = "€ ${
-                                    transaction.amount
-                                }"
-                            )
                         }
+                        launchSingleTop = true
+                        restoreState = true
                     }
                 }
             }
@@ -109,6 +91,6 @@ private fun TransactionsDetailsScreen(
 private fun TransactionsDetailsScreenPreview(
 ) {
     AppLayout {
-        TransactionsDetailsScreen(mockCatTransactions[0])
+        TransactionsDetailsScreen(category = mockCatTransactions[0])
     }
 }
