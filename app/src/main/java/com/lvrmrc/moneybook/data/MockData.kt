@@ -1,9 +1,5 @@
 package com.lvrmrc.moneybook.data
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CalendarMonth
-import androidx.compose.material.icons.filled.EditCalendar
-import androidx.compose.material.icons.filled.Today
 import com.lvrmrc.moneybook.data.source.db.entity.CategoryEntity
 import com.lvrmrc.moneybook.data.source.db.entity.TransactionEntity
 import com.lvrmrc.moneybook.domain.model.CategoryWithTransactions
@@ -11,7 +7,6 @@ import com.lvrmrc.moneybook.domain.model.ColorValue
 import com.lvrmrc.moneybook.domain.model.LabeledIcon
 import com.lvrmrc.moneybook.domain.model.Transaction
 import com.lvrmrc.moneybook.domain.model.TransactionType
-import com.lvrmrc.moneybook.presentation.ui.compose.components.tabs.TabItem
 import java.time.LocalDateTime
 import java.util.UUID
 
@@ -21,15 +16,15 @@ val mockCategoryEntities = listOf(
         label = "School",
         icon = LabeledIcon.Label.School,
         type = TransactionType.EXPENSE,
-        color = ColorValue.Name.TEAL,
-        lightText = false,
+        color = ColorValue.purple500.name,
+        lightText = true,
     ),
     CategoryEntity(
         id = UUID.fromString("74641143-4e1f-488c-ae2b-6b4de38faaad"),
         label = "Test",
         icon = LabeledIcon.Label.School,
         type = TransactionType.EXPENSE,
-        color = ColorValue.Name.PURPLE,
+        color = ColorValue.purple500.name,
         lightText = true,
     ),
     CategoryEntity(
@@ -37,7 +32,7 @@ val mockCategoryEntities = listOf(
         label = "School",
         icon = LabeledIcon.Label.School,
         type = TransactionType.EXPENSE,
-        color = ColorValue.Name.TEAL,
+        color = ColorValue.purple200.name,
         lightText = false,
     ),
     CategoryEntity(
@@ -45,7 +40,7 @@ val mockCategoryEntities = listOf(
         label = "Test",
         icon = LabeledIcon.Label.School,
         type = TransactionType.EXPENSE,
-        color = ColorValue.Name.PURPLE,
+        color = ColorValue.purple500.name,
         lightText = true,
     ),
     CategoryEntity(
@@ -53,7 +48,7 @@ val mockCategoryEntities = listOf(
         label = "School",
         icon = LabeledIcon.Label.School,
         type = TransactionType.EXPENSE,
-        color = ColorValue.Name.TEAL,
+        color = ColorValue.purple200.name,
         lightText = false,
     ),
     CategoryEntity(
@@ -61,7 +56,7 @@ val mockCategoryEntities = listOf(
         label = "Test",
         icon = LabeledIcon.Label.School,
         type = TransactionType.EXPENSE,
-        color = ColorValue.Name.PURPLE,
+        color = ColorValue.purple500.name,
         lightText = true,
     ),
     CategoryEntity(
@@ -69,7 +64,7 @@ val mockCategoryEntities = listOf(
         label = "Test",
         icon = LabeledIcon.Label.School,
         type = TransactionType.EXPENSE,
-        color = ColorValue.Name.PURPLE,
+        color = ColorValue.purple500.name,
         lightText = true,
     ),
     CategoryEntity(
@@ -77,15 +72,15 @@ val mockCategoryEntities = listOf(
         label = "Test",
         icon = LabeledIcon.Label.School,
         type = TransactionType.EXPENSE,
-        color = ColorValue.Name.PURPLE,
-        lightText = true,
+        color = ColorValue.purple200.name,
+        lightText = false,
     ),
     CategoryEntity(
         id = UUID.fromString("5757edd4-4ea0-4a5c-936b-d094c2a9bb23"),
         label = "Test",
         icon = LabeledIcon.Label.School,
         type = TransactionType.EXPENSE,
-        color = ColorValue.Name.PURPLE,
+        color = ColorValue.purple500.name,
         lightText = true,
     ),
     CategoryEntity(
@@ -93,15 +88,15 @@ val mockCategoryEntities = listOf(
         label = "Test",
         icon = LabeledIcon.Label.School,
         type = TransactionType.EXPENSE,
-        color = ColorValue.Name.PURPLE,
-        lightText = true,
+        color = ColorValue.purple200.name,
+        lightText = false,
     ),
     CategoryEntity(
         id = UUID.fromString("5757edd4-4ea0-4a5c-936b-d094c2a9bb25"),
         label = "Test",
         icon = LabeledIcon.Label.School,
         type = TransactionType.EXPENSE,
-        color = ColorValue.Name.PURPLE,
+        color = ColorValue.purple500.name,
         lightText = true,
     ),
     CategoryEntity(
@@ -109,15 +104,15 @@ val mockCategoryEntities = listOf(
         label = "Test",
         icon = LabeledIcon.Label.School,
         type = TransactionType.EXPENSE,
-        color = ColorValue.Name.PURPLE,
-        lightText = true,
+        color = ColorValue.purple200.name,
+        lightText = false,
     ),
     CategoryEntity(
         id = UUID.fromString("5757edd4-4ea0-4a5c-936b-d094c2a9bb27"),
         label = "Test",
         icon = LabeledIcon.Label.School,
         type = TransactionType.EXPENSE,
-        color = ColorValue.Name.PURPLE,
+        color = ColorValue.purple500.name,
         lightText = true,
     ),
     CategoryEntity(
@@ -125,8 +120,8 @@ val mockCategoryEntities = listOf(
         label = "Test",
         icon = LabeledIcon.Label.School,
         type = TransactionType.EXPENSE,
-        color = ColorValue.Name.PURPLE,
-        lightText = true,
+        color = ColorValue.purple200.name,
+        lightText = false,
     ),
 )
 
@@ -255,9 +250,3 @@ val mockTransactionEntities = listOf(
 )
 
 val mockTransactions = mockTransactionEntities.map { it.toDomain() }
-
-val mockPeriodTabs = listOf(
-    TabItem(title = "Day", icon = Icons.Filled.Today),
-    TabItem(title = "Month", icon = Icons.Filled.CalendarMonth),
-    TabItem(title = "Year", icon = Icons.Filled.EditCalendar)
-)

@@ -58,7 +58,7 @@ private fun TransactionScreen(
     date: LocalDateTime = LocalDateTime.now(),
     category: Category? = null,
     fabEnabled: Boolean = false,
-    onSetAmount: (Double) -> Unit = {},
+    onSetAmount: (String) -> Unit = {},
     onSetNotes: (String) -> Unit = {},
     onSetDate: (LocalDateTime) -> Unit = {},
     onSetCategory: (Category?) -> Unit = {},
@@ -76,7 +76,7 @@ private fun TransactionScreen(
                     textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.End),
                     value = amount,
                     onValueChange = {
-                        NumberUtils.clean(amount).toDoubleOrNull()?.let { onSetAmount(it) }
+                        onSetAmount(NumberUtils.clean(it))
                     },
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Decimal

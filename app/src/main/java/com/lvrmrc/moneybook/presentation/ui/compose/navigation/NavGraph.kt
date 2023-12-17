@@ -10,17 +10,18 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
+import com.lvrmrc.moneybook.data.AppState
 import com.lvrmrc.moneybook.presentation.ui.compose.screens.CategoriesScreen
+import com.lvrmrc.moneybook.presentation.ui.compose.screens.CategoryDetailsScreen
 import com.lvrmrc.moneybook.presentation.ui.compose.screens.ExpenseScreen
 import com.lvrmrc.moneybook.presentation.ui.compose.screens.Screen
 import com.lvrmrc.moneybook.presentation.ui.compose.screens.TransactionScreen
-import com.lvrmrc.moneybook.presentation.ui.compose.screens.TransactionsDetailsScreen
 import com.lvrmrc.moneybook.presentation.viewmodel.ExpenseViewModel
 
 @Composable
 fun NavGraph(navController: NavHostController) {
 
-//    val appState = AppState.getInstance()
+    val appState = AppState.getInstance()
     val rootRoute = "ROOT"
 
     NavHost(navController = navController, startDestination = rootRoute) {
@@ -62,7 +63,7 @@ fun NavGraph(navController: NavHostController) {
             /**
              * Transactions Details
              */
-            composable(route = Screen.TransactionsDetails.route) { entry ->
+            composable(route = "${Screen.CategoryDetails.route}/{categoryId}") { entry ->
 
                 val parentEntry = remember(entry) {
                     navController.getBackStackEntry(rootRoute)
@@ -70,7 +71,7 @@ fun NavGraph(navController: NavHostController) {
 
                 val vm = hiltViewModel<ExpenseViewModel>(parentEntry)
 
-                TransactionsDetailsScreen(navController, vm)
+                CategoryDetailsScreen(navController)
 
             }
         }

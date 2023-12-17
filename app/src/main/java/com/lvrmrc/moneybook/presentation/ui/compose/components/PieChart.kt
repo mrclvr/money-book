@@ -1,5 +1,8 @@
 package com.lvrmrc.moneybook.presentation.ui.compose.components
 
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -14,24 +17,32 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.lvrmrc.moneybook.data.AppState
 import com.lvrmrc.moneybook.data.mockCatTransactions
 import com.lvrmrc.moneybook.domain.model.CategoryWithTransactions
+import com.lvrmrc.moneybook.presentation.ui.compose.layouts.TabsLayout
 import com.lvrmrc.moneybook.presentation.ui.theme.MoneyBookTheme
+import com.lvrmrc.moneybook.presentation.ui.theme.primary
+import com.lvrmrc.moneybook.utils.NumberUtils
 
 @Composable
 fun PieChart(
@@ -39,50 +50,37 @@ fun PieChart(
     radiusOuter: Dp = 100.dp,
     chartBarWidth: Dp = 35.dp,
     animDuration: Int = 1000,
-    text: String = "Text"
+    text: String? = null
 ) {
 
+    val appState = AppState.getInstance()
     val totalSum = data.sumOf { it.total }
     val angleValues = mutableListOf<Float>()
 
-    // To set the value of each Arc according to
-    // the value given in the data, we have used a simple formula.
-    // For a detailed explanation check out the Medium Article.
-    // The link is in the about section and readme file of this GitHub Repository
     data.forEachIndexed { index, cat ->
-        angleValues.add(index, 360 * cat.transactions.sumOf { it.amount }.toFloat() / totalSum.toFloat())
+        angleValues.add(index, 3.6f * NumberUtils.getFloatPercentage(cat.total, totalSum))
     }
-
-    // add the colors as per the number of data(no. of pie chart entries)
-    // so that each data will get a color
-//    val colors = listOf(
-//        Purple200, Purple500, Teal200, Purple700, Blue
-//    )
 
 //    val animationPlayed = remember { mutableStateOf(false) }
 
     var lastAngle = 0f
-    val gap = 1f
+    val gap = if (data.size < 2) 0f else 1f
 
-    // it is the diameter value of the Pie
-//    val animateSize by animateFloatAsState(
-//        targetValue = if (animationPlayed.value) radiusOuter.value * 2f else 0f, animationSpec = tween(
-//            durationMillis = animDuration, delayMillis = 0, easing = LinearOutSlowInEasing
-//        ), label = "Animate size"
-//    )
+    val animateSize by animateFloatAsState(
+        targetValue = if (appState.pieAnimationPlayed) radiusOuter.value * 2f else 0f, animationSpec = tween(
+            durationMillis = animDuration, delayMillis = 0, easing = LinearOutSlowInEasing
+        ), label = "Animate size"
+    )
 
-    // if you want to stabilize the Pie Chart you can use value -90f
-    // 90f is used to complete 1/4 of the rotation
-//    val animateRotation by animateFloatAsState(
-//        targetValue = if (animationPlayed.value) 90f * 11f else 0f, animationSpec = tween(
-//            durationMillis = animDuration, delayMillis = 0, easing = LinearOutSlowInEasing
-//        ), label = "Animate rotation"
-//    )
+    val animateRotation by animateFloatAsState(
+        targetValue = if (appState.pieAnimationPlayed) 360f * 11f else 0f, animationSpec = tween(
+            durationMillis = animDuration, delayMillis = 0, easing = LinearOutSlowInEasing
+        ), label = "Animate rotation"
+    )
 
-    // to play the animation only once when the function is Created or Recomposed
-//    LaunchedEffect(key1 = true) {
-//        animationPlayed.value = true
-//    }
+    LaunchedEffect(key1 = true) {
+        appState.setPieAnimationPlayed(true)
+    }
 
     Column(
         modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center
@@ -90,6 +88,7 @@ fun PieChart(
 
         Box(
 //            modifier = Modifier.size(animateSize.dp),
+//                .size(radiusOuter * 2f + chartBarWidth)
             contentAlignment = Alignment.Center
         ) {
             val textMeasurer = rememberTextMeasurer()
@@ -98,34 +97,57 @@ fun PieChart(
                 modifier = Modifier.size(radiusOuter * 2f)
 //                    .rotate(animateRotation)
             ) {
-                angleValues.forEachIndexed { idx, angle ->
+
+                if (data.isEmpty() || (totalSum == 0.0 && data.size == 1)) {
                     drawArc(
-                        color = data[idx].color,
-                        startAngle = lastAngle + gap,
-                        sweepAngle = angle - 2 * gap,
+                        color = primary,
+                        startAngle = 0f,
+                        sweepAngle = 360f,
                         useCenter = false,
                         style = Stroke(chartBarWidth.toPx(), cap = StrokeCap.Butt)
                     )
-                    lastAngle += angle
+                } else {
+                    angleValues.forEachIndexed { idx, angle ->
+                        if (angle > 0) {
+                            drawArc(
+                                color = data[idx].color,
+                                startAngle = lastAngle + gap,
+                                sweepAngle = angle - 2 * gap,
+                                useCenter = false,
+                                style = Stroke(chartBarWidth.toPx(), cap = StrokeCap.Butt)
+                            )
+                            lastAngle += angle
+                        }
+                    }
                 }
-
-                val canvasWidth = size.width
-                val canvasHeight = size.height
+                val textString = text ?: if (data.isNotEmpty()) totalSum.toString() else "No records"
                 val annotatedString = buildAnnotatedString {
-                    append(text)
-//                    addStyle(SpanStyle(fontSize = 50.sp), text.length, this.length)
-                    toAnnotatedString()
+                    withStyle(
+                        style = SpanStyle(
+                            fontWeight = FontWeight.Bold, fontSize = 24.sp
+                        )
+                    ) {
+                        append(textString)
+                    }
                 }
-                val textLayoutResult: TextLayoutResult = textMeasurer.measure(annotatedString)
-
+//                val maxSize: Int = (radiusOuter * 2f - chartBarWidth / 2f).toPx().toInt()
+                val textLayoutResult: TextLayoutResult = textMeasurer.measure(
+                    annotatedString,
+//                    constraints = Constraints(maxWidth = maxSize)
+                )
                 val textSize = textLayoutResult.size
 
+//                drawCircle(
+//                    color = primary100,
+//                    radius = (radiusOuter - chartBarWidth / 2f).toPx(),
+//                    center = this.center,
+//                )
+
                 drawText(
-//                    style = TextStyle(fontSize = 30.sp),
                     textMeasurer = textMeasurer,
-                    text = text,
+                    text = annotatedString,
                     topLeft = Offset(
-                        (canvasWidth - textSize.width) / 2f, (canvasHeight - textSize.height) / 2f
+                        (size.width - textSize.width) / 2f, (size.height - textSize.height) / 2f
                     ),
                 )
 
@@ -211,11 +233,11 @@ fun DetailsPieChartItem(
 fun PieChartPreview() {
     MoneyBookTheme {
 //        ComposeLocalWrapper {
-//        AppTabsLayout {
-        PieChart(
-            mockCatTransactions
-        )
-//        }
+        TabsLayout {
+            PieChart(
+                mockCatTransactions, text = "123123"
+            )
+        }
 //        }
     }
 }

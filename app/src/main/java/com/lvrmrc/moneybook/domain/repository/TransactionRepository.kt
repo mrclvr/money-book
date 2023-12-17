@@ -16,7 +16,7 @@ import javax.inject.Singleton
 @Singleton
 interface TransactionRepository {
 
-    suspend fun insert(transaction: TransactionWithCategory): Unit
+    suspend fun insert(transaction: Transaction): Unit
 
     suspend fun getById(id: UUID): Transaction
 
@@ -25,4 +25,10 @@ interface TransactionRepository {
     suspend fun getMonthTransactions(type: TransactionType, month: Int, year: Int): List<TransactionWithCategory>
 
     suspend fun getYearTransactions(type: TransactionType, year: Int): List<TransactionWithCategory>
+
+    suspend fun getDayTransactionsByCategory(categoryId: UUID, type: TransactionType, day: String): List<Transaction>
+
+    suspend fun getMonthTransactionsByCategory(categoryId: UUID, type: TransactionType, month: Int, year: Int): List<Transaction>
+
+    suspend fun getYearTransactionsByCategory(categoryId: UUID, type: TransactionType, year: Int): List<Transaction>
 }

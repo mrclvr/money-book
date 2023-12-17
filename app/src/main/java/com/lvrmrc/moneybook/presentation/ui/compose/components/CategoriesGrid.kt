@@ -1,5 +1,6 @@
 package com.lvrmrc.moneybook.presentation.ui.compose.components
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -18,7 +19,7 @@ import com.lvrmrc.moneybook.presentation.ui.compose.layouts.AppLayout
 @Composable
 fun CategoriesGrid(categories: List<Category>, selected: Category? = null, onSelected: (Category) -> Unit = {}) {
     LazyVerticalGrid(
-        columns = GridCells.Fixed(5), modifier = Modifier.height(160.dp)
+        columns = GridCells.Fixed(4), modifier = Modifier.height(200.dp), verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         items(categories.size) { idx ->
             val category: Category = categories[idx]

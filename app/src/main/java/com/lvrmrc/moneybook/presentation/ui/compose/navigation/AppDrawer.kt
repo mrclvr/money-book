@@ -1,9 +1,13 @@
 package com.lvrmrc.moneybook.presentation.ui.compose.navigation
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Addchart
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
@@ -54,12 +58,15 @@ private fun AppDrawer(
     drawerState: DrawerState, onNavigate: (String) -> Unit = {}, content: @Composable () -> Unit = {}
 ) {
     ModalNavigationDrawer(drawerState = drawerState, drawerContent = {
-        ModalDrawerSheet {
+        ModalDrawerSheet(drawerContainerColor = colorScheme.primaryContainer) {
             Text("Money Book", modifier = Modifier.padding(16.dp))
             Divider()
-            NavigationDrawerItem(label = { Text(text = "Categories") }, selected = false, onClick = {
-                onNavigate(Screen.Categories.route)
-            })
+            NavigationDrawerItem(icon = { Icon(Icons.Filled.Addchart, "Categories screen") },
+                label = { Text(text = "Categories") },
+                selected = false,
+                onClick = {
+                    onNavigate(Screen.Categories.route)
+                })
         }
     }) {
         content()

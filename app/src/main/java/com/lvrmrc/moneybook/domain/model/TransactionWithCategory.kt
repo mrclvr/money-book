@@ -11,7 +11,7 @@ data class TransactionWithCategory(
     override val amount: Double,
     override val date: LocalDateTime,
     override val type: TransactionType,
-    override val categoryId: UUID?,
+    override val categoryId: UUID,
     val category: Category,
 ) : TransactionInterface {
 

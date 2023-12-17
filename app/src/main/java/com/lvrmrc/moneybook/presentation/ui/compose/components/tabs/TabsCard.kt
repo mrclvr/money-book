@@ -1,6 +1,7 @@
 package com.lvrmrc.moneybook.presentation.ui.compose.components.tabs
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
@@ -22,7 +23,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.lvrmrc.moneybook.data.mockPeriodTabs
+import com.lvrmrc.moneybook.domain.model.TransactionPeriod
+import com.lvrmrc.moneybook.domain.model.periodIntMap
+import com.lvrmrc.moneybook.presentation.ui.compose.layouts.TabsLayout
 import com.lvrmrc.moneybook.presentation.ui.theme.MoneyBookTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -30,13 +33,15 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TabsCard(
-    tabs: List<TabItem>,
+    tabs: List<PeriodTabItem>,
+    period: TransactionPeriod,
     initialPage: Int = 0,
-    currentPage: Int? = null,
-    onTabRowClick: (String) -> Unit = {},
+    onSetPeriod: (TransactionPeriod) -> Unit = {},
     cardContent: @Composable () -> Unit = {}
 ) {
-    val pagerState = rememberPagerState(initialPage, initialPageOffsetFraction = 0f, pageCount = { tabs.size })
+
+
+    val pagerState = rememberPagerState(initialPage = periodIntMap[period] ?: 0, initialPageOffsetFraction = 0f, pageCount = { tabs.size })
 
     Card(
         modifier = Modifier
@@ -45,7 +50,7 @@ fun TabsCard(
             .aspectRatio(1f),
         colors = CardDefaults.cardColors(containerColor = colorScheme.surface, contentColor = colorScheme.onSurface),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 10.dp
+            defaultElevation = 6.dp
         )
 
     ) {
@@ -54,9 +59,16 @@ fun TabsCard(
 
         Column {
             TabRow(
-                selectedTabIndex = currentPage ?: pagerState.currentPage,
+                selectedTabIndex = pagerState.currentPage,
 //                containerColor = colorScheme.primary,
-//                contentColor = colorScheme.onPrimary
+//                contentColor = colorScheme.onPrimary,
+//                indicator = @Composable { tabPositions ->
+//                    if (pagerState.currentPage < tabPositions.size) {
+//                        TabRowDefaults.Indicator(
+//                            Modifier.tabIndicatorOffset(tabPositions[pagerState.currentPage]), color = colorScheme.onPrimary
+//                        )
+//                    }
+//                },
             ) {
 
                 tabs.forEachIndexed { index, tab ->
@@ -65,15 +77,17 @@ fun TabsCard(
                         icon = { Icon(tab.icon, "") },
                         onClick = {
                             cardScope.launch {
-//                                pagerState.animateScrollToPage(index)
-                                pagerState.scrollToPage(index)
+                                pagerState.animateScrollToPage(index)
+//                                pagerState.scrollToPage(index)
                             }
-                            onTabRowClick(tab.title)
+                            onSetPeriod(tab.period)
                         })
                 }
             }
             HorizontalPager(
-                state = pagerState, modifier = Modifier.fillMaxSize()
+                state = pagerState, modifier = Modifier
+                    .fillMaxSize()
+                    .background(colorScheme.background)
             ) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     when (cardContent) {
@@ -90,6 +104,8 @@ fun TabsCard(
 @Composable
 private fun TabsCardPreview() {
     MoneyBookTheme {
-        TabsCard(mockPeriodTabs)
+        TabsLayout {
+            TabsCard(periodTabs, TransactionPeriod.MONTH)
+        }
     }
 }

@@ -15,7 +15,7 @@ enum class ScreenName {
 sealed class Screen(val route: String, val label: String, val icon: ImageVector, val bottomBar: Boolean = true, val fab: Boolean = true) {
     data object Home : Screen(ScreenName.HOME.name, "Home", Icons.Rounded.ArrowUpward, bottomBar = true)
     data object Transaction : Screen(ScreenName.TRANSACTION.name, "Transactions", Icons.Rounded.Add, bottomBar = false, fab = false)
-    data object TransactionsDetails : Screen(
+    data object CategoryDetails : Screen(
         ScreenName.TRANSACTIONS_DETAILS.name, "Transactions Details", Icons.Rounded.AccountBalanceWallet, bottomBar = false, fab = false
     )
 

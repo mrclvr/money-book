@@ -31,5 +31,9 @@ class NumberUtils {
 
             return stringBuilder.toString()
         }
+
+        fun getFloatPercentage(value: Double, total: Double): Float {
+            return if (value == 0.0) 0f else (100 * (value / total)).toFloat()
+        }
     }
 }

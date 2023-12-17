@@ -26,16 +26,11 @@ class TransactionViewModel @Inject constructor(
     private val transactionRepo: TransactionRepositoryImpl,
     private val categoryRepo: CategoryRepositoryImpl
 ) : ViewModel() {
-
-//    private val _drawerShouldBeOpened = MutableStateFlow(false)
-//    val drawerShouldBeOpened = _drawerShouldBeOpened.asStateFlow()
-
+    
     private val transactionId: String? = savedStateHandle["transactionId"]
 
-    private val _transaction by mutableStateOf(
-        Transaction(
-            UUID.randomUUID(), "", 0.0, LocalDateTime.now(), appState.transType
-        )
+    private var _transaction by mutableStateOf(
+        Transaction(type = appState.transType)
     )
     val transaction: Transaction get() = _transaction
 
@@ -51,8 +46,8 @@ class TransactionViewModel @Inject constructor(
     private var _amount by mutableStateOf(transaction.amount.toString())
     val amount: String get() = _amount
 
-    fun setAmount(amount: Double) {
-        _amount = amount.toString()
+    fun setAmount(amount: String) {
+        _amount = amount
     }
 
     private var _notes by mutableStateOf(transaction.notes)
@@ -88,28 +83,31 @@ class TransactionViewModel @Inject constructor(
 //        appState.setLoading(true)
         if (transactionId != null) {
             viewModelScope.launch {
-                val (_, notes, amount, date, _, categoryId) = transactionRepo.getById(UUID.fromString(transactionId))
+                _transaction = transactionRepo.getById(UUID.fromString(transactionId))
+
+                val (_, notes, amount, date, _, categoryId) = transaction
                 _notes = notes
                 _amount = amount.toString()
                 _date = date
-                _category = categoryId?.let { categoryRepo.getById(it) }
+                _category = categoryId.let { categoryRepo.getById(it) }
 //            appState.setLoading(false)
             }
         }
-//            _transaction.value = appState.currentTransaction?.toTransaction() ?: Transaction(
-//                UUID.randomUUID(), "", 0.0, LocalDateTime.now(), appState.transType
-//            )
-//            _category.value = appState.currentTransaction?.category
     }
 
     fun addTransaction() {
         viewModelScope.launch {
-            category.let {
+            category.let { it ->
                 when (it) {
                     null -> println("No category was selected, please fill all the requested fields")
-                    else -> transactionRepo.insert(
-                        transaction.toTransactionWithCategory(it)
-                    )
+                    else -> {
+                        _transaction.amount = amount.toDouble()
+                        _transaction.notes = notes
+                        _transaction.date = date
+                        category?.let { _transaction.categoryId = it.id }
+
+                        transactionRepo.insert(transaction)
+                    }
                 }
             }
         }

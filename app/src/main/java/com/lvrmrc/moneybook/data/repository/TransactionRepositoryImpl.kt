@@ -18,7 +18,7 @@ import javax.inject.Singleton
 @Singleton
 class TransactionRepositoryImpl @Inject constructor(private val transactionDao: TransactionDao) : TransactionRepository {
 
-    override suspend fun insert(transaction: TransactionWithCategory) = transactionDao.insert(transaction.toEntity())
+    override suspend fun insert(transaction: Transaction) = transactionDao.insert(transaction.toEntity())
 
     override suspend fun getById(id: UUID): Transaction = transactionDao.getById(id).toDomain()
 
@@ -30,6 +30,15 @@ class TransactionRepositoryImpl @Inject constructor(private val transactionDao: 
 
     override suspend fun getYearTransactions(type: TransactionType, year: Int): List<TransactionWithCategory> =
         transactionDao.getYearTransactions(type, year).map { it.toDomain() }
+
+    override suspend fun getDayTransactionsByCategory(categoryId: UUID, type: TransactionType, day: String): List<Transaction> =
+        transactionDao.getDayTransactionsByCategory(categoryId, type, day).map { it.toDomain() }
+
+    override suspend fun getMonthTransactionsByCategory(categoryId: UUID, type: TransactionType, month: Int, year: Int): List<Transaction> =
+        transactionDao.getMonthTransactionsByCategory(categoryId, type, month, year).map { it.toDomain() }
+
+    override suspend fun getYearTransactionsByCategory(categoryId: UUID, type: TransactionType, year: Int): List<Transaction> =
+        transactionDao.getYearTransactionsByCategory(categoryId, type, year).map { it.toDomain() }
 
     companion object {
 
