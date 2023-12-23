@@ -6,11 +6,8 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.Button
 import androidx.compose.material3.FabPosition
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -21,34 +18,19 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun FABLayout(
-    onFabAction: () -> Unit = {}, fabEnabled: Boolean = false, content: @Composable() () -> Unit = {}
+    fabText: String = "Text", fabEnabled: Boolean = false, onFabAction: () -> Unit = {}, content: @Composable() () -> Unit = {}
 ) {
 
-    Scaffold(modifier = Modifier.fillMaxSize(), floatingActionButtonPosition = FabPosition.End, floatingActionButton = {
+    Scaffold(modifier = Modifier.fillMaxSize(), floatingActionButtonPosition = FabPosition.Center, floatingActionButton = {
         Button(
             onClick = {
                 onFabAction()
             }, modifier = Modifier.defaultMinSize(minWidth = 56.dp, minHeight = 56.dp), enabled = fabEnabled, shape = CircleShape
 
         ) {
-            Text(text = "Add")
-            Icon(Icons.Filled.ArrowForward, contentDescription = "Add transaction")
+            Text(text = fabText)
+//            Icon(Icons.Filled.ArrowForward, contentDescription = "Add transaction")
         }
-//            ExtendedFloatingActionButton(
-//                shape = CircleShape,
-//                onClick =
-////                {
-////                    coroutineScope.launch {
-//                onFabAction,
-////                    }
-////                }
-//                icon = {
-//                    Icon(
-//                        Icons.Filled.ArrowForward, contentDescription = "Add transaction"
-//                    )
-//                },
-//                text = { Text(text = "Add") },
-//            )
     }
 
     ) {

@@ -4,7 +4,6 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
@@ -36,10 +35,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
+import com.lvrmrc.moneybook.LocalNavController
 import com.lvrmrc.moneybook.domain.model.TransactionType
 import com.lvrmrc.moneybook.presentation.ui.compose.components.tabs.customTabIndicatorOffset
 import com.lvrmrc.moneybook.presentation.ui.compose.components.tabs.transactionsTabs
@@ -55,7 +54,6 @@ val LocalFabVisible = compositionLocalOf {
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun TabsLayout(
-    navController: NavHostController = rememberNavController(),
     drawerState: DrawerState = rememberDrawerState(DrawerValue.Closed),
     onNavClick: (TransactionType) -> Unit = {},
     index: Int = 0,
@@ -65,13 +63,14 @@ fun TabsLayout(
 
 
     val appScope = rememberCoroutineScope()
+    val navController = LocalNavController.current
     val bottomBarVisible = rememberSaveable { (mutableStateOf(true)) }
     val fabVisible = rememberSaveable { (mutableStateOf(true)) }
 //    val pagerState = rememberPagerState(initialPage, initialPageOffsetFraction = 0f, pageCount = { transactionsTabs.size })
     val snackBarHostState = remember { SnackbarHostState() }
     val currentPage = remember { mutableIntStateOf(index) }
 
-    AppDrawer(navController, drawerState) {
+    AppDrawer(drawerState) {
         CompositionLocalProvider(LocalFabVisible provides fabVisible.value) {
             Scaffold(
 //                containerColor = primary50,
@@ -81,7 +80,7 @@ fun TabsLayout(
                 },
                 floatingActionButtonPosition = FabPosition.Center,
                 floatingActionButton = {
-                    AnimatedAppFAB(navController, LocalFabVisible.current)
+                    AnimatedAppFAB(LocalFabVisible.current)
                 },
                 bottomBar = {
                     TabRow(
@@ -120,25 +119,22 @@ fun TabsLayout(
                 },
                 topBar = {
                     TopAppBar(
-                        modifier = Modifier
-                            .width(58.dp)
-                            .clip(RoundedCornerShape(0, 0, 50, 0)),
+//                        modifier = Modifier
+//                            .width(58.dp)
+//                            .clip(RoundedCornerShape(0, 0, 50, 0)),
                         colors = TopAppBarDefaults.topAppBarColors(
-                            containerColor = colorScheme.onPrimary,
-                        ),
-                        title = {
+                            containerColor = Color.Transparent,
+                        ), title = {
                             Text(
                                 ""
                             )
-                        },
-                        navigationIcon = {
+                        }, navigationIcon = {
                             IconButton(onClick = { appScope.launch { drawerState.open() } }) {
                                 Icon(
                                     imageVector = Icons.Filled.Menu, contentDescription = "Open drawer", tint = colorScheme.primary
                                 )
                             }
-                        },
-                        scrollBehavior = scrollBehavior
+                        }, scrollBehavior = scrollBehavior
                     )
                 },
 

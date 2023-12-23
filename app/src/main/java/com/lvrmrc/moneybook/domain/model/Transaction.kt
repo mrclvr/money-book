@@ -6,12 +6,12 @@ import java.util.UUID
 
 
 data class Transaction(
-    override var id: UUID = UUID.randomUUID(),
-    override var notes: String = "",
-    override var amount: Double = 0.0,
-    override var date: LocalDateTime = LocalDateTime.now(),
-    override val type: TransactionType,
-    override var categoryId: UUID = UUID.randomUUID()
+    override var id: UUID,
+    override var notes: String,
+    override var amount: Double,
+    override var date: LocalDateTime,
+    override var type: TransactionType,
+    override var categoryId: UUID
 ) : TransactionInterface {
 
 

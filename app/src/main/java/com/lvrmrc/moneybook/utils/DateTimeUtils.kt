@@ -4,6 +4,9 @@ import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
+import java.util.Locale
 
 class DateTimeUtils {
     companion object {
@@ -18,4 +21,10 @@ class DateTimeUtils {
             return dateTime.atZone(ZoneOffset.UTC).toInstant().toEpochMilli()
         }
     }
+}
+
+fun LocalDateTime.localFormat(): String? {
+    return this.format(
+        DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG).withLocale(Locale.getDefault())
+    )
 }

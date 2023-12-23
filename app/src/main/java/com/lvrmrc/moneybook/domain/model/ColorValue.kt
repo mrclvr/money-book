@@ -1,13 +1,12 @@
 package com.lvrmrc.moneybook.domain.model
 
 import androidx.compose.ui.graphics.Color
-import com.lvrmrc.moneybook.presentation.ui.theme.orangePeel
 import com.lvrmrc.moneybook.presentation.ui.theme.slateBlue
 import com.lvrmrc.moneybook.presentation.ui.theme.triadic1_500
 
 sealed class ColorValue(val name: Name, val value: Color) {
-    data object purple200 : ColorValue(Name.PURPLE, triadic1_500)
-    data object purple500 : ColorValue(Name.TEAL, orangePeel)
+    data object Triadic500 : ColorValue(Name.TriadicOne500, triadic1_500)
+//    data object OrangePeel : ColorValue(Name.TEAL, orangePeel)
 
     companion object {
         fun getColorValue(name: Name): Color {
@@ -21,6 +20,8 @@ sealed class ColorValue(val name: Name, val value: Color) {
     }
 
     enum class Name {
-        PURPLE, TEAL
+        Primary300, Primary500, Complementary300, Complementary500, AnalogousOne500, AnalogousTwo500, TriadicOne500, TriadicTwo500,
     }
 }
+
+

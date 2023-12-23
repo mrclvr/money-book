@@ -1,7 +1,6 @@
 package com.lvrmrc.moneybook.domain.usecase
 
 
-import com.lvrmrc.moneybook.data.AppState
 import com.lvrmrc.moneybook.data.repository.TransactionRepositoryImpl
 import com.lvrmrc.moneybook.domain.model.CategoryWithTransactions
 import com.lvrmrc.moneybook.domain.model.TransactionPeriod
@@ -14,14 +13,10 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class GetCategoryTransactionsByPeriod(
-    private val transactionRepo: TransactionRepositoryImpl,
-    private val appState: AppState,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val transactionRepo: TransactionRepositoryImpl, private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
     suspend operator fun invoke(
-        period: TransactionPeriod = appState.period,
-        transType: TransactionType = appState.transType,
-        date: LocalDateTime = LocalDateTime.now()
+        period: TransactionPeriod, transType: TransactionType, date: LocalDateTime = LocalDateTime.now()
     ): List<CategoryWithTransactions> = withContext(dispatcher) {
 
         var result: List<TransactionWithCategory> = emptyList()

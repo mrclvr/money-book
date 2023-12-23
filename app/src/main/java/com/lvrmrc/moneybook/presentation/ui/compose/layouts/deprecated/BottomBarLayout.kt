@@ -17,17 +17,17 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavDestination
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
+import com.lvrmrc.moneybook.LocalNavController
 import com.lvrmrc.moneybook.presentation.ui.compose.layouts.AnimatedAppFAB
 import com.lvrmrc.moneybook.presentation.ui.compose.screens.Screen
 import com.lvrmrc.moneybook.presentation.ui.theme.MoneyBookTheme
 
 @Composable
 fun BottomBarLayout(
-    navController: NavHostController = rememberNavController(), content: @Composable () -> Unit
+    content: @Composable () -> Unit
 ) {
+    val navController = LocalNavController.current
     val bottomBarVisible = rememberSaveable { (mutableStateOf(true)) }
     val fabVisible = rememberSaveable { (mutableStateOf(true)) }
     val snackBarHostState = remember { SnackbarHostState() }
@@ -48,7 +48,7 @@ fun BottomBarLayout(
         },
         floatingActionButtonPosition = FabPosition.Center,
         floatingActionButton = {
-            AnimatedAppFAB(navController, true)
+            AnimatedAppFAB(true)
         },
         snackbarHost = {
             SnackbarHost(hostState = snackBarHostState)

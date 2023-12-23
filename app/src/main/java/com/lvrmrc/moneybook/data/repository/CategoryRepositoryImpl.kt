@@ -23,6 +23,8 @@ class CategoryRepositoryImpl @Inject constructor(private val categoryDao: Catego
 
     override suspend fun getById(id: UUID): Category = categoryDao.getById(id).toDomain()
 
+    override suspend fun getAll(): List<Category> = categoryDao.getAll().map { it.toDomain() }
+
     override suspend fun getDayCategoriesWithTransactions(type: TransactionType, day: String): List<CategoryWithTransactions> =
         categoryDao.getDayCategoriesWithTransactions(type, day).map { it.toDomain() }
 

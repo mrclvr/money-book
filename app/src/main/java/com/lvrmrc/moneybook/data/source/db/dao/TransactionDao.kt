@@ -15,11 +15,12 @@ interface TransactionDao : BaseDao<TransactionEntity> {
     @Query("SELECT * FROM transactions WHERE id = :id")
     override suspend fun getById(id: UUID): TransactionEntity
 
+    @Query("DELETE FROM transactions WHERE id = :id")
+    suspend fun deleteById(id: UUID)
 
     @Transaction
     @Query("SELECT * FROM transactions WHERE $filterByDayType")
     suspend fun getDayTransactions(type: TransactionType, day: String): List<TransactionWithCategoryEntity>
-
 
     @Transaction
     @Query("SELECT * FROM transactions t WHERE $filterByMonthYearType")
@@ -42,6 +43,5 @@ interface TransactionDao : BaseDao<TransactionEntity> {
 
     @Query("SELECT SUM(amount) from transactions")
     suspend fun getPeriodTotal(): Double
-
 
 }

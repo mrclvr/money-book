@@ -7,7 +7,6 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
@@ -18,54 +17,47 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
+import com.lvrmrc.moneybook.LocalNavController
 import com.lvrmrc.moneybook.presentation.ui.compose.screens.Screen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
+
 @Composable
 fun AppDrawer(
-    navController: NavHostController = rememberNavController(),
-    drawerState: DrawerState = rememberDrawerState(DrawerValue.Closed),
-    content: @Composable () -> Unit = {}
+    drawerState: DrawerState, content: @Composable () -> Unit = {}
 ) {
 
+    val navController = LocalNavController.current
     val drawerScope: CoroutineScope = rememberCoroutineScope()
 
-    AppDrawer(drawerState = drawerState, content = content, onNavigate = {
-        drawerScope.launch {
-            drawerState.apply {
-                close()
-//                if (isClosed) open() else close()
-            }
-        }
-
-        navController.navigate(it) {
-            navController.graph.route?.let { route ->
-                popUpTo(route) {
-                    saveState = true
-                }
-            }
-            launchSingleTop = true
-            restoreState = true
-        }
-    })
-}
-
-@Composable
-private fun AppDrawer(
-    drawerState: DrawerState, onNavigate: (String) -> Unit = {}, content: @Composable () -> Unit = {}
-) {
     ModalNavigationDrawer(drawerState = drawerState, drawerContent = {
-        ModalDrawerSheet(drawerContainerColor = colorScheme.primaryContainer) {
+        ModalDrawerSheet(
+//            drawerContainerColor = colorScheme.primaryContainer
+        ) {
             Text("Money Book", modifier = Modifier.padding(16.dp))
             Divider()
             NavigationDrawerItem(icon = { Icon(Icons.Filled.Addchart, "Categories screen") },
                 label = { Text(text = "Categories") },
                 selected = false,
                 onClick = {
-                    onNavigate(Screen.Categories.route)
+
+                    drawerScope.launch {
+                        drawerState.apply {
+                            close()
+//                if (isClosed) open() else close()
+                        }
+                    }
+
+                    navController.navigate(Screen.Categories.route) {
+                        navController.graph.route?.let { route ->
+                            popUpTo(route) {
+                                saveState = true
+                            }
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
                 })
         }
     }) {
@@ -77,5 +69,5 @@ private fun AppDrawer(
 @Composable
 @Preview(showBackground = true, showSystemUi = true)
 fun AppDrawerPreview() {
-    AppDrawer(drawerState = rememberDrawerState(DrawerValue.Open), onNavigate = {})
+    AppDrawer(drawerState = rememberDrawerState(DrawerValue.Open))
 }

@@ -13,53 +13,59 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
-import com.lvrmrc.moneybook.data.AppState
+import com.lvrmrc.moneybook.LocalNavController
 import com.lvrmrc.moneybook.data.mockCatTransactions
 import com.lvrmrc.moneybook.domain.model.CategoryWithTransactions
+import com.lvrmrc.moneybook.domain.model.TransactionPeriod
+import com.lvrmrc.moneybook.domain.model.TransactionType
 import com.lvrmrc.moneybook.domain.model.transTypeIntMap
 import com.lvrmrc.moneybook.presentation.ui.compose.components.ExpensesList
 import com.lvrmrc.moneybook.presentation.ui.compose.components.PieChart
 import com.lvrmrc.moneybook.presentation.ui.compose.components.tabs.TabsCard
 import com.lvrmrc.moneybook.presentation.ui.compose.components.tabs.periodTabs
+import com.lvrmrc.moneybook.presentation.ui.compose.layouts.NavProvider
 import com.lvrmrc.moneybook.presentation.ui.compose.layouts.TabsLayout
-import com.lvrmrc.moneybook.presentation.ui.theme.MoneyBookTheme
+import com.lvrmrc.moneybook.presentation.viewmodel.AppViewModel
 import com.lvrmrc.moneybook.presentation.viewmodel.ExpenseViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-
 @Composable
 fun ExpenseScreen(
-    navController: NavHostController = rememberNavController(),
+    appVm: AppViewModel = hiltViewModel(),
     vm: ExpenseViewModel = hiltViewModel(),
 ) {
 
-    LaunchedEffect(key1 = vm.appState.period, key2 = vm.appState.transType) {
+    LaunchedEffect(key1 = appVm.period, key2 = appVm.transType) {
         CoroutineScope(Dispatchers.IO).launch {
-            vm.loadTransactions()
+            vm.loadTransactions(appVm.period, appVm.transType)
         }
     }
 
-    ExpenseScreen(navController = navController, catTransactions = vm.catTransactions.value,
-//        animLaunched = vm.animationLaunched.value,
+    ExpenseScreen(period = appVm.period,
+        tabIndex = transTypeIntMap[appVm.transType] ?: 0,
+        catTransactions = vm.catTransactions.value,
         onSetCategory = {
             vm.setCategory(it)
-        })
+        },
+        onSetPeriod = { appVm.setPeriod(it) },
+        onSetTransType = { appVm.setTransType(it) })
 }
 
 @Composable
 private fun ExpenseScreen(
-    navController: NavHostController = rememberNavController(),
+    period: TransactionPeriod,
+    tabIndex: Int,
     catTransactions: List<CategoryWithTransactions>,
-    onSetCategory: (CategoryWithTransactions) -> Unit = {}
+    onSetCategory: (CategoryWithTransactions) -> Unit = {},
+    onSetPeriod: (TransactionPeriod) -> Unit = {},
+    onSetTransType: (TransactionType) -> Unit = {}
 ) {
-    val appState = AppState.getInstance()
+    val navController = LocalNavController.current
 
-    TabsLayout(navController = navController, index = transTypeIntMap[appState.transType] ?: 0, onNavClick = {
-        appState.setTransType(it)
+    TabsLayout(index = tabIndex, onNavClick = {
+        onSetTransType(it)
     }) {
         Column(
             modifier = Modifier
@@ -70,8 +76,8 @@ private fun ExpenseScreen(
             horizontalAlignment = Alignment.CenterHorizontally
 
         ) {
-            TabsCard(periodTabs, appState.period, onSetPeriod = {
-                appState.setPeriod(it)
+            TabsCard(periodTabs, period, onSetPeriod = {
+                onSetPeriod(it)
             }, cardContent = {
 
 //            val donutChartData = DonutChartDataList((catTransactions.map {
@@ -105,9 +111,9 @@ private fun ExpenseScreen(
 @Preview(showBackground = true)
 @Composable
 private fun ExpenseScreenPreview() {
-    MoneyBookTheme {
+    NavProvider {
 //        AppTabsLayout {
-        ExpenseScreen(catTransactions = mockCatTransactions)
+        ExpenseScreen(TransactionPeriod.DAY, 0, mockCatTransactions)
 //        }
     }
 }

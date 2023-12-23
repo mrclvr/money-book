@@ -18,6 +18,8 @@ import javax.inject.Singleton
 @Singleton
 class TransactionRepositoryImpl @Inject constructor(private val transactionDao: TransactionDao) : TransactionRepository {
 
+    override suspend fun deleteById(id: UUID) = transactionDao.deleteById(id)
+
     override suspend fun insert(transaction: Transaction) = transactionDao.insert(transaction.toEntity())
 
     override suspend fun getById(id: UUID): Transaction = transactionDao.getById(id).toDomain()

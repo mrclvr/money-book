@@ -1,6 +1,9 @@
 package com.lvrmrc.moneybook.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
+import androidx.core.graphics.ColorUtils
+import com.lvrmrc.moneybook.domain.model.ColorValue
 
 val primary50 = Color(0xFFefe6f7)
 val primary100 = Color(0xFFd6c1ec)
@@ -62,6 +65,21 @@ val triadic2_600 = Color(0xFFc2753f)
 val triadic2_700 = Color(0xFFba693a)
 val triadic2_800 = Color(0xFFb25c34)
 val triadic2_900 = Color(0xFFa7482b)
+
+val colorsMap = mapOf(
+    ColorValue.Name.Primary300 to primary,
+    ColorValue.Name.Primary500 to primary500,
+    ColorValue.Name.Complementary300 to complementary300,
+    ColorValue.Name.Complementary500 to complementary500,
+    ColorValue.Name.AnalogousOne500 to analogous1_500,
+    ColorValue.Name.AnalogousTwo500 to analogous2_500,
+    ColorValue.Name.TriadicOne500 to triadic1_500,
+    ColorValue.Name.TriadicTwo500 to triadic2_500,
+)
+
+fun Color.lighter(factor: Float = 1f) = Color(ColorUtils.blendARGB(this.toArgb(), Color.White.toArgb(), factor))
+
+fun Color.darker(factor: Float = 1f) = Color(ColorUtils.blendARGB(this.toArgb(), Color.Black.toArgb(), factor))
 
 
 //fun String.toColor() = Color(android.graphics.Color.parseColor(this))

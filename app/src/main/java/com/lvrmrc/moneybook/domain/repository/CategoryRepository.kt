@@ -19,6 +19,7 @@ interface CategoryRepository {
     suspend fun insert(category: CategoryEntity)
 
     suspend fun getById(id: UUID): Category
+    suspend fun getAll(): List<Category>
 
     suspend fun getDayCategoriesWithTransactions(type: TransactionType, day: String): List<CategoryWithTransactions>
 

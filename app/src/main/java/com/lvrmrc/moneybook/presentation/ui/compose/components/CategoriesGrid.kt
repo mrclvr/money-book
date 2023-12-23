@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.lvrmrc.moneybook.data.mockCategories
+import com.lvrmrc.moneybook.data.expenseCategories
 import com.lvrmrc.moneybook.domain.model.Category
 import com.lvrmrc.moneybook.presentation.ui.compose.layouts.AppLayout
 
@@ -39,7 +39,7 @@ fun CategoriesGridPreview() {
                 .verticalScroll(rememberScrollState()),
 
             ) {
-            CategoriesGrid(mockCategories)
+            CategoriesGrid(expenseCategories)
         }
     }
 }

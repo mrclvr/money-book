@@ -22,8 +22,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.lvrmrc.moneybook.data.mockCategories
 import com.lvrmrc.moneybook.domain.model.Category
+import com.lvrmrc.moneybook.domain.model.IconLabel
+import com.lvrmrc.moneybook.domain.model.outlinedIcons
+import com.lvrmrc.moneybook.presentation.ui.theme.primary200
+import java.util.UUID
 
 @Composable
 fun CategoryItem(category: Category, selected: Boolean = true, onClick: (Boolean) -> Unit = {}) {
@@ -75,6 +78,14 @@ fun CategoryItemPreview() {
             .width(100.dp)
             .height(100.dp)
     ) {
-        CategoryItem(mockCategories[0])
+        CategoryItem(
+            Category(
+                id = UUID.fromString("5757edd4-4ea0-4a5c-936b-d094c2a9bb28"),
+                label = "Test",
+                icon = outlinedIcons[IconLabel.ReceiptLong]!!,
+                color = primary200,
+                lightText = false,
+            )
+        )
     }
 }

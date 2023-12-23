@@ -5,11 +5,14 @@ import java.text.DecimalFormatSymbols
 class NumberUtils {
 
     companion object {
-        fun clean(input: String): String {
+        fun cleanDoubleText(input: String): String {
             val symbols: DecimalFormatSymbols = DecimalFormatSymbols.getInstance()
 //            val decimalSeparator = symbols.decimalSeparator
 //            val thousandsSeparator = symbols.groupingSeparator
-            val decimalSeparators = listOf(symbols.monetaryDecimalSeparator, symbols.groupingSeparator)
+            val decimalSeparators = listOf(
+                symbols.monetaryDecimalSeparator
+//                , symbols.groupingSeparator
+            )
 
             if (input.matches("\\D".toRegex())) return ""
             if (input.matches("0+".toRegex())) return "0"
@@ -35,5 +38,14 @@ class NumberUtils {
         fun getFloatPercentage(value: Double, total: Double): Float {
             return if (value == 0.0) 0f else (100 * (value / total)).toFloat()
         }
+
+        fun removeDecimal(value: Double): Number {
+            return if (value.rem(1).equals(0.0)) value.toInt() else value
+        }
     }
+}
+
+
+fun Double.removeDecimal(): Number {
+    return if (this.rem(1).equals(0.0)) this.toInt() else this
 }

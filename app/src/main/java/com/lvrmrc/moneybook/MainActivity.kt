@@ -3,11 +3,17 @@ package com.lvrmrc.moneybook
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.compositionLocalOf
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.lvrmrc.moneybook.presentation.ui.compose.layouts.AppLayout
 import com.lvrmrc.moneybook.presentation.ui.compose.navigation.NavGraph
 import dagger.hilt.android.AndroidEntryPoint
+
+val LocalNavController = compositionLocalOf<NavHostController> {
+    error("No LocalNavController provided")
+}
 
 @AndroidEntryPoint()
 class MainActivity() : ComponentActivity() {
@@ -17,7 +23,10 @@ class MainActivity() : ComponentActivity() {
 
         setContent {
             val navController: NavHostController = rememberNavController()
-            AppLayout(navController = navController, content = { NavGraph(navController) })
+
+            CompositionLocalProvider(LocalNavController provides navController) {
+                AppLayout(content = { NavGraph() })
+            }
         }
     }
 }

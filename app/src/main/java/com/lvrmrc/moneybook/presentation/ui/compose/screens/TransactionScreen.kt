@@ -2,61 +2,74 @@ package com.lvrmrc.moneybook.presentation.ui.compose.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
-import com.lvrmrc.moneybook.data.mockCategories
+import com.lvrmrc.moneybook.LocalNavController
 import com.lvrmrc.moneybook.domain.model.Category
 import com.lvrmrc.moneybook.presentation.ui.compose.components.CategoriesGrid
 import com.lvrmrc.moneybook.presentation.ui.compose.components.DialogDatePicker
 import com.lvrmrc.moneybook.presentation.ui.compose.components.LabeledSection
 import com.lvrmrc.moneybook.presentation.ui.compose.layouts.AppLayout
 import com.lvrmrc.moneybook.presentation.ui.compose.layouts.FABLayout
+import com.lvrmrc.moneybook.presentation.viewmodel.AppViewModel
 import com.lvrmrc.moneybook.presentation.viewmodel.TransactionViewModel
 import com.lvrmrc.moneybook.utils.NumberUtils
+import com.lvrmrc.moneybook.utils.localFormat
 import java.time.LocalDateTime
 
 @Composable
 fun TransactionScreen(
-    navController: NavHostController = rememberNavController(), vm: TransactionViewModel = hiltViewModel()
+    appVm: AppViewModel = hiltViewModel(), vm: TransactionViewModel = hiltViewModel()
 ) {
+    val navController = LocalNavController.current
+
     TransactionScreen(
         amount = vm.amount,
         notes = vm.notes,
         date = vm.date,
         category = vm.category,
+        categories = appVm.categories,
+        isUpdate = vm.transactionId != null,
         fabEnabled = vm.fabEnabled.value,
         onSetAmount = { vm.setAmount(it) },
         onSetNotes = { vm.setNotes(it) },
         onSetDate = { vm.setDate(it) },
         onSetCategory = { vm.setCategory(it) },
         onUpdate = {
-            vm.addTransaction()
+            vm.addTransaction(appVm.transType)
             navController.popBackStack()
         },
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TransactionScreen(
     amount: String = "",
     notes: String = "",
     date: LocalDateTime = LocalDateTime.now(),
     category: Category? = null,
+    categories: List<Category> = emptyList(),
+    isUpdate: Boolean = false,
     fabEnabled: Boolean = false,
     onSetAmount: (String) -> Unit = {},
     onSetNotes: (String) -> Unit = {},
@@ -64,24 +77,34 @@ private fun TransactionScreen(
     onSetCategory: (Category?) -> Unit = {},
     onUpdate: () -> Unit = {}
 ) {
+    val fabText = if (isUpdate) "Update" else "Add transaction"
 
-    FABLayout(fabEnabled = fabEnabled, onFabAction = { onUpdate() }) {
+    FABLayout(fabText = fabText, fabEnabled = fabEnabled, onFabAction = { onUpdate() }) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState()),
         ) {
             LabeledSection(horizontalArrangement = Arrangement.Center) {
-                TextField(modifier = Modifier.fillMaxWidth(0.5f),
+                TextField(
+                    modifier = Modifier.fillMaxWidth(0.5f),
                     textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.End),
                     value = amount,
                     onValueChange = {
-                        onSetAmount(NumberUtils.clean(it))
+                        onSetAmount(NumberUtils.cleanDoubleText(it))
                     },
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Decimal
                     ),
-                    prefix = { Text("EUR") })
+                    prefix = { Text("EUR") },
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color.Transparent,
+                        unfocusedContainerColor = Color.Transparent,
+
+                        focusedIndicatorColor = colorScheme.primary,
+                        unfocusedIndicatorColor = colorScheme.primary,
+                    )
+                )
             }
             LabeledSection(
 //                modifier = Modifier.weight(1f, true),
@@ -90,23 +113,38 @@ private fun TransactionScreen(
 
                 println(category)
 
-                CategoriesGrid(mockCategories, selected = category, onSelected = {
+                CategoriesGrid(categories, selected = category, onSelected = {
                     onSetCategory(it)
                 })
 
             }
             LabeledSection(sectionTitle = "Notes") {
 
-                TextField(modifier = Modifier.fillMaxWidth(1f), singleLine = true, value = notes, onValueChange = {
-                    onSetNotes(it)
-                })
+                TextField(modifier = Modifier.fillMaxWidth(1f),
+                    singleLine = true,
+                    value = notes,
+                    placeholder = { Text("Notes") },
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color.Transparent,
+                        unfocusedContainerColor = Color.Transparent,
+
+                        focusedIndicatorColor = colorScheme.primary,
+                        unfocusedIndicatorColor = colorScheme.primary,
+                    ),
+                    onValueChange = {
+                        onSetNotes(it)
+                    })
 
             }
             LabeledSection(
                 sectionTitle = "Date", horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                DialogDatePicker(date) {
-                    onSetDate(it)
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(15.dp)) {
+                    DialogDatePicker(date) {
+                        onSetDate(it)
+                    }
+
+                    date.localFormat()?.let { Text(text = it) }
                 }
             }
         }
@@ -120,6 +158,6 @@ private fun TransactionScreen(
 private fun TransactionScreenPreview(
 ) {
     AppLayout {
-        TransactionScreen(amount = "10")
+        TransactionScreen(amount = "")
     }
 }

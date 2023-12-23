@@ -1,6 +1,5 @@
 package com.lvrmrc.moneybook.di
 
-import com.lvrmrc.moneybook.data.AppState
 import com.lvrmrc.moneybook.data.repository.TransactionRepositoryImpl
 import com.lvrmrc.moneybook.domain.usecase.GetCategoryTransactionsByPeriod
 import com.lvrmrc.moneybook.domain.usecase.GetTransactionsByPeriodAndCategory
@@ -17,16 +16,16 @@ object UseCaseModule {
     @Singleton
     @Provides
     fun provideGetCategoryTransactionsByPeriod(
-        transactionRepo: TransactionRepositoryImpl, appState: AppState
+        transactionRepo: TransactionRepositoryImpl
     ): GetCategoryTransactionsByPeriod {
-        return GetCategoryTransactionsByPeriod(transactionRepo, appState)
+        return GetCategoryTransactionsByPeriod(transactionRepo)
     }
 
     @Singleton
     @Provides
     fun provideGetTransactionsByPeriodAndCategory(
-        transactionRepo: TransactionRepositoryImpl, appState: AppState
+        transactionRepo: TransactionRepositoryImpl
     ): GetTransactionsByPeriodAndCategory {
-        return GetTransactionsByPeriodAndCategory(transactionRepo, appState)
+        return GetTransactionsByPeriodAndCategory(transactionRepo)
     }
 }

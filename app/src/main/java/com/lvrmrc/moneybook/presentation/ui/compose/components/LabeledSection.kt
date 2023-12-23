@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -25,8 +26,10 @@ fun LabeledSection(
     modifier: Modifier = Modifier,
     fillHeight: Boolean = false,
     sectionTitle: String = "",
+    titleColor: Color = colorScheme.primary,
     horizontalArrangement: Arrangement.Horizontal = Arrangement.SpaceBetween,
-    content: @Composable () -> Unit = {}
+    topRightContent: @Composable () -> Unit = {},
+    content: @Composable () -> Unit = {},
 ) {
 
     Column(modifier) {
@@ -34,9 +37,12 @@ fun LabeledSection(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(15.dp)
+                    .padding(15.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(sectionTitle, color = colorScheme.primary, fontWeight = FontWeight.Bold, fontSize = 20.sp)
+                Text(sectionTitle, color = titleColor, fontWeight = FontWeight.Bold, fontSize = 20.sp)
+                topRightContent()
             }
         }
         Row(

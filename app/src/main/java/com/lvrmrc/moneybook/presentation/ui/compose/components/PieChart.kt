@@ -43,6 +43,7 @@ import com.lvrmrc.moneybook.presentation.ui.compose.layouts.TabsLayout
 import com.lvrmrc.moneybook.presentation.ui.theme.MoneyBookTheme
 import com.lvrmrc.moneybook.presentation.ui.theme.primary
 import com.lvrmrc.moneybook.utils.NumberUtils
+import com.lvrmrc.moneybook.utils.removeDecimal
 
 @Composable
 fun PieChart(
@@ -120,7 +121,7 @@ fun PieChart(
                         }
                     }
                 }
-                val textString = text ?: if (data.isNotEmpty()) totalSum.toString() else "No records"
+                val textString = text ?: if (data.isNotEmpty()) "${totalSum.removeDecimal()}€" else "No records"
                 val annotatedString = buildAnnotatedString {
                     withStyle(
                         style = SpanStyle(

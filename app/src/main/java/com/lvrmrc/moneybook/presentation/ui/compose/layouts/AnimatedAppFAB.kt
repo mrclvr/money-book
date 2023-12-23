@@ -10,23 +10,16 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
+import com.lvrmrc.moneybook.LocalNavController
 import com.lvrmrc.moneybook.presentation.ui.compose.screens.Screen
 import com.lvrmrc.moneybook.presentation.ui.theme.MoneyBookTheme
 
 @Composable
-fun AnimatedAppFAB(navController: NavHostController, showFAB: Boolean) {
-    AnimatedVisibility(visible = showFAB, enter = scaleIn(), exit = scaleOut(), content = {
-        AppFAB(navController)
-    })
-}
+fun AnimatedAppFAB(showFAB: Boolean) {
+    val navController = LocalNavController.current
 
-@Composable
-fun AppFAB(navController: NavHostController) {
-    FloatingActionButton(
-//        modifier = Modifier.offset(y = 8.dp),
-        containerColor = colorScheme.secondaryContainer, contentColor = colorScheme.onSecondaryContainer, shape = CircleShape, onClick = {
+    AnimatedVisibility(visible = showFAB, enter = scaleIn(), exit = scaleOut(), content = {
+        AppFAB(onClick = {
             navController.navigate(Screen.Transaction.route) {
 
                 navController.graph.route?.let { route ->
@@ -37,6 +30,17 @@ fun AppFAB(navController: NavHostController) {
                 launchSingleTop = true
                 restoreState = true
             }
+        })
+    })
+}
+
+@Composable
+fun AppFAB(onClick: () -> Unit = {}) {
+
+    FloatingActionButton(
+//        modifier = Modifier.offset(y = 8.dp),
+        containerColor = colorScheme.secondaryContainer, contentColor = colorScheme.onSecondaryContainer, shape = CircleShape, onClick = {
+            onClick()
         }, elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
     ) {
         Icon(Screen.Transaction.icon, Screen.Transaction.label)
@@ -47,7 +51,7 @@ fun AppFAB(navController: NavHostController) {
 @Composable
 fun AppFABPreview() {
     MoneyBookTheme {
-        AnimatedAppFAB(navController = rememberNavController(), true)
+        AnimatedAppFAB(true)
     }
 }
 

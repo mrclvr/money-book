@@ -1,95 +1,85 @@
 package com.lvrmrc.moneybook.presentation.ui.compose.screens
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.MaterialTheme.colorScheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
-import com.lvrmrc.moneybook.data.mockCategories
+import com.lvrmrc.moneybook.LocalNavController
+import com.lvrmrc.moneybook.data.expenseCategories
 import com.lvrmrc.moneybook.data.mockTransactions
 import com.lvrmrc.moneybook.domain.model.Category
 import com.lvrmrc.moneybook.domain.model.Transaction
-import com.lvrmrc.moneybook.domain.model.TransactionWithCategory
+import com.lvrmrc.moneybook.presentation.ui.compose.components.ScreenHeader
 import com.lvrmrc.moneybook.presentation.ui.compose.components.TransactionsListItem
 import com.lvrmrc.moneybook.presentation.ui.compose.layouts.AppLayout
+import com.lvrmrc.moneybook.presentation.ui.compose.layouts.NavProvider
+import com.lvrmrc.moneybook.presentation.viewmodel.AppViewModel
 import com.lvrmrc.moneybook.presentation.viewmodel.CategoryDetailsViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.UUID
 
 @Composable
 fun CategoryDetailsScreen(
-    navController: NavHostController = rememberNavController(), vm: CategoryDetailsViewModel = hiltViewModel()
+    appVm: AppViewModel = hiltViewModel(), vm: CategoryDetailsViewModel = hiltViewModel()
 ) {
 
-    LaunchedEffect(key1 = true) {
+    LaunchedEffect(appVm.period, appVm.transType) {
         CoroutineScope(Dispatchers.IO).launch {
-            vm.initCategory()
+            vm.loadCategoryTransactions(appVm.period, appVm.transType)
         }
     }
-    
-    CategoryDetailsScreen(
-        navController = navController,
-        category = vm.category,
-        transactions = vm.transactions,
-//        onSetTransaction = { vm.appState.setCurrentTransaction(it) }
-    )
+
+//    SideEffect {
+//        if (vm.transactions.isEmpty()) {
+//            navController.navigate(Screen.Home.route)
+//        }
+//    }
+
+    CategoryDetailsScreen(category = vm.category, transactions = vm.transactions, onDelete = { id ->
+        vm.deleteTransaction(id)
+    })
 }
 
 @Composable
 private fun CategoryDetailsScreen(
     category: Category?,
     transactions: List<Transaction>,
-    onSetTransaction: (TransactionWithCategory) -> Unit = {},
-    navController: NavHostController = rememberNavController(),
+    onDelete: (UUID) -> Unit = {},
 ) {
+    val navController = LocalNavController.current
 
     if (category != null) {
-        LazyColumn(
-            modifier = Modifier.fillMaxSize()
+        Column() {
+            ScreenHeader(category.label, category.color)
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(15.dp),
+                verticalArrangement = Arrangement.spacedBy(15.dp)
 
-        ) {
-            item {
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(10.dp),
-                    text = category.label,
-                    textAlign = TextAlign.Center,
-                    color = colorScheme.primary,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 24.sp
-                )
-            }
+            ) {
+                items(transactions.size) { idx ->
 
-            items(transactions.size) { idx ->
+                    val transaction: Transaction = transactions[idx]
 
-                val transaction: Transaction = transactions[idx]
-
-                TransactionsListItem(transaction, category) {
-                    onSetTransaction(transaction.toTransactionWithCategory(category))
-
-                    navController.navigate("${Screen.Transaction.route}?transactionId=${transaction.id}") {
-
-                        navController.graph.route?.let { route ->
-                            popUpTo(route) {
-                                saveState = true
+                    TransactionsListItem(transaction, category, onDelete = { onDelete(transaction.id) }) {
+                        navController.navigate("${Screen.Transaction.route}?transactionId=${transaction.id}") {
+                            navController.graph.route?.let { route ->
+                                popUpTo(route) {
+                                    saveState = true
+                                }
                             }
+                            launchSingleTop = true
+                            restoreState = true
                         }
-                        launchSingleTop = true
-                        restoreState = true
                     }
                 }
             }
@@ -103,7 +93,9 @@ private fun CategoryDetailsScreen(
 @Composable
 private fun TransactionsDetailsScreenPreview(
 ) {
-    AppLayout {
-        CategoryDetailsScreen(mockCategories[0], mockTransactions)
+    NavProvider {
+        AppLayout {
+            CategoryDetailsScreen(expenseCategories[0], mockTransactions)
+        }
     }
 }

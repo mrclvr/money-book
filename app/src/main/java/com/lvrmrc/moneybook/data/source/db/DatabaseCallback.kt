@@ -2,7 +2,7 @@ package com.lvrmrc.moneybook.data.source.db
 
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.lvrmrc.moneybook.data.mockCategoryEntities
+import com.lvrmrc.moneybook.data.expenseCategoryEntities
 import com.lvrmrc.moneybook.data.mockTransactionEntities
 import com.lvrmrc.moneybook.data.source.db.dao.CategoryDao
 import com.lvrmrc.moneybook.data.source.db.dao.TransactionDao
@@ -32,7 +32,7 @@ class DatabaseCallback(
     }
 
     private suspend fun seedCategories() {
-        categoryProvider.get().insert(*mockCategoryEntities.toTypedArray())
+        categoryProvider.get().insert(*expenseCategoryEntities.toTypedArray())
     }
 
     private suspend fun seedTransactions() {

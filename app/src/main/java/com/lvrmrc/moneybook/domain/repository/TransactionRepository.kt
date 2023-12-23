@@ -16,7 +16,9 @@ import javax.inject.Singleton
 @Singleton
 interface TransactionRepository {
 
-    suspend fun insert(transaction: Transaction): Unit
+    suspend fun deleteById(id: UUID)
+
+    suspend fun insert(transaction: Transaction)
 
     suspend fun getById(id: UUID): Transaction
 

@@ -30,6 +30,7 @@ import com.lvrmrc.moneybook.data.mockCatTransactions
 import com.lvrmrc.moneybook.domain.model.CategoryWithTransactions
 import com.lvrmrc.moneybook.presentation.ui.theme.MoneyBookTheme
 import com.lvrmrc.moneybook.utils.NumberUtils
+import com.lvrmrc.moneybook.utils.removeDecimal
 import kotlin.math.roundToInt
 
 @Composable
@@ -78,7 +79,7 @@ fun ExpensesList(catTransactions: List<CategoryWithTransactions>, onSetCategory:
                         Text(text = cat.label, color = colorScheme.onPrimaryContainer)
                     }
                     Text(text = "${percentage}%", color = colorScheme.onPrimaryContainer)
-                    Text(text = "${cat.total} €", color = colorScheme.onPrimaryContainer)
+                    Text(text = "${cat.total.removeDecimal()} €", color = colorScheme.onPrimaryContainer)
                 }
             }
         }
