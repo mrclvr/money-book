@@ -36,7 +36,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.lvrmrc.moneybook.data.AppState
 import com.lvrmrc.moneybook.data.mockCatTransactions
 import com.lvrmrc.moneybook.domain.model.CategoryWithTransactions
 import com.lvrmrc.moneybook.presentation.ui.compose.layouts.TabsLayout
@@ -51,10 +50,11 @@ fun PieChart(
     radiusOuter: Dp = 100.dp,
     chartBarWidth: Dp = 35.dp,
     animDuration: Int = 1000,
-    text: String? = null
+    text: String? = null,
+    animationPlayed: Boolean = false,
+    onLoaded: () -> Unit = {}
 ) {
 
-    val appState = AppState.getInstance()
     val totalSum = data.sumOf { it.total }
     val angleValues = mutableListOf<Float>()
 
@@ -62,25 +62,25 @@ fun PieChart(
         angleValues.add(index, 3.6f * NumberUtils.getFloatPercentage(cat.total, totalSum))
     }
 
-//    val animationPlayed = remember { mutableStateOf(false) }
+//    val animationPlayed = remember { mutableStateOf(animationPlayed) }
 
     var lastAngle = 0f
     val gap = if (data.size < 2) 0f else 1f
 
     val animateSize by animateFloatAsState(
-        targetValue = if (appState.pieAnimationPlayed) radiusOuter.value * 2f else 0f, animationSpec = tween(
+        targetValue = if (animationPlayed) radiusOuter.value * 2f else 0f, animationSpec = tween(
             durationMillis = animDuration, delayMillis = 0, easing = LinearOutSlowInEasing
         ), label = "Animate size"
     )
 
     val animateRotation by animateFloatAsState(
-        targetValue = if (appState.pieAnimationPlayed) 360f * 11f else 0f, animationSpec = tween(
+        targetValue = if (animationPlayed) 360f * 11f else 0f, animationSpec = tween(
             durationMillis = animDuration, delayMillis = 0, easing = LinearOutSlowInEasing
         ), label = "Animate rotation"
     )
 
     LaunchedEffect(key1 = true) {
-        appState.setPieAnimationPlayed(true)
+        onLoaded()
     }
 
     Column(

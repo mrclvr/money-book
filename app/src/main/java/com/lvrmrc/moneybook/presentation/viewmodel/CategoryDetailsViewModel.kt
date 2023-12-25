@@ -6,7 +6,6 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.lvrmrc.moneybook.data.AppState
 import com.lvrmrc.moneybook.data.repository.CategoryRepositoryImpl
 import com.lvrmrc.moneybook.data.repository.TransactionRepositoryImpl
 import com.lvrmrc.moneybook.domain.model.Category
@@ -23,7 +22,6 @@ import javax.inject.Inject
 @HiltViewModel
 class CategoryDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    val appState: AppState,
     private val categoryRepo: CategoryRepositoryImpl,
     private val transactionRepo: TransactionRepositoryImpl,
     val getTransactionsByPeriodAndCategory: GetTransactionsByPeriodAndCategory
@@ -37,11 +35,6 @@ class CategoryDetailsViewModel @Inject constructor(
     private var _transactions by mutableStateOf<List<Transaction>>(emptyList())
     val transactions: List<Transaction> get() = _transactions
 
-    var updated: Int = 0
-//    init {
-//        initCategory()
-//    }
-
     suspend fun loadCategoryTransactions(period: TransactionPeriod, transType: TransactionType) {
         viewModelScope.launch {
             val id = UUID.fromString(categoryId)
@@ -54,9 +47,7 @@ class CategoryDetailsViewModel @Inject constructor(
     fun deleteTransaction(id: UUID) {
         viewModelScope.launch {
             val deleted = transactionRepo.deleteById(id)
-            println("DELETED " + deleted.toString())
             _transactions = _transactions.filter { it.id != id }
-//            loadCategoryTransactions()
         }
 
     }

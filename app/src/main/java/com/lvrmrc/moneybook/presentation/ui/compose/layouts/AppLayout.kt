@@ -16,7 +16,6 @@ import com.lvrmrc.moneybook.presentation.ui.theme.MoneyBookTheme
 fun AppLayout(
     content: @Composable () -> Unit = {}
 ) {
-
     MoneyBookTheme {
         Surface(
             modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background

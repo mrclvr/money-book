@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Text
@@ -61,7 +60,6 @@ fun TransactionScreen(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TransactionScreen(
     amount: String = "",
@@ -110,8 +108,6 @@ private fun TransactionScreen(
 //                modifier = Modifier.weight(1f, true),
                 sectionTitle = "Category", horizontalArrangement = Arrangement.spacedBy(15.dp)
             ) {
-
-                println(category)
 
                 CategoriesGrid(categories, selected = category, onSelected = {
                     onSetCategory(it)

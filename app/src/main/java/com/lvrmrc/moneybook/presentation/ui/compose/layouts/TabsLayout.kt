@@ -10,7 +10,6 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme.colorScheme
@@ -78,10 +77,10 @@ fun TabsLayout(
                 snackbarHost = {
                     SnackbarHost(hostState = snackBarHostState)
                 },
-                floatingActionButtonPosition = FabPosition.Center,
-                floatingActionButton = {
-                    AnimatedAppFAB(LocalFabVisible.current)
-                },
+//                floatingActionButtonPosition = FabPosition.Center,
+//                floatingActionButton = {
+//                    AnimatedAppFAB(LocalFabVisible.current)
+//                },
                 bottomBar = {
                     TabRow(
                         modifier = Modifier.clip(
@@ -166,7 +165,7 @@ fun TabsLayout(
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun TabsLayoutPreview() {
-    MoneyBookTheme {
+    NavProvider {
         TabsLayout() {}
     }
 }

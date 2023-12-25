@@ -1,4 +1,4 @@
-package com.lvrmrc.moneybook.data
+package com.lvrmrc.moneybook.deprecated
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

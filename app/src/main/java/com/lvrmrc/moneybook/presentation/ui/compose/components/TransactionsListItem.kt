@@ -32,9 +32,9 @@ import com.lvrmrc.moneybook.data.expenseCategories
 import com.lvrmrc.moneybook.data.mockTransactions
 import com.lvrmrc.moneybook.domain.model.Category
 import com.lvrmrc.moneybook.domain.model.Transaction
+import com.lvrmrc.moneybook.domain.model.darker
+import com.lvrmrc.moneybook.domain.model.lighter
 import com.lvrmrc.moneybook.presentation.ui.compose.layouts.NavProvider
-import com.lvrmrc.moneybook.presentation.ui.theme.darker
-import com.lvrmrc.moneybook.presentation.ui.theme.lighter
 import com.lvrmrc.moneybook.utils.localFormat
 import com.lvrmrc.moneybook.utils.removeDecimal
 

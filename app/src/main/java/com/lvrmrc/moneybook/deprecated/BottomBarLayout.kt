@@ -1,4 +1,4 @@
-package com.lvrmrc.moneybook.presentation.ui.compose.layouts.deprecated
+package com.lvrmrc.moneybook.deprecated
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -48,7 +48,7 @@ fun BottomBarLayout(
         },
         floatingActionButtonPosition = FabPosition.Center,
         floatingActionButton = {
-            AnimatedAppFAB(true)
+            AnimatedAppFAB(showFAB = true)
         },
         snackbarHost = {
             SnackbarHost(hostState = snackBarHostState)

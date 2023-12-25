@@ -9,17 +9,18 @@ import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.lvrmrc.moneybook.LocalNavController
 import com.lvrmrc.moneybook.presentation.ui.compose.screens.Screen
 import com.lvrmrc.moneybook.presentation.ui.theme.MoneyBookTheme
 
 @Composable
-fun AnimatedAppFAB(showFAB: Boolean) {
+fun AnimatedAppFAB(modifier: Modifier = Modifier, showFAB: Boolean) {
     val navController = LocalNavController.current
 
     AnimatedVisibility(visible = showFAB, enter = scaleIn(), exit = scaleOut(), content = {
-        AppFAB(onClick = {
+        AppFAB(modifier = modifier, onClick = {
             navController.navigate(Screen.Transaction.route) {
 
                 navController.graph.route?.let { route ->
@@ -35,13 +36,17 @@ fun AnimatedAppFAB(showFAB: Boolean) {
 }
 
 @Composable
-fun AppFAB(onClick: () -> Unit = {}) {
+fun AppFAB(modifier: Modifier = Modifier, onClick: () -> Unit = {}) {
 
     FloatingActionButton(
-//        modifier = Modifier.offset(y = 8.dp),
-        containerColor = colorScheme.secondaryContainer, contentColor = colorScheme.onSecondaryContainer, shape = CircleShape, onClick = {
+        modifier = modifier,
+        containerColor = colorScheme.secondaryContainer,
+        contentColor = colorScheme.onSecondaryContainer,
+        shape = CircleShape,
+        onClick = {
             onClick()
-        }, elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
+        },
+        elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
     ) {
         Icon(Screen.Transaction.icon, Screen.Transaction.label)
     }
@@ -51,7 +56,7 @@ fun AppFAB(onClick: () -> Unit = {}) {
 @Composable
 fun AppFABPreview() {
     MoneyBookTheme {
-        AnimatedAppFAB(true)
+        AnimatedAppFAB(showFAB = true)
     }
 }
 

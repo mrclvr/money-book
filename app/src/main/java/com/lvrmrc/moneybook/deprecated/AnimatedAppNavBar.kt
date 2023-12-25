@@ -1,4 +1,4 @@
-package com.lvrmrc.moneybook.presentation.ui.compose.layouts.deprecated
+package com.lvrmrc.moneybook.deprecated
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically

@@ -2,12 +2,15 @@ package com.lvrmrc.moneybook.presentation.ui.compose.components.tabs
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Card
@@ -25,8 +28,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.lvrmrc.moneybook.domain.model.TransactionPeriod
 import com.lvrmrc.moneybook.domain.model.periodIntMap
+import com.lvrmrc.moneybook.presentation.ui.compose.layouts.AnimatedAppFAB
+import com.lvrmrc.moneybook.presentation.ui.compose.layouts.LocalFabVisible
+import com.lvrmrc.moneybook.presentation.ui.compose.layouts.NavProvider
 import com.lvrmrc.moneybook.presentation.ui.compose.layouts.TabsLayout
-import com.lvrmrc.moneybook.presentation.ui.theme.MoneyBookTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -70,7 +75,6 @@ fun TabsCard(
 //                    }
 //                },
             ) {
-
                 tabs.forEachIndexed { index, tab ->
                     Tab(selected = index == pagerState.currentPage,
                         text = { Text(text = tab.title) },
@@ -89,10 +93,21 @@ fun TabsCard(
                     .fillMaxSize()
                     .background(colorScheme.background)
             ) {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Box(
+                    modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
+                ) {
                     when (cardContent) {
                         {} -> tabs[pagerState.currentPage].content()
                         else -> cardContent()
+                    }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .align(Alignment.BottomEnd)
+                            .padding(10.dp),
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                        AnimatedAppFAB(showFAB = LocalFabVisible.current)
                     }
                 }
             }
@@ -103,7 +118,7 @@ fun TabsCard(
 @Preview
 @Composable
 private fun TabsCardPreview() {
-    MoneyBookTheme {
+    NavProvider {
         TabsLayout {
             TabsCard(periodTabs, TransactionPeriod.MONTH)
         }

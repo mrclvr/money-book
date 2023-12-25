@@ -14,13 +14,9 @@ data class Transaction(
     override var categoryId: UUID
 ) : TransactionInterface {
 
-
     fun toEntity() = TransactionEntity(id, notes, amount, date, type, categoryId)
-
-
     fun toTransactionWithCategory(category: Category) = TransactionWithCategory(id, notes, amount, date, type, categoryId, category)
 }
-
 
 enum class TransactionType {
     EXPENSE, INCOME

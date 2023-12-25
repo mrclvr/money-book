@@ -1,4 +1,4 @@
-package com.lvrmrc.moneybook.presentation.ui.compose.components
+package com.lvrmrc.moneybook.deprecated
 
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.TweenSpec

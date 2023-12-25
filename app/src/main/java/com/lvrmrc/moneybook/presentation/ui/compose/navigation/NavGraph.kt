@@ -11,7 +11,7 @@ import androidx.navigation.navArgument
 import com.lvrmrc.moneybook.LocalNavController
 import com.lvrmrc.moneybook.presentation.ui.compose.screens.CategoriesScreen
 import com.lvrmrc.moneybook.presentation.ui.compose.screens.CategoryDetailsScreen
-import com.lvrmrc.moneybook.presentation.ui.compose.screens.ExpenseScreen
+import com.lvrmrc.moneybook.presentation.ui.compose.screens.HomeScreen
 import com.lvrmrc.moneybook.presentation.ui.compose.screens.Screen
 import com.lvrmrc.moneybook.presentation.ui.compose.screens.TransactionScreen
 import com.lvrmrc.moneybook.presentation.viewmodel.AppViewModel
@@ -79,7 +79,7 @@ fun NavGraph() {
 //
 //            val vm = hiltViewModel<ExpenseViewModel>(parentEntry)
 
-            ExpenseScreen()
+            HomeScreen()
         }
 
         /**

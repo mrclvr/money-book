@@ -1,6 +1,5 @@
-package com.lvrmrc.moneybook.di
+package com.lvrmrc.moneybook.deprecated
 
-import com.lvrmrc.moneybook.data.AppState
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

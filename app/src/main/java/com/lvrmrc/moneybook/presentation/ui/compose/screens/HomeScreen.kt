@@ -26,15 +26,15 @@ import com.lvrmrc.moneybook.presentation.ui.compose.components.tabs.periodTabs
 import com.lvrmrc.moneybook.presentation.ui.compose.layouts.NavProvider
 import com.lvrmrc.moneybook.presentation.ui.compose.layouts.TabsLayout
 import com.lvrmrc.moneybook.presentation.viewmodel.AppViewModel
-import com.lvrmrc.moneybook.presentation.viewmodel.ExpenseViewModel
+import com.lvrmrc.moneybook.presentation.viewmodel.HomeViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Composable
-fun ExpenseScreen(
+fun HomeScreen(
     appVm: AppViewModel = hiltViewModel(),
-    vm: ExpenseViewModel = hiltViewModel(),
+    vm: HomeViewModel = hiltViewModel(),
 ) {
 
     LaunchedEffect(key1 = appVm.period, key2 = appVm.transType) {
@@ -43,24 +43,28 @@ fun ExpenseScreen(
         }
     }
 
-    ExpenseScreen(period = appVm.period,
+    HomeScreen(period = appVm.period,
         tabIndex = transTypeIntMap[appVm.transType] ?: 0,
         catTransactions = vm.catTransactions.value,
+        animationPlayed = appVm.pieAnimationPlayed,
         onSetCategory = {
             vm.setCategory(it)
         },
         onSetPeriod = { appVm.setPeriod(it) },
-        onSetTransType = { appVm.setTransType(it) })
+        onSetTransType = { appVm.setTransType(it) },
+        setAnimationPlayed = { appVm.setPieAnimationPlayed(true) })
 }
 
 @Composable
-private fun ExpenseScreen(
+private fun HomeScreen(
     period: TransactionPeriod,
     tabIndex: Int,
     catTransactions: List<CategoryWithTransactions>,
+    animationPlayed: Boolean,
     onSetCategory: (CategoryWithTransactions) -> Unit = {},
     onSetPeriod: (TransactionPeriod) -> Unit = {},
-    onSetTransType: (TransactionType) -> Unit = {}
+    onSetTransType: (TransactionType) -> Unit = {},
+    setAnimationPlayed: () -> Unit = {}
 ) {
     val navController = LocalNavController.current
 
@@ -86,9 +90,7 @@ private fun ExpenseScreen(
 //                )
 //            }))
 //                DonutChart(data = donutChartData, animLaunched = animLaunched, onAnimLaunched = onAnimLaunched)
-                PieChart(
-                    data = catTransactions
-                )
+                PieChart(data = catTransactions, animationPlayed = animationPlayed, onLoaded = { setAnimationPlayed() })
             })
             ExpensesList(catTransactions, onSetCategory = {
                 onSetCategory(it)
@@ -110,10 +112,10 @@ private fun ExpenseScreen(
 
 @Preview(showBackground = true)
 @Composable
-private fun ExpenseScreenPreview() {
+private fun HomeScreenPreview() {
     NavProvider {
 //        AppTabsLayout {
-        ExpenseScreen(TransactionPeriod.DAY, 0, mockCatTransactions)
+        HomeScreen(TransactionPeriod.DAY, 0, mockCatTransactions, false)
 //        }
     }
 }
