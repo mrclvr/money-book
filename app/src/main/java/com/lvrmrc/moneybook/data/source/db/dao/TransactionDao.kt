@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
 import com.lvrmrc.moneybook.data.source.db.entity.TransactionEntity
-import com.lvrmrc.moneybook.data.source.db.entity.TransactionWithCategoryEntity
 import com.lvrmrc.moneybook.domain.model.TransactionType
 import java.util.UUID
 
@@ -20,15 +19,15 @@ interface TransactionDao : BaseDao<TransactionEntity> {
 
     @Transaction
     @Query("SELECT * FROM transactions WHERE $filterByDayType")
-    suspend fun getDayTransactions(type: TransactionType, day: String): List<TransactionWithCategoryEntity>
+    suspend fun getDayTransactions(type: TransactionType, day: String): List<TransactionEntity>
 
     @Transaction
     @Query("SELECT * FROM transactions t WHERE $filterByMonthYearType")
-    suspend fun getMonthTransactions(type: TransactionType, month: Int, year: Int): List<TransactionWithCategoryEntity>
+    suspend fun getMonthTransactions(type: TransactionType, month: Int, year: Int): List<TransactionEntity>
 
     @Transaction
     @Query("SELECT * FROM transactions t WHERE $filterByYearType")
-    suspend fun getYearTransactions(type: TransactionType, year: Int): List<TransactionWithCategoryEntity>
+    suspend fun getYearTransactions(type: TransactionType, year: Int): List<TransactionEntity>
 
     @Query("SELECT * FROM transactions WHERE $filterByDayType AND categoryId == :categoryId")
     suspend fun getDayTransactionsByCategory(categoryId: UUID, type: TransactionType, day: String): List<TransactionEntity>
@@ -43,5 +42,4 @@ interface TransactionDao : BaseDao<TransactionEntity> {
 
     @Query("SELECT SUM(amount) from transactions")
     suspend fun getPeriodTotal(): Double
-
 }

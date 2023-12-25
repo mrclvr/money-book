@@ -1,4 +1,4 @@
-package com.lvrmrc.moneybook.presentation.ui.compose.layouts
+package com.lvrmrc.moneybook.presentation.ui.compose.components.layout
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
@@ -39,11 +39,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.lvrmrc.moneybook.LocalNavController
 import com.lvrmrc.moneybook.domain.model.TransactionType
-import com.lvrmrc.moneybook.presentation.ui.compose.components.tabs.customTabIndicatorOffset
-import com.lvrmrc.moneybook.presentation.ui.compose.components.tabs.transactionsTabs
+import com.lvrmrc.moneybook.domain.model.customTabIndicatorOffset
+import com.lvrmrc.moneybook.domain.model.transactionsTabs
 import com.lvrmrc.moneybook.presentation.ui.compose.navigation.AppDrawer
 import com.lvrmrc.moneybook.presentation.ui.compose.screens.Screen
-import com.lvrmrc.moneybook.presentation.ui.theme.MoneyBookTheme
 import kotlinx.coroutines.launch
 
 val LocalFabVisible = compositionLocalOf {

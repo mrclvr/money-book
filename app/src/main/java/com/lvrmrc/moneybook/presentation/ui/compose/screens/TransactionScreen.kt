@@ -17,18 +17,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.lvrmrc.moneybook.LocalNavController
+import com.lvrmrc.moneybook.R
 import com.lvrmrc.moneybook.domain.model.Category
 import com.lvrmrc.moneybook.presentation.ui.compose.components.CategoriesGrid
-import com.lvrmrc.moneybook.presentation.ui.compose.components.DialogDatePicker
+import com.lvrmrc.moneybook.presentation.ui.compose.components.DatePickerDialog
 import com.lvrmrc.moneybook.presentation.ui.compose.components.LabeledSection
-import com.lvrmrc.moneybook.presentation.ui.compose.layouts.AppLayout
-import com.lvrmrc.moneybook.presentation.ui.compose.layouts.FABLayout
+import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.AppLayout
+import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.FABLayout
 import com.lvrmrc.moneybook.presentation.viewmodel.AppViewModel
 import com.lvrmrc.moneybook.presentation.viewmodel.TransactionViewModel
 import com.lvrmrc.moneybook.utils.NumberUtils
@@ -75,7 +77,7 @@ private fun TransactionScreen(
     onSetCategory: (Category?) -> Unit = {},
     onUpdate: () -> Unit = {}
 ) {
-    val fabText = if (isUpdate) "Update" else "Add transaction"
+    val fabText = if (isUpdate) stringResource(R.string.update) else stringResource(R.string.add_transaction)
 
     FABLayout(fabText = fabText, fabEnabled = fabEnabled, onFabAction = { onUpdate() }) {
         Column(
@@ -94,7 +96,7 @@ private fun TransactionScreen(
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Decimal
                     ),
-                    prefix = { Text("EUR") },
+                    prefix = { Text(stringResource(R.string.eur)) },
                     colors = TextFieldDefaults.colors(
                         focusedContainerColor = Color.Transparent,
                         unfocusedContainerColor = Color.Transparent,
@@ -106,7 +108,7 @@ private fun TransactionScreen(
             }
             LabeledSection(
 //                modifier = Modifier.weight(1f, true),
-                sectionTitle = "Category", horizontalArrangement = Arrangement.spacedBy(15.dp)
+                sectionTitle = stringResource(R.string.category), horizontalArrangement = Arrangement.spacedBy(15.dp)
             ) {
 
                 CategoriesGrid(categories, selected = category, onSelected = {
@@ -114,29 +116,24 @@ private fun TransactionScreen(
                 })
 
             }
-            LabeledSection(sectionTitle = "Notes") {
+            LabeledSection(sectionTitle = stringResource(R.string.notes)) {
 
-                TextField(modifier = Modifier.fillMaxWidth(1f),
-                    singleLine = true,
-                    value = notes,
-                    placeholder = { Text("Notes") },
-                    colors = TextFieldDefaults.colors(
-                        focusedContainerColor = Color.Transparent,
-                        unfocusedContainerColor = Color.Transparent,
+                TextField(modifier = Modifier.fillMaxWidth(1f), singleLine = true, value = notes, colors = TextFieldDefaults.colors(
+                    focusedContainerColor = Color.Transparent,
+                    unfocusedContainerColor = Color.Transparent,
 
-                        focusedIndicatorColor = colorScheme.primary,
-                        unfocusedIndicatorColor = colorScheme.primary,
-                    ),
-                    onValueChange = {
-                        onSetNotes(it)
-                    })
+                    focusedIndicatorColor = colorScheme.primary,
+                    unfocusedIndicatorColor = colorScheme.primary,
+                ), onValueChange = {
+                    onSetNotes(it)
+                })
 
             }
             LabeledSection(
-                sectionTitle = "Date", horizontalArrangement = Arrangement.SpaceBetween
+                sectionTitle = stringResource(R.string.date), horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(15.dp)) {
-                    DialogDatePicker(date) {
+                    DatePickerDialog(date) {
                         onSetDate(it)
                     }
 

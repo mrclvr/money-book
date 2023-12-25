@@ -15,9 +15,11 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.lvrmrc.moneybook.LocalNavController
+import com.lvrmrc.moneybook.R
 import com.lvrmrc.moneybook.presentation.ui.compose.screens.Screen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -35,10 +37,10 @@ fun AppDrawer(
         ModalDrawerSheet(
 //            drawerContainerColor = colorScheme.primaryContainer
         ) {
-            Text("Money Book", modifier = Modifier.padding(16.dp))
+            Text(stringResource(R.string.app_name), modifier = Modifier.padding(16.dp))
             Divider()
-            NavigationDrawerItem(icon = { Icon(Icons.Filled.Addchart, "Categories screen") },
-                label = { Text(text = "Categories") },
+            NavigationDrawerItem(icon = { Icon(Icons.Filled.Addchart, stringResource(R.string.open_categories_screen)) },
+                label = { Text(text = stringResource(R.string.categories)) },
                 selected = false,
                 onClick = {
 

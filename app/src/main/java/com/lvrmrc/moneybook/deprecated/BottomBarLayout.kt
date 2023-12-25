@@ -19,7 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.lvrmrc.moneybook.LocalNavController
-import com.lvrmrc.moneybook.presentation.ui.compose.layouts.AnimatedAppFAB
+import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.AnimatedAppFAB
 import com.lvrmrc.moneybook.presentation.ui.compose.screens.Screen
 import com.lvrmrc.moneybook.presentation.ui.theme.MoneyBookTheme
 

@@ -18,9 +18,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.lvrmrc.moneybook.presentation.ui.compose.layouts.AppLayout
-import com.lvrmrc.moneybook.presentation.ui.compose.layouts.FABLayout
+import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.AppLayout
+import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.FABLayout
 
+/**
+ * Full width section with title
+ */
 @Composable
 fun LabeledSection(
     modifier: Modifier = Modifier,

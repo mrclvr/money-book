@@ -6,20 +6,28 @@ import java.util.UUID
 
 
 class Converters {
-    @TypeConverter
-    fun saveUUID(id: UUID?) = id?.toString()
 
+    /**
+     * UUID to string
+     */
     @TypeConverter
-    fun parseUUID(id: String?) = id?.let { UUID.fromString(id) }
+    fun idToString(id: UUID?): String? = id?.toString()
 
-
+    /**
+     * String to UUID
+     */
     @TypeConverter
-    fun fromTimestamp(value: String?): LocalDateTime? {
-        return value?.let { LocalDateTime.parse(it) }
-    }
+    fun stringToUUID(id: String?): UUID? = id?.let { UUID.fromString(id) }
 
+    /**
+     * timestamp to LocalDateTime
+     */
     @TypeConverter
-    fun dateToTimestamp(date: LocalDateTime?): String? {
-        return date?.toString()
-    }
+    fun timestampToLocalDateTime(value: String?): LocalDateTime? = value?.let { LocalDateTime.parse(it) }
+
+    /**
+     * LocalDateTime to timestamp
+     */
+    @TypeConverter
+    fun localDateTimeToTimestamp(date: LocalDateTime?): String? = date?.toString()
 }

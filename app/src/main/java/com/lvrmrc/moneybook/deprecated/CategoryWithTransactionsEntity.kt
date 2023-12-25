@@ -1,7 +1,9 @@
-package com.lvrmrc.moneybook.data.source.db.entity
+package com.lvrmrc.moneybook.deprecated
 
 import androidx.room.Embedded
 import androidx.room.Relation
+import com.lvrmrc.moneybook.data.source.db.entity.CategoryEntity
+import com.lvrmrc.moneybook.data.source.db.entity.TransactionEntity
 import com.lvrmrc.moneybook.domain.model.CategoryWithTransactions
 
 data class CategoryWithTransactionsEntity(

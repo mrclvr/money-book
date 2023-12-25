@@ -1,4 +1,4 @@
-package com.lvrmrc.moneybook.presentation.ui.compose.layouts
+package com.lvrmrc.moneybook.presentation.ui.compose.components.layout
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.scaleIn

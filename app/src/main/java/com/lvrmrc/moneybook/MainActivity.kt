@@ -7,7 +7,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.lvrmrc.moneybook.presentation.ui.compose.layouts.AppLayout
+import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.AppLayout
 import com.lvrmrc.moneybook.presentation.ui.compose.navigation.NavGraph
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -25,7 +25,7 @@ class MainActivity() : ComponentActivity() {
             val navController: NavHostController = rememberNavController()
 
             CompositionLocalProvider(LocalNavController provides navController) {
-                AppLayout(content = { NavGraph() })
+                AppLayout { NavGraph() }
             }
         }
     }

@@ -19,5 +19,15 @@ package com.lvrmrc.moneybook
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
 
+
 @HiltAndroidApp
-class MoneyBookApplication : Application()
+class MoneyBookApp : Application() {
+    override fun onCreate() {
+        super.onCreate()
+        instance = this
+    }
+
+    companion object {
+        lateinit var instance: MoneyBookApp private set
+    }
+}

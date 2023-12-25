@@ -1,8 +1,11 @@
-package com.lvrmrc.moneybook.presentation.ui.compose.components.tabs
+package com.lvrmrc.moneybook.domain.model
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 
+/**
+ * Defines a tab item for tabs navigation
+ */
 interface TabItemInterface {
     val title: String
     val icon: ImageVector

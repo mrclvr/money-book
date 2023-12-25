@@ -14,8 +14,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.lvrmrc.moneybook.data.expenseCategories
 import com.lvrmrc.moneybook.domain.model.Category
-import com.lvrmrc.moneybook.presentation.ui.compose.layouts.AppLayout
+import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.AppLayout
 
+/**
+ * Grid of category items
+ */
 @Composable
 fun CategoriesGrid(categories: List<Category>, selected: Category? = null, onSelected: (Category) -> Unit = {}) {
     LazyVerticalGrid(

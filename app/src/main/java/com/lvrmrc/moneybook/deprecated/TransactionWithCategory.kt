@@ -1,6 +1,8 @@
-package com.lvrmrc.moneybook.domain.model
+package com.lvrmrc.moneybook.deprecated
 
-import com.lvrmrc.moneybook.data.source.db.entity.TransactionEntity
+import com.lvrmrc.moneybook.domain.model.Category
+import com.lvrmrc.moneybook.domain.model.TransactionInterface
+import com.lvrmrc.moneybook.domain.model.TransactionType
 import java.time.LocalDateTime
 import java.util.UUID
 
@@ -13,10 +15,6 @@ data class TransactionWithCategory(
     override val type: TransactionType,
     override val categoryId: UUID,
     val category: Category,
-) : TransactionInterface {
-
-    fun toTransaction() = Transaction(id, notes, amount, date, type, categoryId)
-    fun toEntity() = TransactionEntity(id, notes, amount, date, type, category.id)
-}
+) : TransactionInterface
 
 

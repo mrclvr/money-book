@@ -36,14 +36,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.lvrmrc.moneybook.MoneyBookApp
+import com.lvrmrc.moneybook.R
 import com.lvrmrc.moneybook.data.mockCatTransactions
 import com.lvrmrc.moneybook.domain.model.CategoryWithTransactions
-import com.lvrmrc.moneybook.presentation.ui.compose.layouts.TabsLayout
+import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.TabsLayout
 import com.lvrmrc.moneybook.presentation.ui.theme.MoneyBookTheme
 import com.lvrmrc.moneybook.presentation.ui.theme.primary
-import com.lvrmrc.moneybook.utils.NumberUtils
 import com.lvrmrc.moneybook.utils.removeDecimal
+import com.lvrmrc.moneybook.utils.toFloatPercentage
 
+/**
+ * Pie chart with text in chart center
+ */
 @Composable
 fun PieChart(
     data: List<CategoryWithTransactions>,
@@ -59,7 +64,7 @@ fun PieChart(
     val angleValues = mutableListOf<Float>()
 
     data.forEachIndexed { index, cat ->
-        angleValues.add(index, 3.6f * NumberUtils.getFloatPercentage(cat.total, totalSum))
+        angleValues.add(index, 3.6f * cat.total.toFloatPercentage(totalSum))
     }
 
 //    val animationPlayed = remember { mutableStateOf(animationPlayed) }
@@ -121,7 +126,8 @@ fun PieChart(
                         }
                     }
                 }
-                val textString = text ?: if (data.isNotEmpty()) "${totalSum.removeDecimal()}€" else "No records"
+                val textString = text
+                    ?: if (data.isNotEmpty()) "${totalSum.removeDecimal()}€" else MoneyBookApp.instance.getString(R.string.no_transactions)
                 val annotatedString = buildAnnotatedString {
                     withStyle(
                         style = SpanStyle(

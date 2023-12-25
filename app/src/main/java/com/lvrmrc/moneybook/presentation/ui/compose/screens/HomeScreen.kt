@@ -18,13 +18,13 @@ import com.lvrmrc.moneybook.data.mockCatTransactions
 import com.lvrmrc.moneybook.domain.model.CategoryWithTransactions
 import com.lvrmrc.moneybook.domain.model.TransactionPeriod
 import com.lvrmrc.moneybook.domain.model.TransactionType
+import com.lvrmrc.moneybook.domain.model.periodTabs
 import com.lvrmrc.moneybook.domain.model.transTypeIntMap
 import com.lvrmrc.moneybook.presentation.ui.compose.components.ExpensesList
 import com.lvrmrc.moneybook.presentation.ui.compose.components.PieChart
-import com.lvrmrc.moneybook.presentation.ui.compose.components.tabs.TabsCard
-import com.lvrmrc.moneybook.presentation.ui.compose.components.tabs.periodTabs
-import com.lvrmrc.moneybook.presentation.ui.compose.layouts.NavProvider
-import com.lvrmrc.moneybook.presentation.ui.compose.layouts.TabsLayout
+import com.lvrmrc.moneybook.presentation.ui.compose.components.TabsCard
+import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.NavProvider
+import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.TabsLayout
 import com.lvrmrc.moneybook.presentation.viewmodel.AppViewModel
 import com.lvrmrc.moneybook.presentation.viewmodel.HomeViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -47,9 +47,6 @@ fun HomeScreen(
         tabIndex = transTypeIntMap[appVm.transType] ?: 0,
         catTransactions = vm.catTransactions.value,
         animationPlayed = appVm.pieAnimationPlayed,
-        onSetCategory = {
-            vm.setCategory(it)
-        },
         onSetPeriod = { appVm.setPeriod(it) },
         onSetTransType = { appVm.setTransType(it) },
         setAnimationPlayed = { appVm.setPieAnimationPlayed(true) })
@@ -61,7 +58,6 @@ private fun HomeScreen(
     tabIndex: Int,
     catTransactions: List<CategoryWithTransactions>,
     animationPlayed: Boolean,
-    onSetCategory: (CategoryWithTransactions) -> Unit = {},
     onSetPeriod: (TransactionPeriod) -> Unit = {},
     onSetTransType: (TransactionType) -> Unit = {},
     setAnimationPlayed: () -> Unit = {}
@@ -93,7 +89,6 @@ private fun HomeScreen(
                 PieChart(data = catTransactions, animationPlayed = animationPlayed, onLoaded = { setAnimationPlayed() })
             })
             ExpensesList(catTransactions, onSetCategory = {
-                onSetCategory(it)
                 navController.navigate("${Screen.CategoryDetails.route}/${it.id}") {
 
                     navController.graph.route?.let { route ->

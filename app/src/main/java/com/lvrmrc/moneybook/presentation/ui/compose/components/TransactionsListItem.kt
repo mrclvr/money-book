@@ -25,23 +25,25 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.lvrmrc.moneybook.R
 import com.lvrmrc.moneybook.data.expenseCategories
 import com.lvrmrc.moneybook.data.mockTransactions
 import com.lvrmrc.moneybook.domain.model.Category
 import com.lvrmrc.moneybook.domain.model.Transaction
-import com.lvrmrc.moneybook.domain.model.darker
-import com.lvrmrc.moneybook.domain.model.lighter
-import com.lvrmrc.moneybook.presentation.ui.compose.layouts.NavProvider
+import com.lvrmrc.moneybook.domain.model.darken
+import com.lvrmrc.moneybook.domain.model.lighten
+import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.NavProvider
 import com.lvrmrc.moneybook.utils.localFormat
 import com.lvrmrc.moneybook.utils.removeDecimal
 
 @Composable
 fun TransactionsListItem(transaction: Transaction, category: Category, onDelete: () -> Unit = {}, onClick: () -> Unit = {}) {
     val gradient = Brush.verticalGradient(
-        listOf(colorScheme.background, category.color.lighter(0.85f)), startY = 0.0f, endY = 100.0f
+        listOf(colorScheme.background, category.color.lighten(0.85f)), startY = 0.0f, endY = 100.0f
     )
     Card(
         shape = RoundedCornerShape(16.dp), elevation = CardDefaults.cardElevation(
@@ -53,19 +55,22 @@ fun TransactionsListItem(transaction: Transaction, category: Category, onDelete:
         LabeledSection(modifier = Modifier
             .background(gradient)
             .clickable { onClick() },
-            sectionTitle = transaction.date.localFormat() ?: "Undefined date",
-            titleColor = category.color.darker(0.3f),
+            sectionTitle = transaction.date.localFormat() ?: stringResource(R.string.undefined_date),
+            titleColor = category.color.darken(0.3f),
             topRightContent = {
 //                IconButton(modifier = Modifier.size(32.dp), colors = IconButtonDefaults.filledTonalIconButtonColors(
 //                    containerColor = colorScheme.error, contentColor = colorScheme.onError
 
                 Icon(
-                    Icons.Outlined.Delete, "Delete transaction", Modifier.clickable { showDialog = true }, colorScheme.error
+                    Icons.Outlined.Delete,
+                    stringResource(R.string.delete_transaction),
+                    Modifier.clickable { showDialog = true },
+                    colorScheme.error
                 )
 
                 if (showDialog) {
-                    CustomAlertDialog(title = "Confirm deletion",
-                        text = "Do you really want to delete \"${transaction.notes}\" transaction?",
+                    CustomAlertDialog(title = stringResource(R.string.confirm_deletion),
+                        text = stringResource(R.string.transaction_delete_msg, transaction.notes),
                         onDismissRequest = { showDialog = false },
                         onConfirmation = {
                             onDelete()
@@ -85,7 +90,7 @@ fun TransactionsListItem(transaction: Transaction, category: Category, onDelete:
                         contentColor = if (category.lightText) colorScheme.background else colorScheme.onBackground
                     ), onClick = { }) {
                         Icon(
-                            category.icon, "${category.label} category", Modifier.size(20.dp)
+                            category.icon, category.label, Modifier.size(20.dp)
                         )
                     }
                     Text(transaction.notes, fontSize = 18.sp)

@@ -40,13 +40,11 @@ fun MoneyBookTheme(useDarkTheme: Boolean = isSystemInDarkTheme(), content: @Comp
     } else {
         lightColors
     }
+
     val view = LocalView.current
-
-
     val statusBarColor = colorScheme.secondary.toArgb()
 
     if (!view.isInEditMode) {
-
         SideEffect {
             val window = (view.context as Activity).window
             window.statusBarColor = statusBarColor
@@ -63,7 +61,5 @@ fun MoneyBookTheme(useDarkTheme: Boolean = isSystemInDarkTheme(), content: @Comp
 @Composable
 @Preview(showSystemUi = true, uiMode = 2)
 fun MoneyBookThemePreview() {
-    MoneyBookTheme() {
-
-    }
+    MoneyBookTheme {}
 }

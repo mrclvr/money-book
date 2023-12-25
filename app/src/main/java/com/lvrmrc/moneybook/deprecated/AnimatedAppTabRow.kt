@@ -15,7 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.tooling.preview.Preview
-import com.lvrmrc.moneybook.presentation.ui.compose.components.tabs.transactionsTabs
+import com.lvrmrc.moneybook.domain.model.transactionsTabs
 import com.lvrmrc.moneybook.presentation.ui.theme.MoneyBookTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch

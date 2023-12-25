@@ -1,4 +1,4 @@
-package com.lvrmrc.moneybook.presentation.ui.compose.components.tabs
+package com.lvrmrc.moneybook.presentation.ui.compose.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -26,25 +26,24 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.lvrmrc.moneybook.domain.model.TransPeriodTabItem
 import com.lvrmrc.moneybook.domain.model.TransactionPeriod
 import com.lvrmrc.moneybook.domain.model.periodIntMap
-import com.lvrmrc.moneybook.presentation.ui.compose.layouts.AnimatedAppFAB
-import com.lvrmrc.moneybook.presentation.ui.compose.layouts.LocalFabVisible
-import com.lvrmrc.moneybook.presentation.ui.compose.layouts.NavProvider
-import com.lvrmrc.moneybook.presentation.ui.compose.layouts.TabsLayout
+import com.lvrmrc.moneybook.domain.model.periodTabs
+import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.AnimatedAppFAB
+import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.LocalFabVisible
+import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.NavProvider
+import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.TabsLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TabsCard(
-    tabs: List<PeriodTabItem>,
-    period: TransactionPeriod,
-    initialPage: Int = 0,
-    onSetPeriod: (TransactionPeriod) -> Unit = {},
-    cardContent: @Composable () -> Unit = {}
+    tabs: List<TransPeriodTabItem>, period: TransactionPeriod,
+//    initialPage: Int = 0,
+    onSetPeriod: (TransactionPeriod) -> Unit = {}, cardContent: @Composable () -> Unit = {}
 ) {
-
 
     val pagerState = rememberPagerState(initialPage = periodIntMap[period] ?: 0, initialPageOffsetFraction = 0f, pageCount = { tabs.size })
 

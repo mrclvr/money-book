@@ -6,11 +6,16 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.DialogProperties
-import com.lvrmrc.moneybook.presentation.ui.compose.layouts.AppLayout
+import com.lvrmrc.moneybook.R
+import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.AppLayout
 
+/**
+ * Alert dialog
+ */
 @Composable
 fun CustomAlertDialog(
     onDismissRequest: () -> Unit = {},
@@ -31,13 +36,13 @@ fun CustomAlertDialog(
         TextButton(onClick = {
             onConfirmation()
         }) {
-            Text("Confirm")
+            Text(stringResource(R.string.confirm))
         }
     }, dismissButton = {
         TextButton(onClick = {
             onDismissRequest()
         }) {
-            Text("Dismiss")
+            Text(stringResource(R.string.dismiss))
         }
     }, properties = DialogProperties(dismissOnClickOutside = false))
 }

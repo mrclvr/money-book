@@ -5,6 +5,9 @@ import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModel
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
@@ -16,34 +19,24 @@ import com.lvrmrc.moneybook.presentation.ui.compose.screens.Screen
 import com.lvrmrc.moneybook.presentation.ui.compose.screens.TransactionScreen
 import com.lvrmrc.moneybook.presentation.viewmodel.AppViewModel
 
-//val LocalTransactionType = compositionLocalOf<TransactionType> {
-//    error("No LocalTransactionType provided")
-//}
+const val rootRoute = "ROOT"
+val innerRootRoute = Screen.Home.route
 
 @Composable
 fun NavGraph() {
-    val rootRoute = Screen.Home.route
     val navController = LocalNavController.current
 
-    NavHost(navController = navController, startDestination = rootRoute) {
-
-//        composable(route = "Loading") { entry ->
-//            if (!appState.loading) navController.popBackStack()
-//
-//            Column(
-//                modifier = Modifier
-//                    .fillMaxSize()
-//                    .background(MaterialTheme.colorScheme.primary),
-//                verticalArrangement = Arrangement.Center,
-//                horizontalAlignment = Alignment.CenterHorizontally
-//            ) {
-//                Text(modifier = Modifier.padding(0.dp, 10.dp), text = "Loading...")
-//                CircularProgressIndicator()
-//            }
-//        }
+    NavHost(navController = navController, startDestination = innerRootRoute) {
 
 //        navigation(startDestination = Screen.Home.route, route = rootRoute) {
 
+        /**
+         * Home (Expense/Income)
+         */
+        composable(route = Screen.Home.route) {
+
+            HomeScreen()
+        }
 
         /**
          * Transaction
@@ -58,51 +51,18 @@ fun NavGraph() {
                     towards = AnimatedContentTransitionScope.SlideDirection.Down, animationSpec = tween(300)
                 )
             }) { entry ->
-
-            val parentEntry = remember(entry) {
-                navController.getBackStackEntry(rootRoute)
-            }
-
-            val appVm = hiltViewModel<AppViewModel>(parentEntry)
+            val appVm = entry.viewModel<AppViewModel>(navController)
             TransactionScreen(appVm)
-        }
-//        }
-
-        /**
-         * Expense/Income (Home)
-         */
-        composable(route = Screen.Home.route) {
-
-//            val parentEntry = remember(entry) {
-//                navController.getBackStackEntry(rootRoute)
-//            }
-//
-//            val vm = hiltViewModel<ExpenseViewModel>(parentEntry)
-
-            HomeScreen()
         }
 
         /**
          * Transactions Details
          */
         composable(route = "${Screen.CategoryDetails.route}/{categoryId}") { entry ->
-            val parentEntry = remember(entry) {
-                navController.getBackStackEntry(rootRoute)
-            }
-
-            val appVm = hiltViewModel<AppViewModel>(parentEntry)
+            val appVm = entry.viewModel<AppViewModel>(navController)
             CategoryDetailsScreen(appVm)
 
         }
-
-
-//            when (initialState.destination.route) {
-//                Screen.Home.route ->
-//            slideIntoContainer(
-//                AnimatedContentTransitionScope.SlideDirection.Left, animationSpec = tween(700)
-//            )
-//                else -> null
-//            }
 
         /**
          * Categories
@@ -124,26 +84,25 @@ fun NavGraph() {
                 AnimatedContentTransitionScope.SlideDirection.Right, animationSpec = tween(700)
             )
         }) { entry ->
-
-            val parentEntry = remember(entry) {
-                navController.getBackStackEntry(rootRoute)
-            }
-
-            val appVm = hiltViewModel<AppViewModel>(parentEntry)
+            val appVm = entry.viewModel<AppViewModel>(navController)
             CategoriesScreen(appVm)
         }
     }
+//    }
 
 }
 
-//@Composable
-//inline fun <reified T : ViewModel> NavBackStackEntry.appViewModel(navController: NavHostController): T {
-//    val navGraphRoute = destination.parent?.route ?: return hiltViewModel()
-//    val parentEntry = remember(this) {
-//        navController.getBackStackEntry(navGraphRoute)
-//    }
-//
-//    return hiltViewModel(parentEntry)
-//}
+/**
+ * Gets shared ViewModel from parent entry
+ */
+@Composable
+inline fun <reified T : ViewModel> NavBackStackEntry.viewModel(navController: NavHostController): T {
+    val navGraphRoute = innerRootRoute ?: rootRoute ?: destination.parent?.route ?: return hiltViewModel()
+    val parentEntry = remember(this) {
+        navController.getBackStackEntry(navGraphRoute)
+    }
+
+    return hiltViewModel(parentEntry)
+}
 
 

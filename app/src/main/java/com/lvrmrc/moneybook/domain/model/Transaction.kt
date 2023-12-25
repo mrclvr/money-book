@@ -4,7 +4,11 @@ import com.lvrmrc.moneybook.data.source.db.entity.TransactionEntity
 import java.time.LocalDateTime
 import java.util.UUID
 
-
+/**
+ * Implementation of transaction interface
+ *
+ * @see TransactionInterface
+ */
 data class Transaction(
     override var id: UUID,
     override var notes: String,
@@ -14,8 +18,10 @@ data class Transaction(
     override var categoryId: UUID
 ) : TransactionInterface {
 
+    /**
+     * Maps transaction instance to database entity
+     */
     fun toEntity() = TransactionEntity(id, notes, amount, date, type, categoryId)
-    fun toTransactionWithCategory(category: Category) = TransactionWithCategory(id, notes, amount, date, type, categoryId, category)
 }
 
 enum class TransactionType {

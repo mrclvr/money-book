@@ -1,4 +1,4 @@
-package com.lvrmrc.moneybook.presentation.ui.compose.components.tabs
+package com.lvrmrc.moneybook.domain.model
 
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
@@ -7,6 +7,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDownward
+import androidx.compose.material.icons.filled.ArrowUpward
+import androidx.compose.material.icons.filled.CalendarMonth
+import androidx.compose.material.icons.filled.EditCalendar
+import androidx.compose.material.icons.filled.Today
 import androidx.compose.material3.TabPosition
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -15,16 +21,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.Dp
-import com.lvrmrc.moneybook.domain.model.TransactionPeriod
-import com.lvrmrc.moneybook.domain.model.TransactionType
+import com.lvrmrc.moneybook.MoneyBookApp
+import com.lvrmrc.moneybook.R
 
-data class TabItem(
-    override val title: String,
-    override val icon: ImageVector,
-    override val content: @Composable () -> Unit = {},
-    override val onClick: suspend () -> Unit = {}
-) : TabItemInterface
-
+/**
+ * Transaction type tab item
+ */
 data class TransTypeTabItem(
     override val title: String,
     override val icon: ImageVector,
@@ -33,7 +35,10 @@ data class TransTypeTabItem(
     val type: TransactionType
 ) : TabItemInterface
 
-data class PeriodTabItem(
+/**
+ * Transaction period tab item
+ */
+data class TransPeriodTabItem(
     override val title: String,
     override val icon: ImageVector,
     override val content: @Composable () -> Unit = {},
@@ -41,7 +46,9 @@ data class PeriodTabItem(
     val period: TransactionPeriod
 ) : TabItemInterface
 
-
+/**
+ * Custom tab indicator modifier
+ */
 fun Modifier.customTabIndicatorOffset(
     currentTabPosition: TabPosition, tabWidth: Dp
 ): Modifier = composed {
@@ -58,3 +65,22 @@ fun Modifier.customTabIndicatorOffset(
         .offset(x = indicatorOffset)
         .width(currentTabWidth)
 }
+
+val periodTabs: List<TransPeriodTabItem> = listOf(
+    TransPeriodTabItem(
+        title = MoneyBookApp.instance.getString(R.string.day), icon = Icons.Filled.Today, period = TransactionPeriod.DAY
+    ), TransPeriodTabItem(
+        title = MoneyBookApp.instance.getString(R.string.month), icon = Icons.Filled.CalendarMonth, period = TransactionPeriod.MONTH
+    ), TransPeriodTabItem(
+        title = MoneyBookApp.instance.getString(R.string.year), icon = Icons.Filled.EditCalendar, period = TransactionPeriod.YEAR
+    )
+)
+
+val transactionsTabs: List<TransTypeTabItem> = listOf(
+    TransTypeTabItem(
+        title = MoneyBookApp.instance.getString(R.string.expense), icon = Icons.Filled.ArrowUpward, type = TransactionType.EXPENSE
+    ),
+    TransTypeTabItem(
+        title = MoneyBookApp.instance.getString(R.string.income), icon = Icons.Filled.ArrowDownward, type = TransactionType.INCOME
+    ),
+)

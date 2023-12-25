@@ -28,6 +28,9 @@ import com.lvrmrc.moneybook.domain.model.outlinedIcons
 import com.lvrmrc.moneybook.presentation.ui.theme.primary200
 import java.util.UUID
 
+/**
+ * Single category clickable item
+ */
 @Composable
 fun CategoryItem(category: Category, selected: Boolean = true, onClick: (Boolean) -> Unit = {}) {
 
@@ -56,10 +59,7 @@ fun CategoryItem(category: Category, selected: Boolean = true, onClick: (Boolean
                 .background(category.color), contentAlignment = Alignment.Center
         ) {
             Icon(
-                modifier = Modifier.size(40.dp),
-                imageVector = category.icon,
-                contentDescription = "${category.label} category",
-                tint = getColor()
+                modifier = Modifier.size(40.dp), imageVector = category.icon, contentDescription = category.label, tint = getColor()
             )
         }
         Text(

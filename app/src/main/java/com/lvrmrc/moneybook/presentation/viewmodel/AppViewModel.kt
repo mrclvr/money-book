@@ -23,6 +23,7 @@ class AppViewModel @Inject constructor(
     private var _categories by mutableStateOf(emptyList<Category>())
     private var _transType by mutableStateOf(TransactionType.EXPENSE)
     private var _period by mutableStateOf(TransactionPeriod.DAY)
+
     val loading: Boolean
         get() = _loading
     val pieAnimationPlayed: Boolean
@@ -33,10 +34,6 @@ class AppViewModel @Inject constructor(
         get() = _period
     val transType: TransactionType
         get() = _transType
-
-    init {
-        setCategories()
-    }
 
     fun setLoading(value: Boolean) {
         _loading = value
@@ -54,11 +51,13 @@ class AppViewModel @Inject constructor(
         _period = period
     }
 
+    init {
+        setCategories()
+    }
+
     private fun setCategories() {
         viewModelScope.launch {
             _categories = categoryRepo.getAll()
         }
     }
-
-
 }

@@ -22,18 +22,9 @@ class HomeViewModel @Inject constructor(
     val catTransactions: State<List<CategoryWithTransactions>>
         get() = _catTransactions
 
-    private val _selectedCategory = mutableStateOf<CategoryWithTransactions?>(null)
-    val selectedCategory: State<CategoryWithTransactions?>
-        get() = _selectedCategory
-
 //    init {
 //        loadTransactions()
 //    }
-
-    fun setCategory(category: CategoryWithTransactions) {
-        _selectedCategory.value = category
-    }
-
 
     fun loadTransactions(period: TransactionPeriod, transType: TransactionType) {
         viewModelScope.launch {

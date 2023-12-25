@@ -1,4 +1,4 @@
-package com.lvrmrc.moneybook.presentation.ui.compose.components
+package com.lvrmrc.moneybook.presentation.ui.compose.components.layout
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row

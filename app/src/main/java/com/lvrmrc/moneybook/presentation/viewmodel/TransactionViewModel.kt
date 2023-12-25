@@ -30,33 +30,16 @@ class TransactionViewModel @Inject constructor(
     val transactionId: String? = savedStateHandle["transactionId"]
 
     private var _transaction by mutableStateOf<Transaction?>(null)
-    val transaction: Transaction? get() = _transaction
-
     private var _category by mutableStateOf<Category?>(null)
-    val category: Category? get() = _category
-
-    fun setCategory(category: Category?) {
-        _category = category
-    }
-
     private var _amount by mutableStateOf(transaction?.let { if (it.amount != 0.0) "${it.amount}" else null } ?: "")
-    val amount: String get() = _amount
-
-    fun setAmount(amount: String) {
-        _amount = amount
-    }
-
     private var _notes by mutableStateOf(transaction?.notes ?: "")
-    val notes: String get() = _notes
-    fun setNotes(notes: String) {
-        _notes = notes
-    }
-
     private var _date by mutableStateOf(transaction?.date ?: LocalDateTime.now())
+
+    val transaction: Transaction? get() = _transaction
+    val category: Category? get() = _category
+    val amount: String get() = _amount
+    val notes: String get() = _notes
     val date: LocalDateTime get() = _date
-    fun setDate(date: LocalDateTime) {
-        _date = date
-    }
 
     private val _hasChanges = derivedStateOf {
         transaction?.let {
@@ -72,6 +55,21 @@ class TransactionViewModel @Inject constructor(
 
     val fabEnabled = derivedStateOf { _hasChanges.value && _areFieldsValid.value }
 
+    fun setCategory(category: Category?) {
+        _category = category
+    }
+
+    fun setAmount(amount: String) {
+        _amount = amount
+    }
+
+    fun setNotes(notes: String) {
+        _notes = notes
+    }
+
+    fun setDate(date: LocalDateTime) {
+        _date = date
+    }
 
     init {
         initTransaction()

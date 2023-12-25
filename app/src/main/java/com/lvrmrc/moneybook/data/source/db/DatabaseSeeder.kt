@@ -13,17 +13,23 @@ import kotlinx.coroutines.launch
 import javax.inject.Provider
 
 
-class DatabaseCallback(
+class DatabaseSeeder(
     private val categoryProvider: Provider<CategoryDao>, private val transactionProvider: Provider<TransactionDao>
 ) : RoomDatabase.Callback() {
 
     private val appScope = CoroutineScope(SupervisorJob())
 
+    /**
+     * Seeds all data on creation
+     */
     override fun onCreate(db: SupportSQLiteDatabase) {
         super.onCreate(db)
         seedAll()
     }
 
+    /**
+     * Runs all seeders
+     */
     private fun seedAll() {
         appScope.launch(Dispatchers.IO) {
             seedCategories()
@@ -31,10 +37,16 @@ class DatabaseCallback(
         }
     }
 
+    /**
+     * Seeds default categories
+     */
     private suspend fun seedCategories() {
         categoryProvider.get().insert(*expenseCategoryEntities.toTypedArray())
     }
 
+    /**
+     * Seeds default transactions
+     */
     private suspend fun seedTransactions() {
         transactionProvider.get().insert(*mockTransactionEntities.toTypedArray())
     }

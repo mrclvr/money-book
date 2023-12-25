@@ -8,6 +8,11 @@ import java.util.UUID
 
 interface BaseDao<T> {
 
+    /**
+     * Get an object by its UUID
+     *
+     * @param id the UUID of the object
+     */
     suspend fun getById(id: UUID): T
 
     /**
@@ -41,5 +46,4 @@ interface BaseDao<T> {
      */
     @Delete
     suspend fun delete(obj: T)
-
 }

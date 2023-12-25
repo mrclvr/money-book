@@ -16,10 +16,10 @@ import com.lvrmrc.moneybook.data.expenseCategories
 import com.lvrmrc.moneybook.data.mockTransactions
 import com.lvrmrc.moneybook.domain.model.Category
 import com.lvrmrc.moneybook.domain.model.Transaction
-import com.lvrmrc.moneybook.presentation.ui.compose.components.ScreenHeader
+import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.ScreenHeader
 import com.lvrmrc.moneybook.presentation.ui.compose.components.TransactionsListItem
-import com.lvrmrc.moneybook.presentation.ui.compose.layouts.AppLayout
-import com.lvrmrc.moneybook.presentation.ui.compose.layouts.NavProvider
+import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.AppLayout
+import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.NavProvider
 import com.lvrmrc.moneybook.presentation.viewmodel.AppViewModel
 import com.lvrmrc.moneybook.presentation.viewmodel.CategoryDetailsViewModel
 import kotlinx.coroutines.CoroutineScope

@@ -1,3 +1,24 @@
 <resources>
-    <string name="app_name">MoneyBook</string>
+    <string name="confirm">Confirm</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="app_name" translatable="false">MoneyBook</string>
+    <string name="day">Day</string>
+    <string name="month">Month</string>
+    <string name="year">Year</string>
+    <string name="expense">Expense</string>
+    <string name="income">Income</string>
+    <string name="categories">Categories</string>
+    <string name="category">Category</string>
+    <string name="notes">Notes</string>
+    <string name="eur" translatable="false">EUR</string>
+    <string name="update">Update</string>
+    <string name="add_transaction">Add transaction</string>
+    <string name="date">Date</string>
+    <string name="undefined_date">Undefined date</string>
+    <string name="delete_transaction">Delete transaction</string>
+    <string name="confirm_deletion">Confirm deletion</string>
+    <string name="transaction_delete_msg">Do you really want to delete \"%1$s\" transaction?</string>
+    <string name="open_date_picker">Open date picker</string>
+    <string name="no_transactions">No transactions</string>
+    <string name="open_categories_screen">Open categories screen</string>
 </resources>

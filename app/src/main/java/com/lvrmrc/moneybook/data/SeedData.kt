@@ -12,6 +12,7 @@ import com.lvrmrc.moneybook.presentation.ui.theme.primary
 import com.lvrmrc.moneybook.presentation.ui.theme.primary500
 import com.lvrmrc.moneybook.presentation.ui.theme.triadic1_500
 import com.lvrmrc.moneybook.presentation.ui.theme.triadic2_500
+import java.util.UUID
 
 
 val colorsMap = mapOf(
@@ -27,6 +28,7 @@ val colorsMap = mapOf(
 
 val expenseCategoryEntities = listOf(
     CategoryEntity(
+        id = UUID.randomUUID(),
         label = "Health",
         icon = IconLabel.MonitorHeart,
         type = TransactionType.EXPENSE,
@@ -34,6 +36,7 @@ val expenseCategoryEntities = listOf(
         lightText = true,
     ),
     CategoryEntity(
+        id = UUID.randomUUID(),
         label = "Home",
         icon = IconLabel.House,
         type = TransactionType.EXPENSE,
@@ -41,6 +44,7 @@ val expenseCategoryEntities = listOf(
         lightText = true,
     ),
     CategoryEntity(
+        id = UUID.randomUUID(),
         label = "Education",
         icon = IconLabel.School,
         type = TransactionType.EXPENSE,
@@ -48,6 +52,7 @@ val expenseCategoryEntities = listOf(
         lightText = true,
     ),
     CategoryEntity(
+        id = UUID.randomUUID(),
         label = "Groceries",
         icon = IconLabel.ShoppingBasket,
         type = TransactionType.EXPENSE,
@@ -55,6 +60,7 @@ val expenseCategoryEntities = listOf(
         lightText = true,
     ),
     CategoryEntity(
+        id = UUID.randomUUID(),
         label = "Shopping",
         icon = IconLabel.ShoppingCart,
         type = TransactionType.EXPENSE,
@@ -62,6 +68,7 @@ val expenseCategoryEntities = listOf(
         lightText = true,
     ),
     CategoryEntity(
+        id = UUID.randomUUID(),
         label = "Car",
         icon = IconLabel.DirectionsCar,
         type = TransactionType.EXPENSE,
@@ -69,6 +76,7 @@ val expenseCategoryEntities = listOf(
         lightText = true,
     ),
     CategoryEntity(
+        id = UUID.randomUUID(),
         label = "Gas",
         icon = IconLabel.LocalGasStation,
         type = TransactionType.EXPENSE,
@@ -76,6 +84,7 @@ val expenseCategoryEntities = listOf(
         lightText = true,
     ),
     CategoryEntity(
+        id = UUID.randomUUID(),
         label = "Bills",
         icon = IconLabel.ReceiptLong,
         type = TransactionType.EXPENSE,

@@ -8,23 +8,27 @@ import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.Locale
 
-class DateTimeUtils {
-    companion object {
-        fun timestampToLocalDateTime(timestamp: Long): LocalDateTime {
-            val instant = Instant.ofEpochMilli(timestamp)
-            val zone = ZoneId.systemDefault()
-
-            return LocalDateTime.ofInstant(instant, zone)
-        }
-
-        fun dateToTimestamp(dateTime: LocalDateTime): Long {
-            return dateTime.atZone(ZoneOffset.UTC).toInstant().toEpochMilli()
-        }
-    }
-}
-
+/**
+ * Formats LocalDateTime to "DD Month YYYY" format in current locale
+ */
 fun LocalDateTime.localFormat(): String? {
     return this.format(
         DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG).withLocale(Locale.getDefault())
     )
+}
+
+/**
+ * Converts LocalDateTime to milliseconds
+ */
+fun LocalDateTime.toMillis(): Long {
+    return this.atZone(ZoneOffset.UTC).toInstant().toEpochMilli()
+}
+
+/**
+ * Converts milliseconds to LocalDateTime
+ */
+fun Long.toLocalDateTime(): LocalDateTime {
+    val instant = Instant.ofEpochMilli(this)
+    val zone = ZoneId.systemDefault()
+    return LocalDateTime.ofInstant(instant, zone)
 }

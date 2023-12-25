@@ -1,5 +1,6 @@
 package com.lvrmrc.moneybook.di
 
+import com.lvrmrc.moneybook.data.repository.CategoryRepositoryImpl
 import com.lvrmrc.moneybook.data.repository.TransactionRepositoryImpl
 import com.lvrmrc.moneybook.domain.usecase.GetCategoryTransactionsByPeriod
 import com.lvrmrc.moneybook.domain.usecase.GetTransactionsByPeriodAndCategory
@@ -13,14 +14,25 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object UseCaseModule {
 
+    /**
+     * Provides GetCategoryTransactionsByPeriod use case as singleton
+     *
+     * @param transactionRepo Transaction repository
+     * @param categoryRepo Category repository
+     */
     @Singleton
     @Provides
     fun provideGetCategoryTransactionsByPeriod(
-        transactionRepo: TransactionRepositoryImpl
+        transactionRepo: TransactionRepositoryImpl, categoryRepo: CategoryRepositoryImpl
     ): GetCategoryTransactionsByPeriod {
-        return GetCategoryTransactionsByPeriod(transactionRepo)
+        return GetCategoryTransactionsByPeriod(transactionRepo, categoryRepo)
     }
 
+    /**
+     * Provides GetTransactionsByPeriodAndCategory use case as singleton
+     *
+     * @param transactionRepo Transaction repository
+     */
     @Singleton
     @Provides
     fun provideGetTransactionsByPeriodAndCategory(

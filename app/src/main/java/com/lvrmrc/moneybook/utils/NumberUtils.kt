@@ -5,28 +5,25 @@ import java.text.DecimalFormatSymbols
 class NumberUtils {
 
     companion object {
+        
+        /**
+         * Validates string input allowing only digits and decimal separator
+         */
         fun cleanDoubleText(input: String): String {
             val symbols: DecimalFormatSymbols = DecimalFormatSymbols.getInstance()
-//            val decimalSeparator = symbols.decimalSeparator
-//            val thousandsSeparator = symbols.groupingSeparator
-            val decimalSeparators = listOf(
-                symbols.monetaryDecimalSeparator
-//                , symbols.groupingSeparator
-            )
+            val decimalSeparator = symbols.decimalSeparator
+            val stringBuilder = StringBuilder()
+            var hasDecimalSep = false
 
             if (input.matches("\\D".toRegex())) return ""
             if (input.matches("0+".toRegex())) return "0"
-
-            val stringBuilder = StringBuilder()
-
-            var hasDecimalSep = false
 
             for (char in input) {
                 if (char.isDigit()) {
                     stringBuilder.append(char)
                     continue
                 }
-                if (decimalSeparators.contains(char) && !hasDecimalSep && stringBuilder.isNotEmpty()) {
+                if (decimalSeparator == char && !hasDecimalSep && stringBuilder.isNotEmpty()) {
                     stringBuilder.append(char)
                     hasDecimalSep = true
                 }
@@ -34,18 +31,19 @@ class NumberUtils {
 
             return stringBuilder.toString()
         }
-
-        fun getFloatPercentage(value: Double, total: Double): Float {
-            return if (value == 0.0) 0f else (100 * (value / total)).toFloat()
-        }
-
-        fun removeDecimal(value: Double): Number {
-            return if (value.rem(1).equals(0.0)) value.toInt() else value
-        }
     }
 }
 
-
+/**
+ * Removes decimal digits when zero, retuning an Int
+ */
 fun Double.removeDecimal(): Number {
     return if (this.rem(1).equals(0.0)) this.toInt() else this
+}
+
+/**
+ * Converts Double to float percentage relative to given total
+ */
+fun Double.toFloatPercentage(total: Double): Float {
+    return if (this == 0.0) 0f else (100 * (this / total)).toFloat()
 }

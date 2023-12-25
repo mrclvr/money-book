@@ -29,10 +29,13 @@ import androidx.compose.ui.unit.dp
 import com.lvrmrc.moneybook.data.mockCatTransactions
 import com.lvrmrc.moneybook.domain.model.CategoryWithTransactions
 import com.lvrmrc.moneybook.presentation.ui.theme.MoneyBookTheme
-import com.lvrmrc.moneybook.utils.NumberUtils
 import com.lvrmrc.moneybook.utils.removeDecimal
+import com.lvrmrc.moneybook.utils.toFloatPercentage
 import kotlin.math.roundToInt
 
+/**
+ * List of expenses grouped by category
+ */
 @Composable
 fun ExpensesList(catTransactions: List<CategoryWithTransactions>, onSetCategory: (CategoryWithTransactions) -> Unit = {}) {
     LazyColumn(
@@ -47,7 +50,7 @@ fun ExpensesList(catTransactions: List<CategoryWithTransactions>, onSetCategory:
 
         items(catTransactions) { cat ->
             val textColor = if (cat.lightText) colorScheme.background else colorScheme.onBackground
-            val percentage = NumberUtils.getFloatPercentage(cat.total, periodTotal).roundToInt()
+            val percentage = cat.total.toFloatPercentage(periodTotal).roundToInt()
             Card(
                 shape = RoundedCornerShape(8.dp), elevation = CardDefaults.cardElevation(
                     defaultElevation = 6.dp
@@ -59,7 +62,11 @@ fun ExpensesList(catTransactions: List<CategoryWithTransactions>, onSetCategory:
                     .background(colorScheme.background)
                     .clickable { onSetCategory(cat) }
                     .padding(10.dp), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Row(
+                        modifier = Modifier.weight(0.6f),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
 
                         Box(
                             modifier = Modifier
@@ -70,16 +77,19 @@ fun ExpensesList(catTransactions: List<CategoryWithTransactions>, onSetCategory:
                             contentAlignment = Alignment.Center
                         ) {
                             Icon(
-                                modifier = Modifier.size(20.dp),
-                                imageVector = cat.icon,
-                                contentDescription = "${cat.label} category",
-                                tint = textColor
+                                modifier = Modifier.size(20.dp), imageVector = cat.icon, contentDescription = cat.label, tint = textColor
                             )
                         }
                         Text(text = cat.label, color = colorScheme.onPrimaryContainer)
                     }
-                    Text(text = "${percentage}%", color = colorScheme.onPrimaryContainer)
-                    Text(text = "${cat.total.removeDecimal()} €", color = colorScheme.onPrimaryContainer)
+                    Row(
+                        modifier = Modifier.weight(0.4f),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(text = "${percentage}%", color = colorScheme.onPrimaryContainer)
+                        Text(text = "${cat.total.removeDecimal()} €", color = colorScheme.onPrimaryContainer)
+                    }
                 }
             }
         }

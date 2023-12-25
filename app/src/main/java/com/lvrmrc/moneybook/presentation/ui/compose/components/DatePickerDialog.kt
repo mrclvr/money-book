@@ -3,7 +3,7 @@ package com.lvrmrc.moneybook.presentation.ui.compose.components
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CalendarMonth
+import androidx.compose.material.icons.outlined.CalendarMonth
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -20,14 +20,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.lvrmrc.moneybook.utils.DateTimeUtils
+import com.lvrmrc.moneybook.R
+import com.lvrmrc.moneybook.utils.toLocalDateTime
+import com.lvrmrc.moneybook.utils.toMillis
 import java.time.LocalDateTime
 
-
+/**
+ * Date picker dialog
+ */
 @Composable
-fun DialogDatePicker(date: LocalDateTime = LocalDateTime.now(), onDateSelected: (LocalDateTime) -> Unit = {}) {
+fun DatePickerDialog(date: LocalDateTime = LocalDateTime.now(), onDateSelected: (LocalDateTime) -> Unit = {}) {
 
     var datePickerOpen by remember {
         mutableStateOf(false)
@@ -37,35 +42,33 @@ fun DialogDatePicker(date: LocalDateTime = LocalDateTime.now(), onDateSelected: 
         IconButton(modifier = Modifier.size(56.dp), colors = IconButtonDefaults.filledIconButtonColors(), onClick = {
             datePickerOpen = true
         }) {
-            Icon(imageVector = Icons.Filled.CalendarMonth, contentDescription = "Open date picker")
+            Icon(imageVector = Icons.Outlined.CalendarMonth, contentDescription = stringResource(R.string.open_date_picker))
         }
     }
 
     if (datePickerOpen) {
-        DialogDatePicker(date = date, onDateSelected = { onDateSelected(it) }, onClose = { datePickerOpen = false })
+        DatePickerDialog(date = date, onDateSelected = { onDateSelected(it) }, onClose = { datePickerOpen = false })
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun DialogDatePicker(
+private fun DatePickerDialog(
     date: LocalDateTime = LocalDateTime.now(), onClose: () -> Unit, onDateSelected: (LocalDateTime) -> Unit
 ) {
-//    val calendar = Calendar.getInstance()
-//    val datePickerState = rememberDatePickerState(initialSelectedDateMillis = calendar.timeInMillis)
-    val datePickerState = rememberDatePickerState(initialSelectedDateMillis = DateTimeUtils.dateToTimestamp(date))
+    val datePickerState = rememberDatePickerState(initialSelectedDateMillis = date.toMillis())
     val selectedDate = datePickerState.selectedDateMillis ?: System.currentTimeMillis()
 
     DatePickerDialog(onDismissRequest = { onClose() }, confirmButton = {
         TextButton(onClick = {
-            onDateSelected(DateTimeUtils.timestampToLocalDateTime(selectedDate))
+            onDateSelected(selectedDate.toLocalDateTime())
             onClose()
         }) {
-            Text("OK")
+            Text(stringResource(R.string.confirm))
         }
     }, dismissButton = {
         TextButton(onClick = onClose) {
-            Text("CANCEL")
+            Text(stringResource(R.string.dismiss))
         }
     }) {
         DatePicker(
@@ -74,15 +77,9 @@ private fun DialogDatePicker(
     }
 }
 
-
-//private fun dateToTimestamp(timestamp: Long): String {
-//    val formatter = SimpleDateFormat("yyyyMMdd")
-//    return formatter.format(Date(timestamp))
-//}
-
 @Preview
 @Composable
 
-fun DialogDatePickerPreview() {
-    DialogDatePicker()
+fun DatePickerDialogPreview() {
+    DatePickerDialog()
 }

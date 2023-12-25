@@ -46,7 +46,7 @@ class CategoryDetailsViewModel @Inject constructor(
 
     fun deleteTransaction(id: UUID) {
         viewModelScope.launch {
-            val deleted = transactionRepo.deleteById(id)
+            transactionRepo.deleteById(id)
             _transactions = _transactions.filter { it.id != id }
         }
 

@@ -95,11 +95,12 @@ val mockCatTransactions = arrayListOf(
 
 val mockTransactionEntities = listOf(
     TransactionEntity(
-        amount = 1.0, notes = "Food 1", type = TransactionType.EXPENSE, date = LocalDateTime.of(
+        id = UUID.randomUUID(), amount = 1.0, notes = "Food 1", type = TransactionType.EXPENSE, date = LocalDateTime.of(
             2023, 2, 14, 12, 1
         ), categoryId = expenseCategoryEntities[0].id
     ),
     TransactionEntity(
+        id = UUID.randomUUID(),
         amount = 2.0,
         notes = "Health 2",
         type = TransactionType.EXPENSE,
@@ -107,6 +108,7 @@ val mockTransactionEntities = listOf(
         categoryId = expenseCategoryEntities[0].id
     ),
     TransactionEntity(
+        id = UUID.randomUUID(),
         amount = 3.0,
         notes = "Cinema 3",
         type = TransactionType.EXPENSE,
@@ -114,6 +116,7 @@ val mockTransactionEntities = listOf(
         categoryId = expenseCategoryEntities[0].id
     ),
     TransactionEntity(
+        id = UUID.randomUUID(),
         amount = 4.0,
         notes = "Food 4",
         type = TransactionType.EXPENSE,
@@ -121,6 +124,7 @@ val mockTransactionEntities = listOf(
         categoryId = expenseCategoryEntities[1].id
     ),
     TransactionEntity(
+        id = UUID.randomUUID(),
         amount = 5.0,
         notes = "Health 5",
         type = TransactionType.EXPENSE,
@@ -128,6 +132,7 @@ val mockTransactionEntities = listOf(
         categoryId = expenseCategoryEntities[1].id
     ),
     TransactionEntity(
+        id = UUID.randomUUID(),
         amount = 6.0,
         notes = "Cinema 6",
         type = TransactionType.EXPENSE,

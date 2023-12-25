@@ -4,14 +4,26 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.ui.graphics.vector.ImageVector
 import java.util.Locale
 
+/**
+ * Icon names identifiers
+ */
 enum class IconLabel {
     MonitorHeart, House, School, ShoppingBasket, ShoppingCart, DirectionsCar, LocalGasStation, ReceiptLong, LocalBar
 }
 
+/**
+ * Icon styles identifiers
+ */
 enum class IconStyle {
     Outlined, Filled, Rounded, Default
 }
 
+/**
+ * Gets icon with given name and style from Material icons library
+ *
+ * @param label the name of the icon
+ * @param style the style of the icon
+ */
 fun getIconByName(label: IconLabel, style: IconStyle): ImageVector? {
     return try {
         val styleClass: Any = when (style) {
@@ -30,6 +42,11 @@ fun getIconByName(label: IconLabel, style: IconStyle): ImageVector? {
     }
 }
 
+/**
+ * Maps each IconLabel to corresponding IconsVector with given style
+ *
+ * @param style the style of the icons
+ */
 fun getIconsList(style: IconStyle): Map<IconLabel, ImageVector> {
     val icons = mutableMapOf<IconLabel, ImageVector>()
     IconLabel.entries.forEach {

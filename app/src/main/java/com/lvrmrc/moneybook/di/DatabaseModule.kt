@@ -18,6 +18,13 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {
 
+    /**
+     * Provides singleton DB instance
+     *
+     * @param context app context
+     * @param catProvider category DAO provider
+     * @param transProvider transaction DAO provider
+     */
     @Provides
     @Singleton
     fun provideAppDatabase(
@@ -26,25 +33,44 @@ object DatabaseModule {
         return AppDatabase.getInstance(context, catProvider, transProvider)
     }
 
-
+    /**
+     * Provides Category DAO singleton instance
+     *
+     * @param appDatabase DB instance
+     */
     @Provides
     @Singleton
     fun provideCategoryDao(appDatabase: AppDatabase): CategoryDao {
         return appDatabase.categoryDao()
     }
 
+    /**
+     * Provides Category repository singleton instance
+     *
+     * @param categoryDao Category DAO instance
+     */
     @Provides
     @Singleton
     fun provideCategoryRepository(categoryDao: CategoryDao): CategoryRepositoryImpl {
         return CategoryRepositoryImpl(categoryDao)
     }
 
+    /**
+     * Provides Transaction DAO singleton instance
+     *
+     * @param appDatabase DB instance
+     */
     @Provides
     @Singleton
     fun provideTransactionDao(appDatabase: AppDatabase): TransactionDao {
         return appDatabase.transactionDao()
     }
 
+    /**
+     * Provides Transaction repository singleton instance
+     *
+     * @param transactionDao Transaction DAO instance
+     */
     @Provides
     @Singleton
     fun provideTransactionRepository(transactionDao: TransactionDao): TransactionRepositoryImpl {
