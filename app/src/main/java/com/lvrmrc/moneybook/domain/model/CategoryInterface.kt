@@ -14,5 +14,6 @@ interface CategoryInterface {
     val label: String
     val icon: ImageVector
     val color: Color
+    val type: TransactionType
     val lightText: Boolean
 }

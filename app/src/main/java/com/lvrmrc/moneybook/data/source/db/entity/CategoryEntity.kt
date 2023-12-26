@@ -29,8 +29,8 @@ data class CategoryEntity(
     @PrimaryKey @ColumnInfo(name = "id") val id: UUID,
     @ColumnInfo(name = "label") val label: String,
     @ColumnInfo(name = "icon") val icon: IconLabel,
-    @ColumnInfo(name = "type") val type: TransactionType,
     @ColumnInfo(name = "color") val color: ColorName,
+    @ColumnInfo(name = "type") val type: TransactionType,
     @ColumnInfo(name = "lightText") val lightText: Boolean,
 ) {
     companion object {
@@ -42,7 +42,12 @@ data class CategoryEntity(
      */
     fun toDomain(): Category {
         return Category(
-            id, label, outlinedIcons.getOrDefault(icon, Icons.Outlined.QuestionMark), colorsMap.getOrDefault(color, primary), lightText
+            id,
+            label,
+            outlinedIcons.getOrDefault(icon, Icons.Outlined.QuestionMark),
+            colorsMap.getOrDefault(color, primary),
+            type,
+            lightText
         )
     }
 }

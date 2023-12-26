@@ -13,11 +13,12 @@ data class CategoryWithTransactionsEntity(
 
 ) {
     fun toDomain(): CategoryWithTransactions {
-        val (id, label, icon, color, lightText) = category.toDomain()
+        val (id, label, icon, color, type, lightText) = category.toDomain()
         return CategoryWithTransactions(id,
             label,
             icon,
             color,
+            type,
             lightText,
             ArrayList(transactions.map { it.toDomain() }),
             transactions.sumOf { it.amount })

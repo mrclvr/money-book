@@ -25,6 +25,7 @@ import com.lvrmrc.moneybook.presentation.ui.compose.components.PieChart
 import com.lvrmrc.moneybook.presentation.ui.compose.components.TabsCard
 import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.NavProvider
 import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.TabsLayout
+import com.lvrmrc.moneybook.presentation.ui.compose.navigation.navigateDefault
 import com.lvrmrc.moneybook.presentation.viewmodel.AppViewModel
 import com.lvrmrc.moneybook.presentation.viewmodel.HomeViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -89,16 +90,7 @@ private fun HomeScreen(
                 PieChart(data = catTransactions, animationPlayed = animationPlayed, onLoaded = { setAnimationPlayed() })
             })
             ExpensesList(catTransactions, onSetCategory = {
-                navController.navigate("${Screen.CategoryDetails.route}/${it.id}") {
-
-                    navController.graph.route?.let { route ->
-                        popUpTo(route) {
-                            saveState = true
-                        }
-                    }
-                    launchSingleTop = true
-                    restoreState = true
-                }
+                navController.navigateDefault("${Screen.CategoryDetails.route}/${it.id}")
             })
         }
     }

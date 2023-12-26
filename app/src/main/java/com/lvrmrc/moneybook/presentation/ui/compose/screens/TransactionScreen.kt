@@ -5,9 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Text
@@ -25,12 +23,14 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.lvrmrc.moneybook.LocalNavController
 import com.lvrmrc.moneybook.R
+import com.lvrmrc.moneybook.data.expenseCategories
 import com.lvrmrc.moneybook.domain.model.Category
 import com.lvrmrc.moneybook.presentation.ui.compose.components.CategoriesGrid
 import com.lvrmrc.moneybook.presentation.ui.compose.components.DatePickerDialog
 import com.lvrmrc.moneybook.presentation.ui.compose.components.LabeledSection
-import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.AppLayout
 import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.FABLayout
+import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.NavProvider
+import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.ScreenHeader
 import com.lvrmrc.moneybook.presentation.viewmodel.AppViewModel
 import com.lvrmrc.moneybook.presentation.viewmodel.TransactionViewModel
 import com.lvrmrc.moneybook.utils.NumberUtils
@@ -68,7 +68,7 @@ private fun TransactionScreen(
     notes: String = "",
     date: LocalDateTime = LocalDateTime.now(),
     category: Category? = null,
-    categories: List<Category> = emptyList(),
+    categories: List<Category>,
     isUpdate: Boolean = false,
     fabEnabled: Boolean = false,
     onSetAmount: (String) -> Unit = {},
@@ -77,13 +77,19 @@ private fun TransactionScreen(
     onSetCategory: (Category?) -> Unit = {},
     onUpdate: () -> Unit = {}
 ) {
-    val fabText = if (isUpdate) stringResource(R.string.update) else stringResource(R.string.add_transaction)
+    val fabText = if (isUpdate) R.string.update else R.string.add_transaction
+    val headerText = if (isUpdate) R.string.update_transaction else R.string.add_new_transaction
 
-    FABLayout(fabText = fabText, fabEnabled = fabEnabled, onFabAction = { onUpdate() }) {
+    FABLayout(topBar = {
+        ScreenHeader(
+            title = stringResource(
+                headerText
+            ), color = colorScheme.primary
+        )
+    }, fabText = stringResource(fabText), fabEnabled = fabEnabled, onFabAction = { onUpdate() }) {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState()),
+            modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween
+//                .verticalScroll(rememberScrollState()),
         ) {
             LabeledSection(horizontalArrangement = Arrangement.Center) {
                 TextField(
@@ -110,8 +116,7 @@ private fun TransactionScreen(
 //                modifier = Modifier.weight(1f, true),
                 sectionTitle = stringResource(R.string.category), horizontalArrangement = Arrangement.spacedBy(15.dp)
             ) {
-
-                CategoriesGrid(categories, selected = category, onSelected = {
+                CategoriesGrid(categories.slice(0..6), selected = category, onSelected = {
                     onSetCategory(it)
                 })
 
@@ -150,7 +155,7 @@ private fun TransactionScreen(
 @Composable
 private fun TransactionScreenPreview(
 ) {
-    AppLayout {
-        TransactionScreen(amount = "")
+    NavProvider {
+        TransactionScreen(categories = expenseCategories)
     }
 }

@@ -18,8 +18,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.AppLayout
-import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.FABLayout
 
 /**
  * Full width section with title
@@ -27,20 +25,18 @@ import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.FABLayout
 @Composable
 fun LabeledSection(
     modifier: Modifier = Modifier,
-    fillHeight: Boolean = false,
     sectionTitle: String = "",
     titleColor: Color = colorScheme.primary,
     horizontalArrangement: Arrangement.Horizontal = Arrangement.SpaceBetween,
     topRightContent: @Composable () -> Unit = {},
     content: @Composable () -> Unit = {},
 ) {
-
     Column(modifier) {
         if (sectionTitle.isNotBlank()) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(15.dp),
+                    .padding(0.dp, 0.dp, 0.dp, 16.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -49,31 +45,25 @@ fun LabeledSection(
             }
         }
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(15.dp), horizontalArrangement, verticalAlignment = Alignment.Top
+            modifier = Modifier.fillMaxWidth(), horizontalArrangement, verticalAlignment = Alignment.Top
         ) { content() }
 
     }
 }
 
-@Preview
 @Composable
+@Preview(showBackground = true)
 fun LabeledSectionPreview(
 ) {
-    AppLayout {
-        FABLayout {
-            Column() {
-                LabeledSection(sectionTitle = "Section 1", content = {
-                    Icon(Icons.Rounded.Home, "Test")
-                })
-                LabeledSection(sectionTitle = "Section 2", content = {
-                    Icon(Icons.Rounded.Home, "Test")
-                })
-                LabeledSection(fillHeight = true, sectionTitle = "Section 3", content = {
-                    Icon(Icons.Rounded.Home, "Test")
-                })
-            }
-        }
+    Column() {
+        LabeledSection(sectionTitle = "Section 1", content = {
+            Icon(Icons.Rounded.Home, "Test")
+        })
+        LabeledSection(sectionTitle = "Section 2", content = {
+            Icon(Icons.Rounded.Home, "Test")
+        })
+        LabeledSection(sectionTitle = "Section 3", content = {
+            Icon(Icons.Rounded.Home, "Test")
+        })
     }
 }

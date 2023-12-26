@@ -64,10 +64,10 @@ fun BottomBarLayout(
         }
     }
 
-    navController.addOnDestinationChangedListener { _, destination, _ ->
-        bottomBarVisible.value = Screen.hasNavbar(destination.route)
-        fabVisible.value = Screen.hasFAB(destination.route)
-    }
+//    navController.addOnDestinationChangedListener { _, destination, _ ->
+//        bottomBarVisible.value = Screen.hasNavbar(destination.route)
+//        fabVisible.value = Screen.hasFAB(destination.route)
+//    }
 }
 
 

@@ -18,6 +18,18 @@
     <string name="confirm_deletion">Conferma eliminazione</string>
     <string name="transaction_delete_msg">Vuoi davvero eliminare la transazione \"%1$s\" ?</string>
     <string name="open_date_picker">Apri calendario</string>
-    <string name="no_transactions">nessuna transazione</string>
+    <string name="no_transactions">Nessuna transazione</string>
     <string name="open_categories_screen">Apri schermata categorie</string>
+    <string name="add_category">Aggiungi categoria</string>
+    <string name="label">Etichetta</string>
+    <string name="color">Colore</string>
+    <string name="icon">Icona</string>
+    <string name="type">Tipologia</string>
+    <string name="icons">Icone</string>
+    <string name="open_icons_screen">Apri libreria icone</string>
+    <string name="open_home_screen">Apri schermata home</string>
+    <string name="add_new_category">Nuova categoria</string>
+    <string name="update_category">Aggiorna categoria</string>
+    <string name="update_transaction">Aggiorna transazione</string>
+    <string name="add_new_transaction">Nuova transazione</string>
 </resources>

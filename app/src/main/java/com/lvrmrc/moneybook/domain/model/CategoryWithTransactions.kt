@@ -14,6 +14,7 @@ data class CategoryWithTransactions(
     override val label: String,
     override val icon: ImageVector,
     override val color: Color,
+    override val type: TransactionType,
     override val lightText: Boolean,
     var transactions: ArrayList<Transaction>,
     var total: Double

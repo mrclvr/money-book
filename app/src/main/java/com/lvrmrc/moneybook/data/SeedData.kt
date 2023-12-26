@@ -14,7 +14,6 @@ import com.lvrmrc.moneybook.presentation.ui.theme.triadic1_500
 import com.lvrmrc.moneybook.presentation.ui.theme.triadic2_500
 import java.util.UUID
 
-
 val colorsMap = mapOf(
     ColorName.Primary300 to primary,
     ColorName.Primary500 to primary500,

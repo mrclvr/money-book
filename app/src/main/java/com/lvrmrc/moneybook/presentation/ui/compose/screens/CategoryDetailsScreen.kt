@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -16,10 +17,10 @@ import com.lvrmrc.moneybook.data.expenseCategories
 import com.lvrmrc.moneybook.data.mockTransactions
 import com.lvrmrc.moneybook.domain.model.Category
 import com.lvrmrc.moneybook.domain.model.Transaction
-import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.ScreenHeader
 import com.lvrmrc.moneybook.presentation.ui.compose.components.TransactionsListItem
-import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.AppLayout
 import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.NavProvider
+import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.ScreenHeader
+import com.lvrmrc.moneybook.presentation.ui.compose.navigation.navigateDefault
 import com.lvrmrc.moneybook.presentation.viewmodel.AppViewModel
 import com.lvrmrc.moneybook.presentation.viewmodel.CategoryDetailsViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -38,12 +39,6 @@ fun CategoryDetailsScreen(
         }
     }
 
-//    SideEffect {
-//        if (vm.transactions.isEmpty()) {
-//            navController.navigate(Screen.Home.route)
-//        }
-//    }
-
     CategoryDetailsScreen(category = vm.category, transactions = vm.transactions, onDelete = { id ->
         vm.deleteTransaction(id)
     })
@@ -57,33 +52,23 @@ private fun CategoryDetailsScreen(
 ) {
     val navController = LocalNavController.current
 
+    if (transactions.isEmpty()) {
+        navController.navigateDefault(Screen.Home.route)
+    }
+
     if (category != null) {
         Column() {
             ScreenHeader(category.label, category.color)
             LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(15.dp),
-                verticalArrangement = Arrangement.spacedBy(15.dp)
+                modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(15.dp), verticalArrangement = Arrangement.spacedBy(15.dp)
 
             ) {
-                items(transactions.size) { idx ->
-
-                    val transaction: Transaction = transactions[idx]
-
-                    TransactionsListItem(transaction, category, onDelete = { onDelete(transaction.id) }) {
-                        navController.navigate("${Screen.Transaction.route}?transactionId=${transaction.id}") {
-                            navController.graph.route?.let { route ->
-                                popUpTo(route) {
-                                    saveState = true
-                                }
-                            }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
+                items(transactions) { trans ->
+                    TransactionsListItem(trans, category, onDelete = { onDelete(trans.id) }) {
+                        navController.navigateDefault("${Screen.Transaction.route}?transactionId=${trans.id}")
                     }
                 }
             }
-
         }
     }
 }
@@ -94,8 +79,6 @@ private fun CategoryDetailsScreen(
 private fun TransactionsDetailsScreenPreview(
 ) {
     NavProvider {
-        AppLayout {
-            CategoryDetailsScreen(expenseCategories[0], mockTransactions)
-        }
+        CategoryDetailsScreen(expenseCategories[0], mockTransactions)
     }
 }

@@ -12,9 +12,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.lvrmrc.moneybook.LocalNavController
-import com.lvrmrc.moneybook.presentation.ui.compose.screens.CategoriesScreen
+import com.lvrmrc.moneybook.domain.model.IconLabel
+import com.lvrmrc.moneybook.presentation.ui.compose.screens.CategoriesGridScreen
 import com.lvrmrc.moneybook.presentation.ui.compose.screens.CategoryDetailsScreen
+import com.lvrmrc.moneybook.presentation.ui.compose.screens.CategoryScreen
 import com.lvrmrc.moneybook.presentation.ui.compose.screens.HomeScreen
+import com.lvrmrc.moneybook.presentation.ui.compose.screens.IconsLibraryScreen
 import com.lvrmrc.moneybook.presentation.ui.compose.screens.Screen
 import com.lvrmrc.moneybook.presentation.ui.compose.screens.TransactionScreen
 import com.lvrmrc.moneybook.presentation.viewmodel.AppViewModel
@@ -56,7 +59,7 @@ fun NavGraph() {
         }
 
         /**
-         * Transactions Details
+         * Category Details
          */
         composable(route = "${Screen.CategoryDetails.route}/{categoryId}") { entry ->
             val appVm = entry.viewModel<AppViewModel>(navController)
@@ -85,7 +88,24 @@ fun NavGraph() {
             )
         }) { entry ->
             val appVm = entry.viewModel<AppViewModel>(navController)
-            CategoriesScreen(appVm)
+            CategoriesGridScreen(appVm)
+        }
+
+        /**
+         * Category
+         */
+        composable(
+            route = "${Screen.Category.route}?categoryId={categoryId}", arguments = listOf(navArgument("categoryId") { nullable = true })
+        ) { entry ->
+            val selectedIcon = entry.savedStateHandle.get<IconLabel>("iconLabel")
+            CategoryScreen(iconLabel = selectedIcon)
+        }
+
+        /**
+         * Icons library
+         */
+        composable(route = Screen.IconsLibrary.route) {
+            IconsLibraryScreen()
         }
     }
 //    }
@@ -103,6 +123,23 @@ inline fun <reified T : ViewModel> NavBackStackEntry.viewModel(navController: Na
     }
 
     return hiltViewModel(parentEntry)
+}
+
+/**
+ * Navigates to route with save state options
+ */
+fun NavHostController.navigateDefault(routeName: String) {
+    val navController = this
+
+    navController.navigate(routeName) {
+        navController.graph.route?.let { route ->
+            popUpTo(route) {
+                saveState = true
+            }
+        }
+        launchSingleTop = true
+        restoreState = true
+    }
 }
 
 

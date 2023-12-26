@@ -4,6 +4,8 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
@@ -12,8 +14,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.lvrmrc.moneybook.LocalNavController
+import com.lvrmrc.moneybook.presentation.ui.compose.navigation.navigateDefault
 import com.lvrmrc.moneybook.presentation.ui.compose.screens.Screen
-import com.lvrmrc.moneybook.presentation.ui.theme.MoneyBookTheme
 
 @Composable
 fun AnimatedAppFAB(modifier: Modifier = Modifier, showFAB: Boolean) {
@@ -21,16 +23,7 @@ fun AnimatedAppFAB(modifier: Modifier = Modifier, showFAB: Boolean) {
 
     AnimatedVisibility(visible = showFAB, enter = scaleIn(), exit = scaleOut(), content = {
         AppFAB(modifier = modifier, onClick = {
-            navController.navigate(Screen.Transaction.route) {
-
-                navController.graph.route?.let { route ->
-                    popUpTo(route) {
-                        saveState = true
-                    }
-                }
-                launchSingleTop = true
-                restoreState = true
-            }
+            navController.navigateDefault(Screen.Transaction.route)
         })
     })
 }
@@ -48,14 +41,14 @@ fun AppFAB(modifier: Modifier = Modifier, onClick: () -> Unit = {}) {
         },
         elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
     ) {
-        Icon(Screen.Transaction.icon, Screen.Transaction.label)
+        Icon(Icons.Filled.Add, Screen.Transaction.label)
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun AppFABPreview() {
-    MoneyBookTheme {
+    NavProvider {
         AnimatedAppFAB(showFAB = true)
     }
 }

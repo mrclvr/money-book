@@ -3,6 +3,8 @@ package com.lvrmrc.moneybook.deprecated
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.QuestionMark
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme.colorScheme
@@ -52,7 +54,7 @@ fun AppNavBar(navController: NavHostController, screens: ArrayList<Screen>) {
                 }
             },
                 selected = currentRoute?.hierarchy?.any { it.route == screen.route } == true,
-                icon = { Icon(imageVector = screen.icon, contentDescription = screen.label) },
+                icon = { Icon(imageVector = screen.icon ?: Icons.Filled.QuestionMark, contentDescription = screen.label) },
                 label = { Text(text = screen.label, fontSize = 9.sp) })
         }
     })

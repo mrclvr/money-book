@@ -3,10 +3,13 @@ package com.lvrmrc.moneybook.presentation.ui.compose.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Delete
@@ -47,26 +50,28 @@ fun TransactionsListItem(transaction: Transaction, category: Category, onDelete:
     )
     Card(
         shape = RoundedCornerShape(16.dp), elevation = CardDefaults.cardElevation(
-            defaultElevation = 6.dp
+            defaultElevation = 4.dp
         )
     ) {
         var showDialog by remember { mutableStateOf(false) }
 
         LabeledSection(modifier = Modifier
             .background(gradient)
+            .padding(8.dp)
             .clickable { onClick() },
             sectionTitle = transaction.date.localFormat() ?: stringResource(R.string.undefined_date),
             titleColor = category.color.darken(0.3f),
             topRightContent = {
-//                IconButton(modifier = Modifier.size(32.dp), colors = IconButtonDefaults.filledTonalIconButtonColors(
-//                    containerColor = colorScheme.error, contentColor = colorScheme.onError
-
-                Icon(
-                    Icons.Outlined.Delete,
-                    stringResource(R.string.delete_transaction),
-                    Modifier.clickable { showDialog = true },
-                    colorScheme.error
-                )
+                Box(modifier = Modifier
+                    .size(32.dp)
+                    .background(colorScheme.background, CircleShape), contentAlignment = Alignment.Center) {
+                    Icon(
+                        Icons.Outlined.Delete,
+                        stringResource(R.string.delete_transaction),
+                        Modifier.clickable { showDialog = true },
+                        colorScheme.error
+                    )
+                }
 
                 if (showDialog) {
                     CustomAlertDialog(title = stringResource(R.string.confirm_deletion),
@@ -77,7 +82,6 @@ fun TransactionsListItem(transaction: Transaction, category: Category, onDelete:
                             showDialog = false
                         })
                 }
-//                }
             }) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -98,7 +102,6 @@ fun TransactionsListItem(transaction: Transaction, category: Category, onDelete:
                 Text(
                     text = "${
                         transaction.amount.removeDecimal()
-//                        NumberUtils.removeDecimal(transaction.amount)
                     }€", fontSize = 20.sp
                 )
             }
@@ -111,10 +114,16 @@ fun TransactionsListItem(transaction: Transaction, category: Category, onDelete:
 @Composable
 private fun TransactionsListItemPreview() {
     NavProvider {
-        Column(verticalArrangement = Arrangement.spacedBy(20.dp)) {
-            TransactionsListItem(mockTransactions[0], expenseCategories[0])
-            TransactionsListItem(mockTransactions[0], expenseCategories[0])
-            TransactionsListItem(mockTransactions[0], expenseCategories[0])
+        LazyColumn(verticalArrangement = Arrangement.spacedBy(20.dp)) {
+            item {
+                TransactionsListItem(mockTransactions[0], expenseCategories[0])
+            }
+            item {
+                TransactionsListItem(mockTransactions[0], expenseCategories[0])
+            }
+            item {
+                TransactionsListItem(mockTransactions[0], expenseCategories[0])
+            }
         }
     }
 }

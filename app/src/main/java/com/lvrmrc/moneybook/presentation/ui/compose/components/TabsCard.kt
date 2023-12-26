@@ -31,9 +31,7 @@ import com.lvrmrc.moneybook.domain.model.TransactionPeriod
 import com.lvrmrc.moneybook.domain.model.periodIntMap
 import com.lvrmrc.moneybook.domain.model.periodTabs
 import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.AnimatedAppFAB
-import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.LocalFabVisible
 import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.NavProvider
-import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.TabsLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -64,15 +62,6 @@ fun TabsCard(
         Column {
             TabRow(
                 selectedTabIndex = pagerState.currentPage,
-//                containerColor = colorScheme.primary,
-//                contentColor = colorScheme.onPrimary,
-//                indicator = @Composable { tabPositions ->
-//                    if (pagerState.currentPage < tabPositions.size) {
-//                        TabRowDefaults.Indicator(
-//                            Modifier.tabIndicatorOffset(tabPositions[pagerState.currentPage]), color = colorScheme.onPrimary
-//                        )
-//                    }
-//                },
             ) {
                 tabs.forEachIndexed { index, tab ->
                     Tab(selected = index == pagerState.currentPage,
@@ -106,7 +95,7 @@ fun TabsCard(
                             .padding(10.dp),
                         horizontalArrangement = Arrangement.End
                     ) {
-                        AnimatedAppFAB(showFAB = LocalFabVisible.current)
+                        AnimatedAppFAB(showFAB = true)
                     }
                 }
             }
@@ -118,8 +107,8 @@ fun TabsCard(
 @Composable
 private fun TabsCardPreview() {
     NavProvider {
-        TabsLayout {
-            TabsCard(periodTabs, TransactionPeriod.MONTH)
-        }
+//        TabsLayout {
+        TabsCard(periodTabs, TransactionPeriod.MONTH)
+//        }
     }
 }

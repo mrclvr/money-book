@@ -13,6 +13,7 @@ val mockCatTransactions = arrayListOf(
         expenseCategories[0].label,
         expenseCategories[0].icon,
         expenseCategories[0].color,
+        TransactionType.EXPENSE,
         expenseCategories[0].lightText,
         arrayListOf(
             Transaction(
@@ -41,6 +42,7 @@ val mockCatTransactions = arrayListOf(
         expenseCategories[1].label,
         expenseCategories[1].icon,
         expenseCategories[1].color,
+        TransactionType.EXPENSE,
         expenseCategories[1].lightText,
         arrayListOf(
             Transaction(

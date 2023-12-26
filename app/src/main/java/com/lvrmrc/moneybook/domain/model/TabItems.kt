@@ -30,8 +30,8 @@ import com.lvrmrc.moneybook.R
 data class TransTypeTabItem(
     override val title: String,
     override val icon: ImageVector,
+    override val onClick: () -> Unit = {},
     override val content: @Composable () -> Unit = {},
-    override val onClick: suspend () -> Unit = {},
     val type: TransactionType
 ) : TabItemInterface
 
@@ -41,8 +41,8 @@ data class TransTypeTabItem(
 data class TransPeriodTabItem(
     override val title: String,
     override val icon: ImageVector,
+    override val onClick: () -> Unit = {},
     override val content: @Composable () -> Unit = {},
-    override val onClick: suspend () -> Unit = {},
     val period: TransactionPeriod
 ) : TabItemInterface
 

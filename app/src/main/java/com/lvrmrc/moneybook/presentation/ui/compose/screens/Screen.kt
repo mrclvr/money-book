@@ -1,26 +1,34 @@
 package com.lvrmrc.moneybook.presentation.ui.compose.screens
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.AccountBalanceWallet
-import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.Addchart
-import androidx.compose.material.icons.rounded.ArrowUpward
+import androidx.compose.material.icons.filled.GridView
+import androidx.compose.material.icons.filled.PostAdd
+import androidx.compose.material.icons.filled.Savings
+import androidx.compose.material.icons.outlined.EmojiSymbols
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.lvrmrc.moneybook.domain.model.defaultIcon
 
 enum class ScreenName {
-    HOME, TRANSACTION, TRANSACTIONS_DETAILS, CATEGORIES
+    HOME, TRANSACTION, TRANSACTIONS_DETAILS, CATEGORIES, CATEGORY, ICONS_LIBRARY
 }
 
-//Aggiungere icona piena se selezionato
-sealed class Screen(val route: String, val label: String, val icon: ImageVector, val bottomBar: Boolean = true, val fab: Boolean = true) {
-    data object Home : Screen(ScreenName.HOME.name, "Home", Icons.Rounded.ArrowUpward, bottomBar = true)
-    data object Transaction : Screen(ScreenName.TRANSACTION.name, "Transactions", Icons.Rounded.Add, bottomBar = false, fab = false)
+sealed class Screen(
+    val route: String, val label: String, val icon: ImageVector = defaultIcon, val bottomBar: Boolean = true, val fab: Boolean = true
+) {
+    data object Home : Screen(ScreenName.HOME.name, "Home", Icons.Filled.Savings)
+    data object Transaction : Screen(ScreenName.TRANSACTION.name, "Transaction")
     data object CategoryDetails : Screen(
-        ScreenName.TRANSACTIONS_DETAILS.name, "Transactions Details", Icons.Rounded.AccountBalanceWallet, bottomBar = false, fab = false
+        ScreenName.TRANSACTIONS_DETAILS.name, "Transactions details"
     )
 
     data object Categories : Screen(
-        ScreenName.CATEGORIES.name, "Categories", Icons.Rounded.Addchart, bottomBar = false, fab = false
+        ScreenName.CATEGORIES.name, "Categories", Icons.Filled.GridView
+    )
+
+    data object Category : Screen(ScreenName.CATEGORY.name, "Category", Icons.Filled.PostAdd)
+
+    data object IconsLibrary : Screen(
+        ScreenName.ICONS_LIBRARY.name, "Icons", Icons.Outlined.EmojiSymbols
     )
 
     companion object {

@@ -55,7 +55,7 @@ class AppViewModel @Inject constructor(
         setCategories()
     }
 
-    private fun setCategories() {
+    fun setCategories() {
         viewModelScope.launch {
             _categories = categoryRepo.getAll()
         }

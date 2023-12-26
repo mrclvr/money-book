@@ -2,6 +2,7 @@ package com.lvrmrc.moneybook.presentation.ui.compose.components.layout
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -18,10 +19,13 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun FABLayout(
-    fabText: String = "Text", fabEnabled: Boolean = false, onFabAction: () -> Unit = {}, content: @Composable() () -> Unit = {}
+    topBar: @Composable () -> Unit = {},
+    fabText: String = "Text",
+    fabEnabled: Boolean = false,
+    onFabAction: () -> Unit = {},
+    content: @Composable() () -> Unit = {}
 ) {
-
-    Scaffold(modifier = Modifier.fillMaxSize(), floatingActionButtonPosition = FabPosition.Center, floatingActionButton = {
+    Scaffold(modifier = Modifier.fillMaxSize(), topBar = topBar, floatingActionButtonPosition = FabPosition.Center, floatingActionButton = {
         Button(
             onClick = {
                 onFabAction()
@@ -38,9 +42,15 @@ fun FABLayout(
             modifier = Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
-                .padding(paddingValues = it),
+                .padding(paddingValues = it)
         ) {
-            content()
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp, 16.dp, 16.dp, 84.dp)
+            ) {
+                content()
+            }
         }
     }
 }
@@ -50,6 +60,6 @@ fun FABLayout(
 @Composable
 fun FABLayoutPreview() {
     AppLayout {
-        FABLayout()
+        FABLayout(topBar = { ScreenHeader(title = "Top bar", color = MaterialTheme.colorScheme.primary) })
     }
 }

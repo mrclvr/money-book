@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
@@ -20,10 +21,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.lvrmrc.moneybook.domain.model.Category
 import com.lvrmrc.moneybook.domain.model.IconLabel
+import com.lvrmrc.moneybook.domain.model.TransactionType
 import com.lvrmrc.moneybook.domain.model.outlinedIcons
 import com.lvrmrc.moneybook.presentation.ui.theme.primary200
 import java.util.UUID
@@ -32,7 +36,7 @@ import java.util.UUID
  * Single category clickable item
  */
 @Composable
-fun CategoryItem(category: Category, selected: Boolean = true, onClick: (Boolean) -> Unit = {}) {
+fun CategoryGridItem(category: Category, selected: Boolean = true, onClick: (Boolean) -> Unit = {}) {
 
     @Composable
     fun getColor(): Color {
@@ -42,16 +46,15 @@ fun CategoryItem(category: Category, selected: Boolean = true, onClick: (Boolean
         }
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .aspectRatio(1f)
-            .clip(shape = RoundedCornerShape(8.dp))
-            .background(if (selected) category.color else Color.Transparent)
-            .clickable { onClick(!selected) },
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .aspectRatio(1f)
+        .clip(shape = RoundedCornerShape(8.dp))
+        .background(if (selected) category.color else Color.Transparent)
+        .clickable { onClick(!selected) }
+        .padding(4.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceAround
-    ) {
+        verticalArrangement = Arrangement.SpaceBetween) {
         Box(
             modifier = Modifier
                 .size(56.dp)
@@ -63,27 +66,29 @@ fun CategoryItem(category: Category, selected: Boolean = true, onClick: (Boolean
             )
         }
         Text(
-            text = category.label, color = if (selected) getColor() else colorScheme.onBackground
+            text = category.label,
+            fontSize = 14.sp,
+            fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal,
+            color = if (selected) getColor() else colorScheme.onBackground
         )
-
     }
-
 }
 
 @Composable
 @Preview
-fun CategoryItemPreview() {
+fun CategoryGridItemPreview() {
     Box(
         modifier = Modifier
             .width(100.dp)
             .height(100.dp)
     ) {
-        CategoryItem(
+        CategoryGridItem(
             Category(
                 id = UUID.fromString("5757edd4-4ea0-4a5c-936b-d094c2a9bb28"),
                 label = "Test",
                 icon = outlinedIcons[IconLabel.ReceiptLong]!!,
                 color = primary200,
+                type = TransactionType.EXPENSE,
                 lightText = false,
             )
         )

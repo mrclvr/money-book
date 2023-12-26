@@ -1,6 +1,7 @@
 package com.lvrmrc.moneybook.domain.model
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.QuestionMark
 import androidx.compose.ui.graphics.vector.ImageVector
 import java.util.Locale
 
@@ -8,7 +9,7 @@ import java.util.Locale
  * Icon names identifiers
  */
 enum class IconLabel {
-    MonitorHeart, House, School, ShoppingBasket, ShoppingCart, DirectionsCar, LocalGasStation, ReceiptLong, LocalBar
+    DEFAULT, MonitorHeart, House, School, ShoppingBasket, ShoppingCart, DirectionsCar, LocalGasStation, ReceiptLong, LocalBar
 }
 
 /**
@@ -26,6 +27,8 @@ enum class IconStyle {
  */
 fun getIconByName(label: IconLabel, style: IconStyle): ImageVector? {
     return try {
+        if (label == IconLabel.DEFAULT) return Icons.Filled.QuestionMark
+
         val styleClass: Any = when (style) {
             IconStyle.Filled -> Icons.Filled
             IconStyle.Outlined -> Icons.Outlined
@@ -47,15 +50,20 @@ fun getIconByName(label: IconLabel, style: IconStyle): ImageVector? {
  *
  * @param style the style of the icons
  */
-fun getIconsList(style: IconStyle): Map<IconLabel, ImageVector> {
+fun getIconsMap(style: IconStyle, labels: List<IconLabel> = IconLabel.entries): Map<IconLabel, ImageVector> {
     val icons = mutableMapOf<IconLabel, ImageVector>()
-    IconLabel.entries.forEach {
-        getIconByName(it, style)?.let { found -> icons[it] = found }
+    labels.forEach {
+        getIconByName(it, style).let { found -> if (found !== null) icons[it] = found }
     }
     return icons
 }
 
-val defaultIcons: Map<IconLabel, ImageVector> = getIconsList(IconStyle.Default)
-val outlinedIcons: Map<IconLabel, ImageVector> = getIconsList(IconStyle.Outlined)
-val filledIcons: Map<IconLabel, ImageVector> = getIconsList(IconStyle.Filled)
-val roundedIcons: Map<IconLabel, ImageVector> = getIconsList(IconStyle.Rounded)
+fun getIconLabel(iconsMap: Map<IconLabel, ImageVector>, icon: ImageVector): IconLabel =
+    iconsMap.entries.find { it.value == icon }?.key ?: IconLabel.DEFAULT
+
+val defaultIcon = Icons.Filled.QuestionMark
+
+val defaultIcons: Map<IconLabel, ImageVector> = getIconsMap(IconStyle.Default)
+val outlinedIcons: Map<IconLabel, ImageVector> = getIconsMap(IconStyle.Outlined)
+val filledIcons: Map<IconLabel, ImageVector> = getIconsMap(IconStyle.Filled)
+val roundedIcons: Map<IconLabel, ImageVector> = getIconsMap(IconStyle.Rounded)

@@ -36,12 +36,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.lvrmrc.moneybook.MoneyBookApp
-import com.lvrmrc.moneybook.R
 import com.lvrmrc.moneybook.data.mockCatTransactions
 import com.lvrmrc.moneybook.domain.model.CategoryWithTransactions
-import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.TabsLayout
-import com.lvrmrc.moneybook.presentation.ui.theme.MoneyBookTheme
+import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.NavProvider
 import com.lvrmrc.moneybook.presentation.ui.theme.primary
 import com.lvrmrc.moneybook.utils.removeDecimal
 import com.lvrmrc.moneybook.utils.toFloatPercentage
@@ -126,8 +123,7 @@ fun PieChart(
                         }
                     }
                 }
-                val textString = text
-                    ?: if (data.isNotEmpty()) "${totalSum.removeDecimal()}€" else MoneyBookApp.instance.getString(R.string.no_transactions)
+                val textString = text ?: if (data.isNotEmpty()) "${totalSum.removeDecimal()}€" else ""
                 val annotatedString = buildAnnotatedString {
                     withStyle(
                         style = SpanStyle(
@@ -143,12 +139,6 @@ fun PieChart(
 //                    constraints = Constraints(maxWidth = maxSize)
                 )
                 val textSize = textLayoutResult.size
-
-//                drawCircle(
-//                    color = primary100,
-//                    radius = (radiusOuter - chartBarWidth / 2f).toPx(),
-//                    center = this.center,
-//                )
 
                 drawText(
                     textMeasurer = textMeasurer,
@@ -181,7 +171,6 @@ fun DetailsPieChart(
             .fillMaxWidth()
             .padding(top = 80.dp)
     ) {
-        // create the data items
         data.values.forEachIndexed { index, value ->
             DetailsPieChartItem(
                 data = Pair(data.keys.elementAt(index), value), color = colors[index]
@@ -236,15 +225,11 @@ fun DetailsPieChartItem(
 }
 
 @Composable
-@Preview
+@Preview(showBackground = true)
 fun PieChartPreview() {
-    MoneyBookTheme {
-//        ComposeLocalWrapper {
-        TabsLayout {
-            PieChart(
-                mockCatTransactions, text = "123123"
-            )
-        }
-//        }
+    NavProvider {
+        PieChart(
+            mockCatTransactions
+        )
     }
 }

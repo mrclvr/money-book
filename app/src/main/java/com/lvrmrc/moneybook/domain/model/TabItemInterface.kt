@@ -9,7 +9,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 interface TabItemInterface {
     val title: String
     val icon: ImageVector
+    val onClick: () -> Unit
     val content: @Composable () -> Unit
-    val onClick: suspend () -> Unit
 }
 
