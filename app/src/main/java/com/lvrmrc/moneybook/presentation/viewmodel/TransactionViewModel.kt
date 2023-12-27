@@ -85,9 +85,15 @@ class TransactionViewModel @Inject constructor(
                     _notes = notes
                     _amount = amount.removeDecimal().toString()
                     _date = date
-                    _category = categoryId.let { cat -> categoryRepo.getById(cat) }
+                    loadCategory(categoryId)
                 }
             }
+        }
+    }
+
+    fun loadCategory(categoryId: UUID) {
+        viewModelScope.launch {
+            setCategory(categoryId.let { categoryRepo.getById(it) })
         }
     }
 

@@ -13,14 +13,15 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.lvrmrc.moneybook.LocalNavController
 import com.lvrmrc.moneybook.domain.model.IconLabel
-import com.lvrmrc.moneybook.presentation.ui.compose.screens.CategoriesGridScreen
-import com.lvrmrc.moneybook.presentation.ui.compose.screens.CategoryDetailsScreen
+import com.lvrmrc.moneybook.presentation.ui.compose.screens.CategoriesLibraryScreen
 import com.lvrmrc.moneybook.presentation.ui.compose.screens.CategoryScreen
+import com.lvrmrc.moneybook.presentation.ui.compose.screens.CategoryTransactionsScreen
 import com.lvrmrc.moneybook.presentation.ui.compose.screens.HomeScreen
 import com.lvrmrc.moneybook.presentation.ui.compose.screens.IconsLibraryScreen
 import com.lvrmrc.moneybook.presentation.ui.compose.screens.Screen
 import com.lvrmrc.moneybook.presentation.ui.compose.screens.TransactionScreen
 import com.lvrmrc.moneybook.presentation.viewmodel.AppViewModel
+import java.util.UUID
 
 const val rootRoute = "ROOT"
 val innerRootRoute = Screen.Home.route
@@ -54,23 +55,24 @@ fun NavGraph() {
                     towards = AnimatedContentTransitionScope.SlideDirection.Down, animationSpec = tween(300)
                 )
             }) { entry ->
+            val categoryId = entry.savedStateHandle.get<UUID>("categoryId")
             val appVm = entry.viewModel<AppViewModel>(navController)
-            TransactionScreen(appVm)
+            TransactionScreen(categoryId, appVm)
         }
 
         /**
          * Category Details
          */
-        composable(route = "${Screen.CategoryDetails.route}/{categoryId}") { entry ->
+        composable(route = "${Screen.CategoryTransactions.route}/{categoryId}") { entry ->
             val appVm = entry.viewModel<AppViewModel>(navController)
-            CategoryDetailsScreen(appVm)
+            CategoryTransactionsScreen(appVm)
 
         }
 
         /**
          * Categories
          */
-        composable(route = Screen.Categories.route, enterTransition = {
+        composable(route = Screen.CategoriesLibrary.route, enterTransition = {
             slideIntoContainer(
                 AnimatedContentTransitionScope.SlideDirection.Left, animationSpec = tween(700)
             )
@@ -88,7 +90,7 @@ fun NavGraph() {
             )
         }) { entry ->
             val appVm = entry.viewModel<AppViewModel>(navController)
-            CategoriesGridScreen(appVm)
+            CategoriesLibraryScreen(appVm)
         }
 
         /**

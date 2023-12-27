@@ -22,8 +22,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.lvrmrc.moneybook.LocalNavController
+import com.lvrmrc.moneybook.data.outlinedIcons
 import com.lvrmrc.moneybook.domain.model.IconLabel
-import com.lvrmrc.moneybook.domain.model.outlinedIcons
 import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.AppLayout
 import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.NavProvider
 import com.lvrmrc.moneybook.presentation.ui.compose.navigation.navigateDefault
@@ -49,15 +49,6 @@ fun IconsGrid(
             val isSelected: Boolean = icon.second == selected
             IconGridItem(icon.second, selectedColor, isSelected, onClick = { onSelected(icon.second) })
         }
-//        items(icons.size) { idx ->
-//            val iconLabel: IconLabel = IconLabel.entries[idx]
-//            val icon: ImageVector? = icons[iconLabel]
-//            val isSelected: Boolean = icon == selected
-//
-//            if (icon != null) {
-//                IconGridItem(icon, selectedColor, isSelected, onClick = { onSelected(icon) })
-//            }
-//        }
 
         if (showMore) {
             item {

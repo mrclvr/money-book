@@ -34,4 +34,7 @@
     <string name="update_category">Update category</string>
     <string name="update_transaction">Update transaction</string>
     <string name="add_new_transaction">New transaction</string>
+    <string name="more_categories">More categories</string>
+    <string name="delete_category">Delete category</string>
+    <string name="category_delete_msg">Do you really want to delete \"%1$s\" category?</string>
 </resources>

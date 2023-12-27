@@ -11,6 +11,7 @@ import javax.inject.Singleton
  */
 @Singleton
 interface CategoryRepository {
+    suspend fun deleteById(id: UUID)
     suspend fun insert(category: CategoryEntity)
     suspend fun getById(id: UUID): Category
     suspend fun getAll(): List<Category>

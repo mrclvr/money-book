@@ -29,7 +29,7 @@ import kotlinx.coroutines.launch
 import java.util.UUID
 
 @Composable
-fun CategoryDetailsScreen(
+fun CategoryTransactionsScreen(
     appVm: AppViewModel = hiltViewModel(), vm: CategoryDetailsViewModel = hiltViewModel()
 ) {
 
@@ -39,22 +39,22 @@ fun CategoryDetailsScreen(
         }
     }
 
-    CategoryDetailsScreen(category = vm.category, transactions = vm.transactions, onDelete = { id ->
+    CategoryTransactionsScreen(category = vm.category, transactions = vm.transactions, onDelete = { id ->
         vm.deleteTransaction(id)
     })
 }
 
 @Composable
-private fun CategoryDetailsScreen(
+private fun CategoryTransactionsScreen(
     category: Category?,
     transactions: List<Transaction>,
     onDelete: (UUID) -> Unit = {},
 ) {
     val navController = LocalNavController.current
 
-    if (transactions.isEmpty()) {
-        navController.navigateDefault(Screen.Home.route)
-    }
+//    if (transactions.isEmpty()) {
+//        navController.navigateDefault(Screen.Home.route)
+//    }
 
     if (category != null) {
         Column() {
@@ -76,9 +76,9 @@ private fun CategoryDetailsScreen(
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-private fun TransactionsDetailsScreenPreview(
+private fun CategoryTransactionsScreenPreview(
 ) {
     NavProvider {
-        CategoryDetailsScreen(expenseCategories[0], mockTransactions)
+        CategoryTransactionsScreen(expenseCategories[0], mockTransactions)
     }
 }

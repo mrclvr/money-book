@@ -64,22 +64,3 @@ fun Modifier.customTabIndicatorOffset(
         .offset(x = indicatorOffset)
         .width(currentTabWidth)
 }
-
-val periodTabs: List<TransPeriodTabItem> = listOf(
-    TransPeriodTabItem(
-        title = R.string.day, icon = Icons.Filled.Today, period = TransactionPeriod.DAY
-    ), TransPeriodTabItem(
-        title = R.string.month, icon = Icons.Filled.CalendarMonth, period = TransactionPeriod.MONTH
-    ), TransPeriodTabItem(
-        title = R.string.year, icon = Icons.Filled.EditCalendar, period = TransactionPeriod.YEAR
-    )
-)
-
-val transactionsTabs: List<TransTypeTabItem> = listOf(
-    TransTypeTabItem(
-        title = R.string.expense, icon = Icons.Filled.ArrowUpward, type = TransactionType.EXPENSE
-    ),
-    TransTypeTabItem(
-        title = R.string.income, icon = Icons.Filled.ArrowDownward, type = TransactionType.INCOME
-    ),
-)

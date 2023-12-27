@@ -22,8 +22,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.lvrmrc.moneybook.data.outlinedIcons
 import com.lvrmrc.moneybook.domain.model.IconLabel
-import com.lvrmrc.moneybook.domain.model.outlinedIcons
 
 /**
  * Single icon clickable item

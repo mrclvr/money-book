@@ -106,4 +106,18 @@ class CategoryViewModel @Inject constructor(
             }
         }
     }
+
+
+    /**
+     * Deletes a category from database
+     */
+    fun deleteCategory() {
+        categoryId?.let {
+            viewModelScope.launch {
+                categoryRepo.deleteById(
+                    UUID.fromString(it)
+                )
+            }
+        }
+    }
 }

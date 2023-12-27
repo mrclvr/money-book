@@ -13,6 +13,12 @@ import javax.inject.Singleton
  */
 @Singleton
 class CategoryRepositoryImpl @Inject constructor(private val categoryDao: CategoryDao) : CategoryRepository {
+    /**
+     * Deletes category by its id
+     *
+     * @param id  the category's UUID
+     */
+    override suspend fun deleteById(id: UUID) = categoryDao.deleteById(id)
 
     /**
      * Inserts new category

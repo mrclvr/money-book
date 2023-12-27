@@ -22,6 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -32,9 +33,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.lvrmrc.moneybook.data.transactionsTabs
 import com.lvrmrc.moneybook.domain.model.TransactionType
 import com.lvrmrc.moneybook.domain.model.customTabIndicatorOffset
-import com.lvrmrc.moneybook.domain.model.transactionsTabs
 import com.lvrmrc.moneybook.presentation.ui.compose.navigation.AppDrawer
 import kotlinx.coroutines.launch
 
@@ -47,7 +48,7 @@ fun TabsLayout(
     content: @Composable () -> Unit = {},
 ) {
     val appScope = rememberCoroutineScope()
-//    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
     val snackBarHostState = remember { SnackbarHostState() }
     val currentPage = remember { mutableIntStateOf(index) }
 
@@ -84,21 +85,17 @@ fun TabsLayout(
                 }
             }
         }, topBar = {
-            TopAppBar(
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.Transparent,
-                ),
-                title = {
-                    Text("")
-                },
-                navigationIcon = {
-                    IconButton(onClick = { appScope.launch { drawerState.open() } }) {
-                        Icon(
-                            imageVector = Icons.Filled.Menu, contentDescription = "Open drawer", tint = colorScheme.primary
-                        )
-                    }
-                },
-//                scrollBehavior = scrollBehavior
+            TopAppBar(colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = Color.Transparent,
+            ), title = {
+                Text("")
+            }, navigationIcon = {
+                IconButton(onClick = { appScope.launch { drawerState.open() } }) {
+                    Icon(
+                        imageVector = Icons.Filled.Menu, contentDescription = "Open drawer", tint = colorScheme.primary
+                    )
+                }
+            }, scrollBehavior = scrollBehavior
             )
         }
 
@@ -123,6 +120,6 @@ fun TabsLayout(
 @Composable
 fun TabsLayoutPreview() {
     NavProvider {
-        TabsLayout() {}
+        TabsLayout()
     }
 }

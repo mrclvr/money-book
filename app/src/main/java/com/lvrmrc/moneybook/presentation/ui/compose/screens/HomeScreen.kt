@@ -18,10 +18,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.lvrmrc.moneybook.LocalNavController
 import com.lvrmrc.moneybook.R
 import com.lvrmrc.moneybook.data.mockCatTransactions
+import com.lvrmrc.moneybook.data.periodTabs
 import com.lvrmrc.moneybook.domain.model.CategoryWithTransactions
 import com.lvrmrc.moneybook.domain.model.TransactionPeriod
 import com.lvrmrc.moneybook.domain.model.TransactionType
-import com.lvrmrc.moneybook.domain.model.periodTabs
 import com.lvrmrc.moneybook.domain.model.transTypeIntMap
 import com.lvrmrc.moneybook.presentation.ui.compose.components.ExpensesList
 import com.lvrmrc.moneybook.presentation.ui.compose.components.PieChart
@@ -97,7 +97,7 @@ private fun HomeScreen(
                 }
             })
             ExpensesList(catTransactions, onSetCategory = {
-                navController.navigateDefault("${Screen.CategoryDetails.route}/${it.id}")
+                navController.navigateDefault("${Screen.CategoryTransactions.route}/${it.id}")
             })
         }
     }

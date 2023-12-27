@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,12 +37,19 @@ import com.lvrmrc.moneybook.presentation.viewmodel.TransactionViewModel
 import com.lvrmrc.moneybook.utils.NumberUtils
 import com.lvrmrc.moneybook.utils.localFormat
 import java.time.LocalDateTime
+import java.util.UUID
 
 @Composable
 fun TransactionScreen(
-    appVm: AppViewModel = hiltViewModel(), vm: TransactionViewModel = hiltViewModel()
+    categoryId: UUID?, appVm: AppViewModel = hiltViewModel(), vm: TransactionViewModel = hiltViewModel()
 ) {
     val navController = LocalNavController.current
+
+    LaunchedEffect(key1 = categoryId) {
+        categoryId?.let {
+            vm.loadCategory(categoryId)
+        }
+    }
 
     TransactionScreen(
         amount = vm.amount,
@@ -79,6 +87,16 @@ private fun TransactionScreen(
 ) {
     val fabText = if (isUpdate) R.string.update else R.string.add_transaction
     val headerText = if (isUpdate) R.string.update_transaction else R.string.add_new_transaction
+    val updatedCategories = categories.slice(0..6).toMutableList()
+
+    /**
+     * Replace first category with selected if not visible
+     */
+    category?.let {
+        if (updatedCategories.find { it == category } == null) {
+            updatedCategories[0] = category
+        }
+    }
 
     FABLayout(topBar = {
         ScreenHeader(
@@ -116,7 +134,7 @@ private fun TransactionScreen(
 //                modifier = Modifier.weight(1f, true),
                 sectionTitle = stringResource(R.string.category), horizontalArrangement = Arrangement.spacedBy(15.dp)
             ) {
-                CategoriesGrid(categories.slice(0..6), selected = category, onSelected = {
+                CategoriesGrid(updatedCategories, showMore = true, selected = category, onSelected = {
                     onSetCategory(it)
                 })
 

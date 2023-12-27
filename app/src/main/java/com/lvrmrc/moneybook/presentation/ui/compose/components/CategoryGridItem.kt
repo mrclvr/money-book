@@ -25,10 +25,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.lvrmrc.moneybook.data.outlinedIcons
 import com.lvrmrc.moneybook.domain.model.Category
 import com.lvrmrc.moneybook.domain.model.IconLabel
 import com.lvrmrc.moneybook.domain.model.TransactionType
-import com.lvrmrc.moneybook.domain.model.outlinedIcons
 import com.lvrmrc.moneybook.presentation.ui.theme.primary200
 import java.util.UUID
 

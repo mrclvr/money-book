@@ -41,7 +41,6 @@ class CategoryDetailsViewModel @Inject constructor(
             _category = categoryRepo.getById(id)
             _transactions = getTransactionsByPeriodAndCategory(id, period, transType)
         }
-
     }
 
     fun deleteTransaction(id: UUID) {

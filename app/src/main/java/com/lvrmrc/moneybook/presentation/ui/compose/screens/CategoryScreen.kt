@@ -1,14 +1,22 @@
 package com.lvrmrc.moneybook.presentation.ui.compose.screens
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -17,13 +25,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.lvrmrc.moneybook.LocalNavController
 import com.lvrmrc.moneybook.R
+import com.lvrmrc.moneybook.data.outlinedIcons
 import com.lvrmrc.moneybook.domain.model.IconLabel
 import com.lvrmrc.moneybook.domain.model.IconStyle
 import com.lvrmrc.moneybook.domain.model.TransactionType
 import com.lvrmrc.moneybook.domain.model.getIconByName
 import com.lvrmrc.moneybook.domain.model.getIconLabel
-import com.lvrmrc.moneybook.domain.model.outlinedIcons
 import com.lvrmrc.moneybook.presentation.ui.compose.components.ColorsRow
+import com.lvrmrc.moneybook.presentation.ui.compose.components.CustomAlertDialog
 import com.lvrmrc.moneybook.presentation.ui.compose.components.IconsGrid
 import com.lvrmrc.moneybook.presentation.ui.compose.components.LabeledSection
 import com.lvrmrc.moneybook.presentation.ui.compose.components.TransactionTypeRadio
@@ -46,8 +55,7 @@ fun CategoryScreen(
         }
     }
 
-    CategoryScreen(
-        label = vm.label,
+    CategoryScreen(label = vm.label,
         icon = vm.icon,
         color = vm.color,
         type = vm.type,
@@ -61,7 +69,10 @@ fun CategoryScreen(
             vm.addCategory()
             navController.popBackStack()
         },
-    )
+        onDelete = {
+            vm.deleteCategory()
+            navController.popBackStack()
+        })
 }
 
 @Composable
@@ -77,13 +88,17 @@ private fun CategoryScreen(
     onSetIcon: (ImageVector) -> Unit = {},
     onSetColor: (Color) -> Unit = {},
     onSetType: (TransactionType) -> Unit = {},
-    onUpdate: () -> Unit = {}
+    onUpdate: () -> Unit = {},
+    onDelete: () -> Unit = {}
 ) {
 
     val fabText = if (isUpdate) R.string.update else R.string.add_category
     val headerText = if (isUpdate) R.string.update_category else R.string.add_new_category
     val iconsList = outlinedIcons.toList().slice(1..7).toMutableList()
 
+    /**
+     * Replace first icon with selected if not visible
+     */
     icon?.let {
         if (iconsList.find { it.second == icon } == null) {
             val iconLabel = getIconLabel(outlinedIcons, icon)
@@ -102,8 +117,31 @@ private fun CategoryScreen(
         Column(
             modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween
         ) {
+
             LabeledSection(
-                sectionTitle = stringResource(R.string.label)
+                sectionTitle = stringResource(R.string.label),
+                topRightContent = {
+                    if (isUpdateation) {
+                        var showDialog by remember { mutableStateOf(false) }
+
+                        Icon(
+                            Icons.Outlined.Delete,
+                            stringResource(R.string.delete_category),
+                            Modifier.clickable { showDialog = true },
+                            colorScheme.error
+                        )
+
+                        if (showDialog) {
+                            CustomAlertDialog(title = stringResource(R.string.confirm_deletion),
+                                text = stringResource(R.string.category_delete_msg, label),
+                                onDismissRequest = { showDialog = false },
+                                onConfirmation = {
+                                    showDialog = false
+                                    onDelete()
+                                })
+                        }
+                    }
+                }
             ) {
                 TextField(modifier = Modifier.fillMaxWidth(1f), singleLine = true, value = label, colors = TextFieldDefaults.colors(
                     focusedContainerColor = Color.Transparent,

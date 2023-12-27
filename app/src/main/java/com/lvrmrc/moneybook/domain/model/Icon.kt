@@ -61,9 +61,3 @@ fun getIconsMap(style: IconStyle, labels: List<IconLabel> = IconLabel.entries): 
 fun getIconLabel(iconsMap: Map<IconLabel, ImageVector>, icon: ImageVector): IconLabel =
     iconsMap.entries.find { it.value == icon }?.key ?: IconLabel.DEFAULT
 
-val defaultIcon = Icons.Filled.QuestionMark
-
-val defaultIcons: Map<IconLabel, ImageVector> = getIconsMap(IconStyle.Default)
-val outlinedIcons: Map<IconLabel, ImageVector> = getIconsMap(IconStyle.Outlined)
-val filledIcons: Map<IconLabel, ImageVector> = getIconsMap(IconStyle.Filled)
-val roundedIcons: Map<IconLabel, ImageVector> = getIconsMap(IconStyle.Rounded)

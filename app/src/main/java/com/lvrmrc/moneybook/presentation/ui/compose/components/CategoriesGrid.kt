@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.MoreHoriz
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
@@ -35,7 +36,11 @@ import com.lvrmrc.moneybook.presentation.ui.compose.screens.Screen
  */
 @Composable
 fun CategoriesGrid(
-    categories: List<Category>, selected: Category? = null, onSelected: (Category) -> Unit = {}
+    categories: List<Category>,
+    showMore: Boolean = false,
+    showAddNew: Boolean = false,
+    selected: Category? = null,
+    onSelected: (Category) -> Unit = {}
 ) {
     val navController = LocalNavController.current
 
@@ -49,23 +54,33 @@ fun CategoriesGrid(
             val isSelected: Boolean = category.id == selected?.id
             CategoryGridItem(category, isSelected, onClick = { onSelected(category) })
         }
-        item {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .aspectRatio(1f)
-                    .padding(4.dp), contentAlignment = Alignment.TopCenter
-            ) {
-                FilledIconButton(modifier = Modifier.size(56.dp), shape = CircleShape, colors = IconButtonDefaults.filledIconButtonColors(
-                    containerColor = colorScheme.primaryContainer, contentColor = colorScheme.background
-                ), onClick = {
-                    navController.navigateDefault(Screen.Category.route)
-                }) {
-                    Icon(
-                        modifier = Modifier.size(32.dp),
-                        imageVector = Icons.Outlined.Add,
-                        contentDescription = stringResource(R.string.add_new_category)
-                    )
+        if (showMore || showAddNew) {
+            item {
+                val containerColor = if (showMore) colorScheme.secondaryContainer else colorScheme.primaryContainer
+                val contentColor = if (showMore) colorScheme.onSecondaryContainer else colorScheme.background
+                val route = if (showMore) Screen.CategoriesLibrary.route else Screen.Category.route
+                val icon = if (showMore) Icons.Outlined.MoreHoriz else Icons.Outlined.Add
+                val contentDescription =
+                    if (showMore) stringResource(R.string.more_categories) else stringResource(R.string.add_new_category)
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .aspectRatio(1f)
+                        .padding(4.dp), contentAlignment = Alignment.TopCenter
+                ) {
+                    FilledIconButton(modifier = Modifier.size(56.dp),
+                        shape = CircleShape,
+                        colors = IconButtonDefaults.filledIconButtonColors(
+                            containerColor = containerColor, contentColor = contentColor
+                        ),
+                        onClick = {
+                            navController.navigateDefault(route)
+                        }) {
+                        Icon(
+                            modifier = Modifier.size(32.dp), imageVector = icon, contentDescription = contentDescription
+                        )
+                    }
                 }
             }
         }

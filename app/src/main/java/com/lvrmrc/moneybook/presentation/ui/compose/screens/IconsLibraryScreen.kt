@@ -15,8 +15,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.lvrmrc.moneybook.LocalNavController
 import com.lvrmrc.moneybook.R
+import com.lvrmrc.moneybook.data.outlinedIcons
 import com.lvrmrc.moneybook.domain.model.getIconLabel
-import com.lvrmrc.moneybook.domain.model.outlinedIcons
 import com.lvrmrc.moneybook.presentation.ui.compose.components.IconsGrid
 import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.NavProvider
 import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.ScreenHeader

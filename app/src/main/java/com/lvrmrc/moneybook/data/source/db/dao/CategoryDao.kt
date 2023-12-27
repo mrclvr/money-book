@@ -17,6 +17,9 @@ interface CategoryDao : BaseDao<CategoryEntity> {
     @Query("SELECT * FROM categories WHERE id = :id")
     override suspend fun getById(id: UUID): CategoryEntity
 
+    @Query("DELETE FROM categories WHERE id = :id")
+    suspend fun deleteById(id: UUID)
+
 //    @Transaction
 //    @Query("SELECT c.* FROM categories c INNER JOIN (SELECT * FROM transactions WHERE $filterByDayType) t ON c.id = t.categoryId GROUP BY c.id")
 //    suspend fun getDayCategoriesWithTransactions(type: TransactionType, day: String): List<CategoryWithTransactionsEntity>

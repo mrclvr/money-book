@@ -32,4 +32,7 @@
     <string name="update_category">Aggiorna categoria</string>
     <string name="update_transaction">Aggiorna transazione</string>
     <string name="add_new_transaction">Nuova transazione</string>
+    <string name="more_categories">Altre categorie</string>
+    <string name="delete_category">Elimina categoria</string>
+    <string name="category_delete_msg">Vuoi davvero eliminare la categoria \"%1$s\" ?</string>
 </resources>

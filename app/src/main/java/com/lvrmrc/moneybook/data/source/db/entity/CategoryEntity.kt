@@ -6,11 +6,11 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.lvrmrc.moneybook.data.colorsMap
+import com.lvrmrc.moneybook.data.outlinedIcons
 import com.lvrmrc.moneybook.domain.model.Category
 import com.lvrmrc.moneybook.domain.model.ColorName
 import com.lvrmrc.moneybook.domain.model.IconLabel
 import com.lvrmrc.moneybook.domain.model.TransactionType
-import com.lvrmrc.moneybook.domain.model.outlinedIcons
 import com.lvrmrc.moneybook.presentation.ui.theme.primary
 import java.util.UUID
 

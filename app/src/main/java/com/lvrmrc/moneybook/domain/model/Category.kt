@@ -2,6 +2,7 @@ package com.lvrmrc.moneybook.domain.model
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.lvrmrc.moneybook.data.outlinedIcons
 import com.lvrmrc.moneybook.data.source.db.entity.CategoryEntity
 import java.util.UUID
 
