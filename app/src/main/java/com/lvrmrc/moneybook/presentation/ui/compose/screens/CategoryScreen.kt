@@ -121,7 +121,7 @@ private fun CategoryScreen(
             LabeledSection(
                 sectionTitle = stringResource(R.string.label),
                 topRightContent = {
-                    if (isUpdateation) {
+                    if (isUpdate) {
                         var showDialog by remember { mutableStateOf(false) }
 
                         Icon(
