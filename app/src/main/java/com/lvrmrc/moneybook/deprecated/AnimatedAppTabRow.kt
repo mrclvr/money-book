@@ -14,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.lvrmrc.moneybook.domain.model.transactionsTabs
 import com.lvrmrc.moneybook.presentation.ui.theme.MoneyBookTheme
@@ -43,16 +44,14 @@ fun AppTabRow(pagerState: PagerState, appState: AppState = AppState.getInstance(
         transactionsTabs.forEachIndexed { index, tab ->
             Tab(
                 selected = index == pagerState.currentPage,
-                text = { Text(text = tab.title) },
-                icon = { Icon(tab.icon, tab.title) },
+                text = { Text(stringResource(tab.title)) },
+                icon = { Icon(tab.icon, stringResource(tab.title)) },
                 onClick = {
                     tabRowScope.launch {
                         pagerState.scrollToPage(index)
                     }
 
-                    if (tab.type != null) {
-                        appState.setTransType(tab.type)
-                    }
+                    appState.setTransType(tab.type)
                 },
             )
         }

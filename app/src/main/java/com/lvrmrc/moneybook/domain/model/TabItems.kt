@@ -21,14 +21,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.Dp
-import com.lvrmrc.moneybook.MoneyBookApp
 import com.lvrmrc.moneybook.R
 
 /**
  * Transaction type tab item
  */
 data class TransTypeTabItem(
-    override val title: String,
+    override val title: Int,
     override val icon: ImageVector,
     override val onClick: () -> Unit = {},
     override val content: @Composable () -> Unit = {},
@@ -39,7 +38,7 @@ data class TransTypeTabItem(
  * Transaction period tab item
  */
 data class TransPeriodTabItem(
-    override val title: String,
+    override val title: Int,
     override val icon: ImageVector,
     override val onClick: () -> Unit = {},
     override val content: @Composable () -> Unit = {},
@@ -68,19 +67,19 @@ fun Modifier.customTabIndicatorOffset(
 
 val periodTabs: List<TransPeriodTabItem> = listOf(
     TransPeriodTabItem(
-        title = MoneyBookApp.instance.getString(R.string.day), icon = Icons.Filled.Today, period = TransactionPeriod.DAY
+        title = R.string.day, icon = Icons.Filled.Today, period = TransactionPeriod.DAY
     ), TransPeriodTabItem(
-        title = MoneyBookApp.instance.getString(R.string.month), icon = Icons.Filled.CalendarMonth, period = TransactionPeriod.MONTH
+        title = R.string.month, icon = Icons.Filled.CalendarMonth, period = TransactionPeriod.MONTH
     ), TransPeriodTabItem(
-        title = MoneyBookApp.instance.getString(R.string.year), icon = Icons.Filled.EditCalendar, period = TransactionPeriod.YEAR
+        title = R.string.year, icon = Icons.Filled.EditCalendar, period = TransactionPeriod.YEAR
     )
 )
 
 val transactionsTabs: List<TransTypeTabItem> = listOf(
     TransTypeTabItem(
-        title = MoneyBookApp.instance.getString(R.string.expense), icon = Icons.Filled.ArrowUpward, type = TransactionType.EXPENSE
+        title = R.string.expense, icon = Icons.Filled.ArrowUpward, type = TransactionType.EXPENSE
     ),
     TransTypeTabItem(
-        title = MoneyBookApp.instance.getString(R.string.income), icon = Icons.Filled.ArrowDownward, type = TransactionType.INCOME
+        title = R.string.income, icon = Icons.Filled.ArrowDownward, type = TransactionType.INCOME
     ),
 )

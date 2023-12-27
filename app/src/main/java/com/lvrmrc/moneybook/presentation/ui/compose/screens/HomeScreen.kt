@@ -6,14 +6,17 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme.colorScheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.lvrmrc.moneybook.LocalNavController
+import com.lvrmrc.moneybook.R
 import com.lvrmrc.moneybook.data.mockCatTransactions
 import com.lvrmrc.moneybook.domain.model.CategoryWithTransactions
 import com.lvrmrc.moneybook.domain.model.TransactionPeriod
@@ -87,7 +90,11 @@ private fun HomeScreen(
 //                )
 //            }))
 //                DonutChart(data = donutChartData, animLaunched = animLaunched, onAnimLaunched = onAnimLaunched)
-                PieChart(data = catTransactions, animationPlayed = animationPlayed, onLoaded = { setAnimationPlayed() })
+                if (catTransactions.isNotEmpty()) {
+                    PieChart(data = catTransactions, animationPlayed = animationPlayed, onLoaded = { setAnimationPlayed() })
+                } else {
+                    Text(stringResource(R.string.no_transactions))
+                }
             })
             ExpensesList(catTransactions, onSetCategory = {
                 navController.navigateDefault("${Screen.CategoryDetails.route}/${it.id}")
@@ -101,8 +108,6 @@ private fun HomeScreen(
 @Composable
 private fun HomeScreenPreview() {
     NavProvider {
-//        AppTabsLayout {
         HomeScreen(TransactionPeriod.DAY, 0, mockCatTransactions, false)
-//        }
     }
 }

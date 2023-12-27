@@ -22,7 +22,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
-import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -30,6 +29,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.lvrmrc.moneybook.domain.model.TransactionType
@@ -47,7 +47,7 @@ fun TabsLayout(
     content: @Composable () -> Unit = {},
 ) {
     val appScope = rememberCoroutineScope()
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+//    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
     val snackBarHostState = remember { SnackbarHostState() }
     val currentPage = remember { mutableIntStateOf(index) }
 
@@ -70,34 +70,39 @@ fun TabsLayout(
                                 .clip(RoundedCornerShape(8.dp)), color = colorScheme.onPrimary
                         )
                     }
-                },
-                tabs = {
-                    transactionsTabs.forEachIndexed { index, tab ->
-                        Tab(
-                            modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 8.dp),
-                            selected = index == currentPage.intValue,
-                            text = { Text(text = tab.title) },
-                            onClick = {
-                                currentPage.intValue = index
-                                onNavClick(tab.type)
-                            },
-                        )
-                    }
-                })
-        }, topBar = {
-            TopAppBar(colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = Color.Transparent,
-            ), title = {
-                Text("")
-            }, navigationIcon = {
-                IconButton(onClick = { appScope.launch { drawerState.open() } }) {
-                    Icon(
-                        imageVector = Icons.Filled.Menu, contentDescription = "Open drawer", tint = colorScheme.primary
+                }) {
+                transactionsTabs.forEachIndexed { index, tab ->
+                    Tab(
+                        modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 8.dp),
+                        selected = true,
+                        text = { Text(text = stringResource(tab.title)) },
+                        onClick = {
+                            currentPage.intValue = index
+                            onNavClick(tab.type)
+                        },
                     )
                 }
-            }, scrollBehavior = scrollBehavior
+            }
+        }, topBar = {
+            TopAppBar(
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color.Transparent,
+                ),
+                title = {
+                    Text("")
+                },
+                navigationIcon = {
+                    IconButton(onClick = { appScope.launch { drawerState.open() } }) {
+                        Icon(
+                            imageVector = Icons.Filled.Menu, contentDescription = "Open drawer", tint = colorScheme.primary
+                        )
+                    }
+                },
+//                scrollBehavior = scrollBehavior
             )
-        }) {
+        }
+
+        ) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -118,6 +123,6 @@ fun TabsLayout(
 @Composable
 fun TabsLayoutPreview() {
     NavProvider {
-        TabsLayout()
+        TabsLayout() {}
     }
 }

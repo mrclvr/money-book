@@ -7,7 +7,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
  * Defines a tab item for tabs navigation
  */
 interface TabItemInterface {
-    val title: String
+    val title: Int
     val icon: ImageVector
     val onClick: () -> Unit
     val content: @Composable () -> Unit
