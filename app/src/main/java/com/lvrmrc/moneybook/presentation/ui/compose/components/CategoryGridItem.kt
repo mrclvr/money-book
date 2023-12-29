@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -62,11 +63,13 @@ fun CategoryGridItem(category: Category, selected: Boolean = true, onClick: (Boo
                 .background(category.color), contentAlignment = Alignment.Center
         ) {
             Icon(
-                modifier = Modifier.size(40.dp), imageVector = category.icon, contentDescription = category.label, tint = getColor()
+                modifier = Modifier.size(36.dp), imageVector = category.icon, contentDescription = category.label, tint = getColor()
             )
         }
         Text(
             text = category.label,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
             fontSize = 14.sp,
             fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal,
             color = if (selected) getColor() else colorScheme.onBackground

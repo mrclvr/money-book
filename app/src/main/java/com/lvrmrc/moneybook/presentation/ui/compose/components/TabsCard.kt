@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -51,6 +52,7 @@ fun TabsCard(
             .defaultMinSize(300.dp)
             .fillMaxWidth()
             .aspectRatio(1f),
+        shape = RoundedCornerShape(6),
         colors = CardDefaults.cardColors(containerColor = colorScheme.surface, contentColor = colorScheme.onSurface),
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp

@@ -31,12 +31,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.lvrmrc.moneybook.LocalNavController
 import com.lvrmrc.moneybook.data.transactionsTabs
 import com.lvrmrc.moneybook.domain.model.TransactionType
 import com.lvrmrc.moneybook.domain.model.customTabIndicatorOffset
 import com.lvrmrc.moneybook.presentation.ui.compose.navigation.AppDrawer
+import com.lvrmrc.moneybook.presentation.ui.compose.navigation.navigateDefault
+import com.lvrmrc.moneybook.presentation.ui.compose.screens.Screen
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -47,6 +51,7 @@ fun TabsLayout(
     onNavClick: (TransactionType) -> Unit = {},
     content: @Composable () -> Unit = {},
 ) {
+    val navController = LocalNavController.current
     val appScope = rememberCoroutineScope()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
     val snackBarHostState = remember { SnackbarHostState() }
@@ -73,10 +78,15 @@ fun TabsLayout(
                     }
                 }) {
                 transactionsTabs.forEachIndexed { index, tab ->
+                    val selected = currentPage.intValue == index
                     Tab(
                         modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 8.dp),
-                        selected = true,
-                        text = { Text(text = stringResource(tab.title)) },
+                        selected = selected,
+                        text = {
+                            Text(
+                                text = stringResource(tab.title), fontWeight = if (selected) FontWeight.Black else FontWeight.SemiBold
+                            )
+                        },
                         onClick = {
                             currentPage.intValue = index
                             onNavClick(tab.type)
@@ -90,9 +100,22 @@ fun TabsLayout(
             ), title = {
                 Text("")
             }, navigationIcon = {
-                IconButton(onClick = { appScope.launch { drawerState.open() } }) {
+                IconButton(onClick = {
+                    appScope.launch { drawerState.open() }
+                }) {
                     Icon(
                         imageVector = Icons.Filled.Menu, contentDescription = "Open drawer", tint = colorScheme.primary
+                    )
+                }
+
+            }, actions = {
+                IconButton(onClick = {
+                    navController.navigateDefault(Screen.TransactionsList.route)
+                }) {
+                    Icon(
+                        imageVector = Screen.TransactionsList.icon,
+                        contentDescription = "Open transactions list",
+                        tint = colorScheme.primary
                     )
                 }
             }, scrollBehavior = scrollBehavior

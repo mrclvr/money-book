@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
 import com.lvrmrc.moneybook.data.source.db.entity.TransactionEntity
+import com.lvrmrc.moneybook.data.source.db.entity.TransactionWithCategoryEntity
 import com.lvrmrc.moneybook.domain.model.TransactionType
 import java.util.UUID
 
@@ -28,6 +29,18 @@ interface TransactionDao : BaseDao<TransactionEntity> {
     @Transaction
     @Query("SELECT * FROM transactions t WHERE $filterByYearType")
     suspend fun getYearTransactions(type: TransactionType, year: Int): List<TransactionEntity>
+
+    @Transaction
+    @Query("SELECT * FROM transactions WHERE $filterByDayType")
+    suspend fun getDayTransactionsWithCategory(type: TransactionType, day: String): List<TransactionWithCategoryEntity>
+
+    @Transaction
+    @Query("SELECT * FROM transactions t WHERE $filterByMonthYearType")
+    suspend fun getMonthTransactionsWithCategory(type: TransactionType, month: Int, year: Int): List<TransactionWithCategoryEntity>
+
+    @Transaction
+    @Query("SELECT * FROM transactions t WHERE $filterByYearType")
+    suspend fun getYearTransactionsWithCategory(type: TransactionType, year: Int): List<TransactionWithCategoryEntity>
 
     @Query("SELECT * FROM transactions WHERE $filterByDayType AND categoryId == :categoryId")
     suspend fun getDayTransactionsByCategory(categoryId: UUID, type: TransactionType, day: String): List<TransactionEntity>

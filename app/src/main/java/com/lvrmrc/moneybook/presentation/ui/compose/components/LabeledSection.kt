@@ -31,7 +31,7 @@ fun LabeledSection(
     topRightContent: @Composable () -> Unit = {},
     content: @Composable () -> Unit = {},
 ) {
-    Column(modifier) {
+    Column(modifier.padding(0.dp, 0.dp, 0.dp, 24.dp)) {
         if (sectionTitle.isNotBlank()) {
             Row(
                 modifier = Modifier
@@ -40,7 +40,7 @@ fun LabeledSection(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(sectionTitle, color = titleColor, fontWeight = FontWeight.Bold, fontSize = 20.sp)
+                Text(sectionTitle, color = titleColor, fontWeight = FontWeight.Bold, fontSize = 16.sp)
                 topRightContent()
             }
         }
@@ -57,7 +57,7 @@ fun LabeledSectionPreview(
 ) {
     Column() {
         LabeledSection(sectionTitle = "Section 1", content = {
-            Icon(Icons.Rounded.Home, "Test")
+            TransactionTypeRadio()
         })
         LabeledSection(sectionTitle = "Section 2", content = {
             Icon(Icons.Rounded.Home, "Test")

@@ -1,12 +1,22 @@
 package com.lvrmrc.moneybook.utils
 
 import java.time.Instant
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.Locale
+
+/**
+ * Formats LocalDate to "DD Month YYYY" format in current locale
+ */
+fun LocalDate.localFormat(): String? {
+    return this.format(
+        DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG).withLocale(Locale.getDefault())
+    )
+}
 
 /**
  * Formats LocalDateTime to "DD Month YYYY" format in current locale

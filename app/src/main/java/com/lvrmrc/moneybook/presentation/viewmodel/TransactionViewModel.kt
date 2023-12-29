@@ -72,29 +72,26 @@ class TransactionViewModel @Inject constructor(
     }
 
     init {
-        initTransaction()
+        viewModelScope.launch {
+            initTransaction()
+        }
     }
 
-    private fun initTransaction() {
+    private suspend fun initTransaction() {
         transactionId?.let { id ->
-            viewModelScope.launch {
-                _transaction = transactionRepo.getById(UUID.fromString(id))
-
-                _transaction?.let { tr ->
-                    val (_, notes, amount, date, _, categoryId) = tr
-                    _notes = notes
-                    _amount = amount.removeDecimal().toString()
-                    _date = date
-                    loadCategory(categoryId)
-                }
+            _transaction = transactionRepo.getById(UUID.fromString(id))
+            _transaction?.let { tr ->
+                val (_, notes, amount, date, _, categoryId) = tr
+                _notes = notes
+                _amount = amount.removeDecimal().toString()
+                _date = date
+                loadCategory(categoryId)
             }
         }
     }
 
-    fun loadCategory(categoryId: UUID) {
-        viewModelScope.launch {
-            setCategory(categoryId.let { categoryRepo.getById(it) })
-        }
+    suspend fun loadCategory(categoryId: UUID) {
+        setCategory(categoryId.let { categoryRepo.getById(it) })
     }
 
     fun addTransaction(transType: TransactionType) {

@@ -37,4 +37,7 @@
     <string name="more_categories">More categories</string>
     <string name="delete_category">Delete category</string>
     <string name="category_delete_msg">Do you really want to delete \"%1$s\" category?</string>
+    <string name="all_transactions">All transactions</string>
+    <string name="open_transactions_screen">Open transactions screen</string>
+    <string name="transaction_deleted">Transaction deleted</string>
 </resources>

@@ -115,15 +115,17 @@ private fun CategoryScreen(
         )
     }, fabText = stringResource(fabText), fabEnabled = fabEnabled, onFabAction = { onUpdate() }) {
         Column(
-            modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween
+            modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceEvenly
         ) {
 
+            // Label
             LabeledSection(
                 sectionTitle = stringResource(R.string.label),
                 topRightContent = {
                     if (isUpdate) {
                         var showDialog by remember { mutableStateOf(false) }
 
+                        // Delete icon
                         Icon(
                             Icons.Outlined.Delete,
                             stringResource(R.string.delete_category),
@@ -131,6 +133,7 @@ private fun CategoryScreen(
                             colorScheme.error
                         )
 
+                        // Deletion dialog
                         if (showDialog) {
                             CustomAlertDialog(title = stringResource(R.string.confirm_deletion),
                                 text = stringResource(R.string.category_delete_msg, label),
@@ -149,22 +152,25 @@ private fun CategoryScreen(
                     focusedIndicatorColor = colorScheme.primary,
                     unfocusedIndicatorColor = colorScheme.primary,
                 ), onValueChange = {
-                    onSetLabel(it)
+                    if (it.length <= 30) onSetLabel(it)
                 })
             }
 
+            // Type
             LabeledSection(
                 sectionTitle = stringResource(R.string.type)
             ) {
                 TransactionTypeRadio(type, onSelected = { onSetType(it) })
             }
 
+            // Icon
             LabeledSection(
                 sectionTitle = stringResource(R.string.icon),
             ) {
                 IconsGrid(iconsList, true, color, icon, onSelected = { onSetIcon(it) })
             }
 
+            // Color
             LabeledSection(
                 sectionTitle = stringResource(R.string.color)
             ) {

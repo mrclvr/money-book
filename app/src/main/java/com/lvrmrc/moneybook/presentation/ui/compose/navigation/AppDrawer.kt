@@ -53,6 +53,22 @@ fun AppDrawer(
                     }
                     navController.navigateDefault(Screen.Home.route)
                 })
+
+            /**
+             * All transactions
+             */
+            NavigationDrawerItem(modifier = Modifier.padding(4.dp),
+                icon = { Icon(Screen.TransactionsList.icon, stringResource(R.string.open_transactions_screen)) },
+                label = { Text(text = stringResource(R.string.all_transactions)) },
+                selected = navController.currentDestination?.route === Screen.TransactionsList.route,
+                onClick = {
+                    drawerScope.launch {
+                        drawerState.apply {
+                            close()
+                        }
+                    }
+                    navController.navigateDefault(Screen.TransactionsList.route)
+                })
             /**
              * Categories
              */

@@ -1,5 +1,6 @@
 package com.lvrmrc.moneybook.presentation.viewmodel
 
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -15,12 +16,13 @@ import com.lvrmrc.moneybook.domain.model.TransactionType
 import com.lvrmrc.moneybook.domain.usecase.GetTransactionsByPeriodAndCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import java.util.UUID
 import javax.inject.Inject
 
 
 @HiltViewModel
-class CategoryDetailsViewModel @Inject constructor(
+class CategoryTransactionsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val categoryRepo: CategoryRepositoryImpl,
     private val transactionRepo: TransactionRepositoryImpl,
@@ -34,6 +36,12 @@ class CategoryDetailsViewModel @Inject constructor(
 
     private var _transactions by mutableStateOf<List<Transaction>>(emptyList())
     val transactions: List<Transaction> get() = _transactions
+    
+    val transactionsByDate by derivedStateOf<Map<LocalDate, List<Transaction>>> {
+        _transactions.groupBy {
+            it.date.toLocalDate()
+        }
+    }
 
     suspend fun loadCategoryTransactions(period: TransactionPeriod, transType: TransactionType) {
         viewModelScope.launch {
@@ -48,6 +56,5 @@ class CategoryDetailsViewModel @Inject constructor(
             transactionRepo.deleteById(id)
             _transactions = _transactions.filter { it.id != id }
         }
-
     }
 }

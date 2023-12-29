@@ -27,7 +27,10 @@ fun AppLayout(
 
 @Composable
 fun NavProvider(content: @Composable () -> Unit = {}) {
-    CompositionLocalProvider(LocalNavController provides rememberNavController()) { content() }
+    CompositionLocalProvider(LocalNavController provides rememberNavController()) {
+
+        AppLayout { content() }
+    }
 }
 
 @Preview(showBackground = true, showSystemUi = true)

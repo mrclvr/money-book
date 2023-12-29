@@ -26,9 +26,11 @@ import com.lvrmrc.moneybook.LocalNavController
 import com.lvrmrc.moneybook.R
 import com.lvrmrc.moneybook.data.expenseCategories
 import com.lvrmrc.moneybook.domain.model.Category
+import com.lvrmrc.moneybook.domain.model.TransactionType
 import com.lvrmrc.moneybook.presentation.ui.compose.components.CategoriesGrid
 import com.lvrmrc.moneybook.presentation.ui.compose.components.DatePickerDialog
 import com.lvrmrc.moneybook.presentation.ui.compose.components.LabeledSection
+import com.lvrmrc.moneybook.presentation.ui.compose.components.TransactionTypeRadio
 import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.FABLayout
 import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.NavProvider
 import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.ScreenHeader
@@ -38,6 +40,7 @@ import com.lvrmrc.moneybook.utils.NumberUtils
 import com.lvrmrc.moneybook.utils.localFormat
 import java.time.LocalDateTime
 import java.util.UUID
+import kotlin.math.min
 
 @Composable
 fun TransactionScreen(
@@ -48,21 +51,29 @@ fun TransactionScreen(
     LaunchedEffect(key1 = categoryId) {
         categoryId?.let {
             vm.loadCategory(categoryId)
+            vm.category?.type?.let { appVm.setTransType(it) }
         }
     }
+
+    val currentCategories = if (appVm.transType == TransactionType.EXPENSE) appVm.expenseCategories else appVm.incomeCategories
 
     TransactionScreen(
         amount = vm.amount,
         notes = vm.notes,
         date = vm.date,
         category = vm.category,
-        categories = appVm.categories,
+        transType = appVm.transType,
+        categories = currentCategories,
         isUpdate = vm.transactionId != null,
         fabEnabled = vm.fabEnabled.value,
         onSetAmount = { vm.setAmount(it) },
         onSetNotes = { vm.setNotes(it) },
         onSetDate = { vm.setDate(it) },
         onSetCategory = { vm.setCategory(it) },
+        onSetType = {
+            appVm.setTransType(it)
+            vm.setCategory(null)
+        },
         onUpdate = {
             vm.addTransaction(appVm.transType)
             navController.popBackStack()
@@ -76,6 +87,7 @@ private fun TransactionScreen(
     notes: String = "",
     date: LocalDateTime = LocalDateTime.now(),
     category: Category? = null,
+    transType: TransactionType,
     categories: List<Category>,
     isUpdate: Boolean = false,
     fabEnabled: Boolean = false,
@@ -83,14 +95,18 @@ private fun TransactionScreen(
     onSetNotes: (String) -> Unit = {},
     onSetDate: (LocalDateTime) -> Unit = {},
     onSetCategory: (Category?) -> Unit = {},
+    onSetType: (TransactionType) -> Unit = {},
     onUpdate: () -> Unit = {}
 ) {
     val fabText = if (isUpdate) R.string.update else R.string.add_transaction
     val headerText = if (isUpdate) R.string.update_transaction else R.string.add_new_transaction
-    val updatedCategories = categories.slice(0..6).toMutableList()
+    val toIndex = min(categories.size, 6)
+    val updatedCategories = categories.subList(0, toIndex).toMutableList()
+
+    println("LOADED")
 
     /**
-     * Replace first category with selected if not visible
+     * Replace first category with selected if not visible and change type accordingly
      */
     category?.let {
         if (updatedCategories.find { it == category } == null) {
@@ -106,9 +122,13 @@ private fun TransactionScreen(
         )
     }, fabText = stringResource(fabText), fabEnabled = fabEnabled, onFabAction = { onUpdate() }) {
         Column(
-            modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween
+            modifier = Modifier
+                .fillMaxSize()
 //                .verticalScroll(rememberScrollState()),
+            , verticalArrangement = Arrangement.SpaceBetween
         ) {
+
+            // Amount
             LabeledSection(horizontalArrangement = Arrangement.Center) {
                 TextField(
                     modifier = Modifier.fillMaxWidth(0.5f),
@@ -130,28 +150,15 @@ private fun TransactionScreen(
                     )
                 )
             }
+
+            // Type
             LabeledSection(
-//                modifier = Modifier.weight(1f, true),
-                sectionTitle = stringResource(R.string.category), horizontalArrangement = Arrangement.spacedBy(15.dp)
+                sectionTitle = stringResource(R.string.type)
             ) {
-                CategoriesGrid(updatedCategories, showMore = true, selected = category, onSelected = {
-                    onSetCategory(it)
-                })
-
+                TransactionTypeRadio(transType, onSelected = { onSetType(it) })
             }
-            LabeledSection(sectionTitle = stringResource(R.string.notes)) {
 
-                TextField(modifier = Modifier.fillMaxWidth(1f), singleLine = true, value = notes, colors = TextFieldDefaults.colors(
-                    focusedContainerColor = Color.Transparent,
-                    unfocusedContainerColor = Color.Transparent,
-
-                    focusedIndicatorColor = colorScheme.primary,
-                    unfocusedIndicatorColor = colorScheme.primary,
-                ), onValueChange = {
-                    onSetNotes(it)
-                })
-
-            }
+            // Date
             LabeledSection(
                 sectionTitle = stringResource(R.string.date), horizontalArrangement = Arrangement.SpaceBetween
             ) {
@@ -162,6 +169,33 @@ private fun TransactionScreen(
 
                     date.localFormat()?.let { Text(text = it) }
                 }
+            }
+
+            // Notes
+            LabeledSection(sectionTitle = stringResource(R.string.notes)) {
+                TextField(modifier = Modifier.fillMaxWidth(1f),
+                    singleLine = true,
+                    value = notes,
+                    maxLines = 1,
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color.Transparent,
+                        unfocusedContainerColor = Color.Transparent,
+                        focusedIndicatorColor = colorScheme.primary,
+                        unfocusedIndicatorColor = colorScheme.primary,
+                    ),
+                    onValueChange = {
+                        if (it.length <= 50) onSetNotes(it)
+                    })
+            }
+
+            // Category
+            LabeledSection(
+//                modifier = Modifier.weight(1f, true),
+                sectionTitle = stringResource(R.string.category), horizontalArrangement = Arrangement.spacedBy(15.dp)
+            ) {
+                CategoriesGrid(updatedCategories, showMore = true, selected = category, onSelected = {
+                    onSetCategory(it)
+                })
             }
         }
     }
@@ -174,6 +208,6 @@ private fun TransactionScreen(
 private fun TransactionScreenPreview(
 ) {
     NavProvider {
-        TransactionScreen(categories = expenseCategories)
+        TransactionScreen(transType = TransactionType.INCOME, categories = expenseCategories)
     }
 }

@@ -20,6 +20,7 @@ import com.lvrmrc.moneybook.presentation.ui.compose.screens.HomeScreen
 import com.lvrmrc.moneybook.presentation.ui.compose.screens.IconsLibraryScreen
 import com.lvrmrc.moneybook.presentation.ui.compose.screens.Screen
 import com.lvrmrc.moneybook.presentation.ui.compose.screens.TransactionScreen
+import com.lvrmrc.moneybook.presentation.ui.compose.screens.TransactionsListScreen
 import com.lvrmrc.moneybook.presentation.viewmodel.AppViewModel
 import java.util.UUID
 
@@ -38,7 +39,6 @@ fun NavGraph() {
          * Home (Expense/Income)
          */
         composable(route = Screen.Home.route) {
-
             HomeScreen()
         }
 
@@ -61,34 +61,44 @@ fun NavGraph() {
         }
 
         /**
+         * Transactions list
+         */
+        composable(route = Screen.TransactionsList.route) { entry ->
+            val appVm = entry.viewModel<AppViewModel>(navController)
+            TransactionsListScreen(appVm)
+        }
+
+        /**
          * Category Details
          */
         composable(route = "${Screen.CategoryTransactions.route}/{categoryId}") { entry ->
             val appVm = entry.viewModel<AppViewModel>(navController)
             CategoryTransactionsScreen(appVm)
-
         }
 
         /**
-         * Categories
+         * Categories Library
          */
-        composable(route = Screen.CategoriesLibrary.route, enterTransition = {
-            slideIntoContainer(
-                AnimatedContentTransitionScope.SlideDirection.Left, animationSpec = tween(700)
-            )
-        }, exitTransition = {
-            slideOutOfContainer(
-                AnimatedContentTransitionScope.SlideDirection.Left, animationSpec = tween(700)
-            )
-        }, popEnterTransition = {
-            slideIntoContainer(
-                AnimatedContentTransitionScope.SlideDirection.Right, animationSpec = tween(700)
-            )
-        }, popExitTransition = {
-            slideOutOfContainer(
-                AnimatedContentTransitionScope.SlideDirection.Right, animationSpec = tween(700)
-            )
-        }) { entry ->
+        composable(
+            route = Screen.CategoriesLibrary.route,
+//            enterTransition = {
+//            slideIntoContainer(
+//                AnimatedContentTransitionScope.SlideDirection.Left, animationSpec = tween(700)
+//            )
+//        }, exitTransition = {
+//            slideOutOfContainer(
+//                AnimatedContentTransitionScope.SlideDirection.Left, animationSpec = tween(700)
+//            )
+//        }, popEnterTransition = {
+//            slideIntoContainer(
+//                AnimatedContentTransitionScope.SlideDirection.Right, animationSpec = tween(700)
+//            )
+//        }, popExitTransition = {
+//            slideOutOfContainer(
+//                AnimatedContentTransitionScope.SlideDirection.Right, animationSpec = tween(700)
+//            )
+//        }
+        ) { entry ->
             val appVm = entry.viewModel<AppViewModel>(navController)
             CategoriesLibraryScreen(appVm)
         }

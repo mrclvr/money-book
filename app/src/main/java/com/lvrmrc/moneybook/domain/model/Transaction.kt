@@ -22,6 +22,8 @@ data class Transaction(
      * Maps transaction instance to database entity
      */
     fun toEntity() = TransactionEntity(id, notes, amount, date, type, categoryId)
+
+    fun toTransactionWithCategory(category: Category) = TransactionWithCategory(id, notes, amount, date, type, categoryId, category)
 }
 
 enum class TransactionType {

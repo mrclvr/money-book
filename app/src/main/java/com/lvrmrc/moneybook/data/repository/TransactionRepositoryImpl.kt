@@ -3,6 +3,7 @@ package com.lvrmrc.moneybook.data.repository
 import com.lvrmrc.moneybook.data.source.db.dao.TransactionDao
 import com.lvrmrc.moneybook.domain.model.Transaction
 import com.lvrmrc.moneybook.domain.model.TransactionType
+import com.lvrmrc.moneybook.domain.model.TransactionWithCategory
 import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -43,6 +44,9 @@ class TransactionRepositoryImpl @Inject constructor(private val transactionDao: 
     override suspend fun getDayTransactions(type: TransactionType, day: String): List<Transaction> =
         transactionDao.getDayTransactions(type, day).map { it.toDomain() }
 
+    override suspend fun getDayTransactionsWithCategory(type: TransactionType, day: String): List<TransactionWithCategory> =
+        transactionDao.getDayTransactionsWithCategory(type, day).map { it.toDomain() }
+
     /**
      * Gets a month's transactions
      *
@@ -53,6 +57,9 @@ class TransactionRepositoryImpl @Inject constructor(private val transactionDao: 
     override suspend fun getMonthTransactions(type: TransactionType, month: Int, year: Int): List<Transaction> =
         transactionDao.getMonthTransactions(type, month, year).map { it.toDomain() }
 
+    override suspend fun getMonthTransactionsWithCategory(type: TransactionType, month: Int, year: Int): List<TransactionWithCategory> =
+        transactionDao.getMonthTransactionsWithCategory(type, month, year).map { it.toDomain() }
+
     /**
      * Gets a year's transactions
      *
@@ -61,6 +68,9 @@ class TransactionRepositoryImpl @Inject constructor(private val transactionDao: 
      */
     override suspend fun getYearTransactions(type: TransactionType, year: Int): List<Transaction> =
         transactionDao.getYearTransactions(type, year).map { it.toDomain() }
+
+    override suspend fun getYearTransactionsWithCategory(type: TransactionType, year: Int): List<TransactionWithCategory> =
+        transactionDao.getYearTransactionsWithCategory(type, year).map { it.toDomain() }
 
     /**
      * Gets a given category's single day's transactions

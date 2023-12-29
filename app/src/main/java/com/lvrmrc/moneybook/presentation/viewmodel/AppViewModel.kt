@@ -1,11 +1,13 @@
 package com.lvrmrc.moneybook.presentation.viewmodel
 
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lvrmrc.moneybook.data.repository.CategoryRepositoryImpl
+import com.lvrmrc.moneybook.data.repository.TransactionRepositoryImpl
 import com.lvrmrc.moneybook.domain.model.Category
 import com.lvrmrc.moneybook.domain.model.TransactionPeriod
 import com.lvrmrc.moneybook.domain.model.TransactionType
@@ -15,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AppViewModel @Inject constructor(
-    private val categoryRepo: CategoryRepositoryImpl
+    private val categoryRepo: CategoryRepositoryImpl, private val transactionRepo: TransactionRepositoryImpl
 ) : ViewModel() {
 
     private var _loading by mutableStateOf(false)
@@ -23,6 +25,9 @@ class AppViewModel @Inject constructor(
     private var _categories by mutableStateOf(emptyList<Category>())
     private var _transType by mutableStateOf(TransactionType.EXPENSE)
     private var _period by mutableStateOf(TransactionPeriod.DAY)
+
+    val expenseCategories by derivedStateOf { _categories.filter { it.type == TransactionType.EXPENSE } }
+    val incomeCategories by derivedStateOf { _categories.filter { it.type == TransactionType.INCOME } }
 
     val loading: Boolean
         get() = _loading
@@ -51,13 +56,13 @@ class AppViewModel @Inject constructor(
         _period = period
     }
 
-    init {
-        setCategories()
-    }
-
     fun setCategories() {
         viewModelScope.launch {
             _categories = categoryRepo.getAll()
         }
+    }
+
+    init {
+        setCategories()
     }
 }

@@ -5,8 +5,8 @@
     <string name="day">Giorno</string>
     <string name="month">Mese</string>
     <string name="year">Anno</string>
-    <string name="expense">Entrate</string>
-    <string name="income">Uscite</string>
+    <string name="expense">Uscite</string>
+    <string name="income">Entrate</string>
     <string name="categories">Categorie</string>
     <string name="category">Categoria</string>
     <string name="notes">Note</string>
@@ -35,4 +35,5 @@
     <string name="more_categories">Altre categorie</string>
     <string name="delete_category">Elimina categoria</string>
     <string name="category_delete_msg">Vuoi davvero eliminare la categoria \"%1$s\" ?</string>
+    <string name="all_transactions">Tutte le transazioni</string>
 </resources>

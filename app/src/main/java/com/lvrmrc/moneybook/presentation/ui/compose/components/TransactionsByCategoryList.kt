@@ -37,7 +37,7 @@ import kotlin.math.roundToInt
  * List of expenses grouped by category
  */
 @Composable
-fun ExpensesList(catTransactions: List<CategoryWithTransactions>, onSetCategory: (CategoryWithTransactions) -> Unit = {}) {
+fun TransactionsByCategoryList(catTransactions: List<CategoryWithTransactions>, onSetCategory: (CategoryWithTransactions) -> Unit = {}) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
 //            .verticalScroll(rememberScrollState()),
@@ -99,8 +99,8 @@ fun ExpensesList(catTransactions: List<CategoryWithTransactions>, onSetCategory:
 
 @Preview(showBackground = true)
 @Composable
-private fun ExpensesListPreview() {
+private fun TransactionsByCategoryPreview() {
     MoneyBookTheme {
-        ExpensesList(mockCatTransactions)
+        TransactionsByCategoryList(mockCatTransactions)
     }
 }

@@ -1,11 +1,9 @@
 package com.lvrmrc.moneybook.presentation.ui.compose.screens
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -23,7 +21,7 @@ import com.lvrmrc.moneybook.domain.model.CategoryWithTransactions
 import com.lvrmrc.moneybook.domain.model.TransactionPeriod
 import com.lvrmrc.moneybook.domain.model.TransactionType
 import com.lvrmrc.moneybook.domain.model.transTypeIntMap
-import com.lvrmrc.moneybook.presentation.ui.compose.components.ExpensesList
+import com.lvrmrc.moneybook.presentation.ui.compose.components.TransactionsByCategoryList
 import com.lvrmrc.moneybook.presentation.ui.compose.components.PieChart
 import com.lvrmrc.moneybook.presentation.ui.compose.components.TabsCard
 import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.NavProvider
@@ -74,8 +72,8 @@ private fun HomeScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(colorScheme.background)
-                .padding(25.dp),
+//                .background(colorScheme.secondaryContainer)
+                .padding(16.dp, 8.dp),
             verticalArrangement = Arrangement.spacedBy(25.dp),
             horizontalAlignment = Alignment.CenterHorizontally
 
@@ -83,20 +81,14 @@ private fun HomeScreen(
             TabsCard(periodTabs, period, onSetPeriod = {
                 onSetPeriod(it)
             }, cardContent = {
-
-//            val donutChartData = DonutChartDataList((catTransactions.map {
-//                DonutChartData(
-//                    it.total, it.color, it.label
-//                )
-//            }))
-//                DonutChart(data = donutChartData, animLaunched = animLaunched, onAnimLaunched = onAnimLaunched)
                 if (catTransactions.isNotEmpty()) {
                     PieChart(data = catTransactions, animationPlayed = animationPlayed, onLoaded = { setAnimationPlayed() })
                 } else {
                     Text(stringResource(R.string.no_transactions))
                 }
             })
-            ExpensesList(catTransactions, onSetCategory = {
+
+            TransactionsByCategoryList(catTransactions, onSetCategory = {
                 navController.navigateDefault("${Screen.CategoryTransactions.route}/${it.id}")
             })
         }

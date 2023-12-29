@@ -3,5 +3,7 @@
 
     <style name="Theme.MoneyBook" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:statusBarColor">@color/outerSpace</item>
+        <!--        <item name="android:windowBackground">@color/backgroundGreen</item>-->
+        <!--        <item name="android:windowDisablePreview">true</item>-->
     </style>
 </resources>

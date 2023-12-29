@@ -55,6 +55,7 @@ fun CategoriesGrid(
             CategoryGridItem(category, isSelected, onClick = { onSelected(category) })
         }
         if (showMore || showAddNew) {
+
             item {
                 val containerColor = if (showMore) colorScheme.secondaryContainer else colorScheme.primaryContainer
                 val contentColor = if (showMore) colorScheme.onSecondaryContainer else colorScheme.background
