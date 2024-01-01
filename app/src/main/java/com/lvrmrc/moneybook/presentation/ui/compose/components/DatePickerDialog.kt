@@ -1,5 +1,6 @@
 package com.lvrmrc.moneybook.presentation.ui.compose.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -45,7 +46,8 @@ fun DatePickerDialog(date: LocalDateTime = LocalDateTime.now(), onDateSelected: 
         contentDescription = stringResource(R.string.open_date_picker),
         modifier = Modifier
             .size(32.dp)
-            .padding(),
+            .padding()
+            .clickable { datePickerOpen = true },
         tint = colorScheme.primary
     )
 //        }
@@ -82,7 +84,7 @@ private fun DatePickerDialog(
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 
 fun DatePickerDialogPreview() {

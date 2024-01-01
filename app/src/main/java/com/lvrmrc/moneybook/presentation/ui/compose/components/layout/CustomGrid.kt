@@ -1,9 +1,12 @@
-package com.lvrmrc.moneybook.presentation.ui.compose.components
+package com.lvrmrc.moneybook.presentation.ui.compose.components.layout
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -24,26 +27,48 @@ import com.lvrmrc.moneybook.LocalNavController
 import com.lvrmrc.moneybook.R
 import com.lvrmrc.moneybook.data.expenseCategories
 import com.lvrmrc.moneybook.domain.model.Category
-import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.CustomGrid
-import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.NavProvider
+import com.lvrmrc.moneybook.presentation.ui.compose.components.CategoryGridItem
 import com.lvrmrc.moneybook.presentation.ui.compose.navigation.navigateDefault
 import com.lvrmrc.moneybook.presentation.ui.compose.screens.Screen
 
-/**
- * Grid of category items
- */
 @Composable
-fun CategoriesGrid(
-    categories: List<Category>, buttonType: GridButtonType? = null, selected: Category? = null, onSelected: (Category) -> Unit = {}
+fun CustomGrid(
+    modifier: Modifier = Modifier,
+    columns: Int,
+    itemsCount: Int,
+    verticalArrangement: Arrangement.Vertical = Arrangement.Top,
+    horizontalAlignment: Alignment.Horizontal = Alignment.Start,
+    button: @Composable() () -> Unit = {},
+    content: @Composable() (Int) -> Unit
 ) {
-    CustomGrid(columns = 4, itemsCount = categories.size, verticalArrangement = Arrangement.spacedBy(10.dp), button = {
-        if (buttonType != null) {
-            GridButton(buttonType)
+    Column(modifier = modifier, verticalArrangement = verticalArrangement, horizontalAlignment = horizontalAlignment) {
+        var rows = (itemsCount / columns)
+
+        if (itemsCount.mod(columns) > 0) {
+            rows += 1
         }
-    }) {
-        val category: Category = categories[it]
-        val isSelected: Boolean = category.id == selected?.id
-        CategoryGridItem(category, isSelected, onClick = { onSelected(category) })
+
+        for (rowId in 0 until rows) {
+            val firstIndex = rowId * columns
+
+            Row {
+                for (columnId in 0 until columns) {
+                    val index = firstIndex + columnId
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f)
+                            .aspectRatio(1f)
+                    ) {
+                        if (index < itemsCount) {
+                            content(index)
+                        } else if (index == itemsCount && button != {}) {
+                            button()
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -52,7 +77,7 @@ enum class GridButtonType {
 }
 
 @Composable
-fun GridButton(type: GridButtonType = GridButtonType.SHOW_MORE) {
+fun MoreButton(type: GridButtonType = GridButtonType.SHOW_MORE) {
     val navController = LocalNavController.current
     val isShowMore = type == GridButtonType.SHOW_MORE
 
@@ -82,8 +107,12 @@ fun GridButton(type: GridButtonType = GridButtonType.SHOW_MORE) {
 
 @Composable
 @Preview(showBackground = true)
-fun CategoriesGridPreview() {
+fun CustomGridPreview() {
     NavProvider {
-        CategoriesGrid(expenseCategories.slice(0..6))
+        val categories = expenseCategories.slice(0..6)
+        CustomGrid(columns = 4, itemsCount = categories.size, button = { MoreButton() }) {
+            val category: Category = categories[it]
+            CategoryGridItem(category, false, onClick = { })
+        }
     }
 }

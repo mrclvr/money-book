@@ -10,6 +10,7 @@ import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -60,7 +61,7 @@ fun LabeledSectionPreview(
             TransactionTypeRadio()
         })
         LabeledSection(sectionTitle = "Section 2", content = {
-            Icon(Icons.Rounded.Home, "Test")
+            TextField(value = "Input", onValueChange = {})
         })
         LabeledSection(sectionTitle = "Section 3", content = {
             Icon(Icons.Rounded.Home, "Test")

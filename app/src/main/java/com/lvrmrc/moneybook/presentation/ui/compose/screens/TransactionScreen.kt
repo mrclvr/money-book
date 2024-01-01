@@ -5,7 +5,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Text
@@ -29,6 +31,7 @@ import com.lvrmrc.moneybook.domain.model.Category
 import com.lvrmrc.moneybook.domain.model.TransactionType
 import com.lvrmrc.moneybook.presentation.ui.compose.components.CategoriesGrid
 import com.lvrmrc.moneybook.presentation.ui.compose.components.DatePickerDialog
+import com.lvrmrc.moneybook.presentation.ui.compose.components.GridButtonType
 import com.lvrmrc.moneybook.presentation.ui.compose.components.LabeledSection
 import com.lvrmrc.moneybook.presentation.ui.compose.components.TransactionTypeRadio
 import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.FABLayout
@@ -124,8 +127,8 @@ private fun TransactionScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-//                .verticalScroll(rememberScrollState()),
-            , verticalArrangement = Arrangement.SpaceBetween
+                .verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
 
             // Amount
@@ -193,7 +196,7 @@ private fun TransactionScreen(
 //                modifier = Modifier.weight(1f, true),
                 sectionTitle = stringResource(R.string.category), horizontalArrangement = Arrangement.spacedBy(15.dp)
             ) {
-                CategoriesGrid(updatedCategories, showMore = true, selected = category, onSelected = {
+                CategoriesGrid(updatedCategories, buttonType = GridButtonType.SHOW_MORE, selected = category, onSelected = {
                     onSetCategory(it)
                 })
             }

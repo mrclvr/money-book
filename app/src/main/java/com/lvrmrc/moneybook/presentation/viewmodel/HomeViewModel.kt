@@ -10,6 +10,7 @@ import com.lvrmrc.moneybook.domain.model.TransactionType
 import com.lvrmrc.moneybook.domain.usecase.GetCategoryTransactionsByPeriod
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,9 +27,9 @@ class HomeViewModel @Inject constructor(
 //        loadTransactions()
 //    }
 
-    fun loadTransactions(period: TransactionPeriod, transType: TransactionType) {
+    fun loadTransactions(period: TransactionPeriod, transType: TransactionType, date: LocalDateTime) {
         viewModelScope.launch {
-            _catTransactions.value = getTransactionsByPeriod(period, transType)
+            _catTransactions.value = getTransactionsByPeriod(period, transType, date)
         }
     }
 }

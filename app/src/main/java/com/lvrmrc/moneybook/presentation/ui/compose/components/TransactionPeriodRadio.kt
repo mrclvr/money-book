@@ -2,7 +2,6 @@ package com.lvrmrc.moneybook.presentation.ui.compose.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
@@ -19,21 +18,18 @@ import com.lvrmrc.moneybook.domain.model.TransactionPeriod
 fun TransactionPeriodRadio(
     selected: TransactionPeriod? = null, onSelected: (TransactionPeriod) -> Unit = {}
 ) {
-    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-        RadioButton(
-            modifier = Modifier.size(20.dp),
+    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+        RadioButton(modifier = Modifier.size(20.dp),
             selected = selected == TransactionPeriod.DAY,
             onClick = { onSelected(TransactionPeriod.DAY) })
         Text(stringResource(R.string.day))
 
-        RadioButton(
-            modifier = Modifier.size(20.dp),
+        RadioButton(modifier = Modifier.size(20.dp),
             selected = selected == TransactionPeriod.MONTH,
             onClick = { onSelected(TransactionPeriod.MONTH) })
         Text(stringResource(R.string.month))
 
-        RadioButton(
-            modifier = Modifier.size(20.dp),
+        RadioButton(modifier = Modifier.size(20.dp),
             selected = selected == TransactionPeriod.YEAR,
             onClick = { onSelected(TransactionPeriod.YEAR) })
         Text(stringResource(R.string.year))

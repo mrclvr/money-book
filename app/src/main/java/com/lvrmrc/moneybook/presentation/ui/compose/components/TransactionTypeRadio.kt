@@ -2,7 +2,6 @@ package com.lvrmrc.moneybook.presentation.ui.compose.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
@@ -19,13 +18,14 @@ import com.lvrmrc.moneybook.domain.model.TransactionType
 fun TransactionTypeRadio(
     selected: TransactionType? = null, onSelected: (TransactionType) -> Unit = {}
 ) {
-    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
         RadioButton(modifier = Modifier.size(20.dp),
             selected = selected == TransactionType.EXPENSE,
             onClick = { onSelected(TransactionType.EXPENSE) })
         Text(stringResource(R.string.expense))
 
-        RadioButton(modifier = Modifier.size(20.dp),
+        RadioButton(
+            modifier = Modifier.size(20.dp),
             selected = selected == TransactionType.INCOME,
             onClick = { onSelected(TransactionType.INCOME) })
         Text(stringResource(R.string.income))

@@ -22,10 +22,9 @@ class GetTransactionsByPeriod(
      * @param transType income or expense type
      */
     suspend operator fun invoke(
-        period: TransactionPeriod, transType: TransactionType
+        period: TransactionPeriod, transType: TransactionType, date: LocalDateTime
     ): List<TransactionWithCategory> = withContext(dispatcher) {
 
-        val date = LocalDateTime.now()
         var result: List<TransactionWithCategory> = emptyList()
 
         when (period) {

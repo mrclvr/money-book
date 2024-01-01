@@ -4,11 +4,11 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
@@ -16,7 +16,6 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
@@ -28,7 +27,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.lvrmrc.moneybook.data.mockCatTransactions
 import com.lvrmrc.moneybook.data.periodTabs
+import com.lvrmrc.moneybook.domain.model.CategoryWithTransactions
 import com.lvrmrc.moneybook.domain.model.TransPeriodTabItem
 import com.lvrmrc.moneybook.domain.model.TransactionPeriod
 import com.lvrmrc.moneybook.domain.model.periodIntMap
@@ -36,13 +37,19 @@ import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.AnimatedAp
 import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.NavProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TabsCard(
-    tabs: List<TransPeriodTabItem>, period: TransactionPeriod,
-//    initialPage: Int = 0,
-    onSetPeriod: (TransactionPeriod) -> Unit = {}, cardContent: @Composable () -> Unit = {}
+    tabs: List<TransPeriodTabItem>,
+    transactionsByCategory: List<CategoryWithTransactions>,
+    period: TransactionPeriod,
+    currentDate: LocalDateTime,
+    onDateBack: () -> Unit = {},
+    onDateForward: () -> Unit = {},
+    onSetPeriod: (TransactionPeriod) -> Unit = {},
+    cardContent: @Composable BoxScope.() -> Unit = {}
 ) {
 
     val pagerState = rememberPagerState(initialPage = periodIntMap[period] ?: 0, initialPageOffsetFraction = 0f, pageCount = { tabs.size })
@@ -50,8 +57,7 @@ fun TabsCard(
     Card(
         modifier = Modifier
             .defaultMinSize(300.dp)
-            .fillMaxWidth()
-            .aspectRatio(1f),
+            .fillMaxWidth(),
         shape = RoundedCornerShape(6),
         colors = CardDefaults.cardColors(containerColor = colorScheme.surface, contentColor = colorScheme.onSurface),
         elevation = CardDefaults.cardElevation(
@@ -62,44 +68,45 @@ fun TabsCard(
 
         val cardScope: CoroutineScope = rememberCoroutineScope()
 
-        Column {
+        Column(Modifier.background(colorScheme.background)) {
             TabRow(
                 selectedTabIndex = pagerState.currentPage,
             ) {
                 tabs.forEachIndexed { index, tab ->
-                    Tab(selected = index == pagerState.currentPage,
-                        text = { Text(text = stringResource(tab.title)) },
-                        icon = { Icon(tab.icon, "") },
+                    Tab(selected = index == pagerState.currentPage, text = { Text(text = stringResource(tab.title)) },
+//                        icon = { Icon(tab.icon, "") },
                         onClick = {
                             cardScope.launch {
                                 pagerState.animateScrollToPage(index)
-//                                pagerState.scrollToPage(index)
                             }
                             onSetPeriod(tab.period)
                         })
                 }
             }
-            HorizontalPager(
-                state = pagerState, modifier = Modifier
-                    .fillMaxSize()
-                    .background(colorScheme.background)
-            ) {
-                Box(
-                    modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
+            DateSelector(period, currentDate, onDateBack = onDateBack, onDateForward = onDateForward)
+
+            Box {
+                HorizontalPager(
+                    state = pagerState, modifier = Modifier
+                        .fillMaxWidth()
+                        .background(colorScheme.background)
                 ) {
-                    when (cardContent) {
-                        {} -> tabs[pagerState.currentPage].content()
-                        else -> cardContent()
-                    }
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .align(Alignment.BottomEnd)
-                            .padding(10.dp),
-                        horizontalArrangement = Arrangement.End
-                    ) {
-                        AnimatedAppFAB(showFAB = true)
-                    }
+//                    when (cardContent) {
+//                        {} -> tabs[pagerState.currentPage].content()
+//                        else -> {
+                    DonutChart(
+                        data = transactionsByCategory
+                    )
+//                        }
+//                    }
+                }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.BottomEnd)
+                        .padding(10.dp), horizontalArrangement = Arrangement.End
+                ) {
+                    AnimatedAppFAB(showFAB = true)
                 }
             }
         }
@@ -110,6 +117,12 @@ fun TabsCard(
 @Composable
 private fun TabsCardPreview() {
     NavProvider {
-        TabsCard(periodTabs, TransactionPeriod.MONTH)
+        Box(
+            Modifier
+                .fillMaxWidth()
+                .aspectRatio(1f)
+        ) {
+            TabsCard(periodTabs, mockCatTransactions, TransactionPeriod.MONTH, LocalDateTime.now())
+        }
     }
 }

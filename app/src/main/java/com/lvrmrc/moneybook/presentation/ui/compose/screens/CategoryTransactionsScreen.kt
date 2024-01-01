@@ -3,8 +3,9 @@ package com.lvrmrc.moneybook.presentation.ui.compose.screens
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -39,7 +40,7 @@ fun CategoryTransactionsScreen(
 
     LaunchedEffect(appVm.period, appVm.transType) {
         CoroutineScope(Dispatchers.IO).launch {
-            vm.loadCategoryTransactions(appVm.period, appVm.transType)
+            vm.loadCategoryTransactions(appVm.period, appVm.transType, appVm.date)
         }
     }
 
@@ -62,32 +63,34 @@ private fun CategoryTransactionsScreen(
     if (category != null) {
         Column() {
             ScreenHeader(category.label, category.color, category.icon)
-//            LazyColumn(
-//                modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(15.dp), verticalArrangement = Arrangement.spacedBy(15.dp)
-//
-//            ) {
-//            items(transactions) { trans ->
-//                    TransactionsListItem(trans, category, onDelete = { onDelete(trans.id) }) {
-//                        navController.navigateDefault("${Screen.Transaction.route}?transactionId=${trans.id}")
-//                    }
-//                }
-//            }
-//        }
-
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(16.dp), verticalArrangement = Arrangement.spacedBy(15.dp)
             ) {
-
-                transactionsByDate.entries.forEach() {
-                    TransactionsListItem(transactions = it.value.map { it.toTransactionWithCategory(category) },
-                        category,
-                        onDelete = { id -> onDelete(id) })
+                transactionsByDate.entries.forEach() { group ->
+                    item {
+                        TransactionsListItem(transactions = group.value.map { it.toTransactionWithCategory(category) },
+                            category,
+//                        outlined = true,
+                            onDelete = { id -> onDelete(id) })
+                    }
                 }
-
             }
         }
+
+//            Column(
+//                modifier = Modifier
+//                    .fillMaxSize()
+//                    .padding(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)
+//            ) {
+//
+//                transactionsByDate.entries.forEach() { group ->
+//                    TransactionsListItem(transactions = group.value.map { it.toTransactionWithCategory(category) },
+//                        category,
+////                        outlined = true,
+//                        onDelete = { id -> onDelete(id) })
+//                }
+//
+//            }
     }
 }
 

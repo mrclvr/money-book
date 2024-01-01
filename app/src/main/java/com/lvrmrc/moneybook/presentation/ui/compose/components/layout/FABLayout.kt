@@ -47,7 +47,8 @@ fun FABLayout(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(16.dp, 16.dp, 16.dp, 84.dp)
+                    .padding(16.dp)
+//                    .padding(16.dp, 16.dp, 16.dp, 84.dp)
             ) {
                 content()
             }

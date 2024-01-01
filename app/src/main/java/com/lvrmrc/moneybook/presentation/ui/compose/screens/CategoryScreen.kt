@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.lvrmrc.moneybook.LocalNavController
 import com.lvrmrc.moneybook.R
@@ -115,37 +116,34 @@ private fun CategoryScreen(
         )
     }, fabText = stringResource(fabText), fabEnabled = fabEnabled, onFabAction = { onUpdate() }) {
         Column(
-            modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceEvenly
+            modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
 
             // Label
-            LabeledSection(
-                sectionTitle = stringResource(R.string.label),
-                topRightContent = {
-                    if (isUpdate) {
-                        var showDialog by remember { mutableStateOf(false) }
+            LabeledSection(sectionTitle = stringResource(R.string.label), topRightContent = {
+                if (isUpdate) {
+                    var showDialog by remember { mutableStateOf(false) }
 
-                        // Delete icon
-                        Icon(
-                            Icons.Outlined.Delete,
-                            stringResource(R.string.delete_category),
-                            Modifier.clickable { showDialog = true },
-                            colorScheme.error
-                        )
+                    // Delete icon
+                    Icon(
+                        Icons.Outlined.Delete,
+                        stringResource(R.string.delete_category),
+                        Modifier.clickable { showDialog = true },
+                        colorScheme.error
+                    )
 
-                        // Deletion dialog
-                        if (showDialog) {
-                            CustomAlertDialog(title = stringResource(R.string.confirm_deletion),
-                                text = stringResource(R.string.category_delete_msg, label),
-                                onDismissRequest = { showDialog = false },
-                                onConfirmation = {
-                                    showDialog = false
-                                    onDelete()
-                                })
-                        }
+                    // Deletion dialog
+                    if (showDialog) {
+                        CustomAlertDialog(title = stringResource(R.string.confirm_deletion),
+                            text = stringResource(R.string.category_delete_msg, label),
+                            onDismissRequest = { showDialog = false },
+                            onConfirmation = {
+                                showDialog = false
+                                onDelete()
+                            })
                     }
                 }
-            ) {
+            }) {
                 TextField(modifier = Modifier.fillMaxWidth(1f), singleLine = true, value = label, colors = TextFieldDefaults.colors(
                     focusedContainerColor = Color.Transparent,
                     unfocusedContainerColor = Color.Transparent,

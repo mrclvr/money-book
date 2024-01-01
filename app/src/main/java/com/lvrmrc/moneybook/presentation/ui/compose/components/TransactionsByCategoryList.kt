@@ -28,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.lvrmrc.moneybook.data.mockCatTransactions
 import com.lvrmrc.moneybook.domain.model.CategoryWithTransactions
+import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.AppLayout
 import com.lvrmrc.moneybook.presentation.ui.theme.MoneyBookTheme
 import com.lvrmrc.moneybook.utils.removeDecimal
 import com.lvrmrc.moneybook.utils.toFloatPercentage
@@ -37,9 +38,13 @@ import kotlin.math.roundToInt
  * List of expenses grouped by category
  */
 @Composable
-fun TransactionsByCategoryList(catTransactions: List<CategoryWithTransactions>, onSetCategory: (CategoryWithTransactions) -> Unit = {}) {
+fun TransactionsByCategoryList(
+    modifier: Modifier = Modifier, catTransactions: List<CategoryWithTransactions>, onSetCategory: (CategoryWithTransactions) -> Unit = {}
+) {
     LazyColumn(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .then(modifier),
 //            .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(10.dp),
@@ -100,7 +105,7 @@ fun TransactionsByCategoryList(catTransactions: List<CategoryWithTransactions>, 
 @Preview(showBackground = true)
 @Composable
 private fun TransactionsByCategoryPreview() {
-    MoneyBookTheme {
-        TransactionsByCategoryList(mockCatTransactions)
+    AppLayout {
+        TransactionsByCategoryList(catTransactions = mockCatTransactions)
     }
 }

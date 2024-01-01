@@ -9,7 +9,7 @@ import java.util.Locale
  * Icon names identifiers
  */
 enum class IconLabel {
-    DEFAULT, MonitorHeart, House, School, ShoppingBasket, ShoppingCart, DirectionsCar, LocalGasStation, ReceiptLong, LocalBar
+    DEFAULT, MonitorHeart, House, School, FitnessCenter, Pool, SportsBasketball, VideogameAsset, ShoppingBasket, ShoppingCart, PedalBike, DirectionsCar, Train, LocalGasStation, ReceiptLong, LocalActivity, LocalBar, LocalDining, LunchDining, FlightTakeoff, RequestPage, AccountBalance, AccountBalanceWallet, Savings, Redeem
 }
 
 /**

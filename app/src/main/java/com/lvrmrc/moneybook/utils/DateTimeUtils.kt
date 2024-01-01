@@ -27,6 +27,13 @@ fun LocalDateTime.localFormat(): String? {
     )
 }
 
+fun LocalDateTime.localMonth(): String? {
+    return this.format(
+        DateTimeFormatter.ofPattern("MMMM").withLocale(Locale.getDefault())
+    )
+}
+
+
 /**
  * Converts LocalDateTime to milliseconds
  */

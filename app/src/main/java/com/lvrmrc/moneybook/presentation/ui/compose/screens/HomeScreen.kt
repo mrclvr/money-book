@@ -4,26 +4,23 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.lvrmrc.moneybook.LocalNavController
-import com.lvrmrc.moneybook.R
 import com.lvrmrc.moneybook.data.mockCatTransactions
 import com.lvrmrc.moneybook.data.periodTabs
 import com.lvrmrc.moneybook.domain.model.CategoryWithTransactions
 import com.lvrmrc.moneybook.domain.model.TransactionPeriod
 import com.lvrmrc.moneybook.domain.model.TransactionType
 import com.lvrmrc.moneybook.domain.model.transTypeIntMap
-import com.lvrmrc.moneybook.presentation.ui.compose.components.TransactionsByCategoryList
-import com.lvrmrc.moneybook.presentation.ui.compose.components.PieChart
+import com.lvrmrc.moneybook.presentation.ui.compose.components.DateDirection
 import com.lvrmrc.moneybook.presentation.ui.compose.components.TabsCard
+import com.lvrmrc.moneybook.presentation.ui.compose.components.TransactionsByCategoryList
 import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.NavProvider
 import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.TabsLayout
 import com.lvrmrc.moneybook.presentation.ui.compose.navigation.navigateDefault
@@ -32,6 +29,7 @@ import com.lvrmrc.moneybook.presentation.viewmodel.HomeViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 
 @Composable
 fun HomeScreen(
@@ -39,30 +37,41 @@ fun HomeScreen(
     vm: HomeViewModel = hiltViewModel(),
 ) {
 
-    LaunchedEffect(key1 = appVm.period, key2 = appVm.transType) {
+    LaunchedEffect(key1 = appVm.period, key2 = appVm.transType, key3 = appVm.date) {
         CoroutineScope(Dispatchers.IO).launch {
-            vm.loadTransactions(appVm.period, appVm.transType)
+            vm.loadTransactions(appVm.period, appVm.transType, appVm.date)
         }
     }
 
-    HomeScreen(period = appVm.period,
+    HomeScreen(
+        period = appVm.period,
+        currentDate = appVm.date,
         tabIndex = transTypeIntMap[appVm.transType] ?: 0,
-        catTransactions = vm.catTransactions.value,
-        animationPlayed = appVm.pieAnimationPlayed,
-        onSetPeriod = { appVm.setPeriod(it) },
+        transactionsByCategory = vm.catTransactions.value,
+        onSetPeriod = {
+            appVm.setDate(LocalDateTime.now())
+            appVm.setPeriod(it)
+        },
         onSetTransType = { appVm.setTransType(it) },
-        setAnimationPlayed = { appVm.setPieAnimationPlayed(true) })
+        onDateBack = { appVm.shiftDate(DateDirection.MINUS) },
+        onDateForward = { appVm.shiftDate(DateDirection.PLUS) },
+//        animationPlayed = appVm.pieAnimationPlayed,
+//        setAnimationPlayed = { appVm.setPieAnimationPlayed(true) }
+    )
 }
 
 @Composable
 private fun HomeScreen(
     period: TransactionPeriod,
+    currentDate: LocalDateTime,
     tabIndex: Int,
-    catTransactions: List<CategoryWithTransactions>,
-    animationPlayed: Boolean,
+    transactionsByCategory: List<CategoryWithTransactions>,
     onSetPeriod: (TransactionPeriod) -> Unit = {},
     onSetTransType: (TransactionType) -> Unit = {},
-    setAnimationPlayed: () -> Unit = {}
+    onDateBack: () -> Unit = {},
+    onDateForward: () -> Unit = {},
+//    animationPlayed: Boolean,
+//    setAnimationPlayed: () -> Unit = {}
 ) {
     val navController = LocalNavController.current
 
@@ -72,23 +81,14 @@ private fun HomeScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-//                .background(colorScheme.secondaryContainer)
-                .padding(16.dp, 8.dp),
-            verticalArrangement = Arrangement.spacedBy(25.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .padding(16.dp, 8.dp), verticalArrangement = Arrangement.spacedBy(16.dp), horizontalAlignment = Alignment.CenterHorizontally
 
         ) {
-            TabsCard(periodTabs, period, onSetPeriod = {
+            TabsCard(periodTabs, transactionsByCategory, period, currentDate, onSetPeriod = {
                 onSetPeriod(it)
-            }, cardContent = {
-                if (catTransactions.isNotEmpty()) {
-                    PieChart(data = catTransactions, animationPlayed = animationPlayed, onLoaded = { setAnimationPlayed() })
-                } else {
-                    Text(stringResource(R.string.no_transactions))
-                }
-            })
+            }, onDateBack = onDateBack, onDateForward = onDateForward)
 
-            TransactionsByCategoryList(catTransactions, onSetCategory = {
+            TransactionsByCategoryList(catTransactions = transactionsByCategory, onSetCategory = {
                 navController.navigateDefault("${Screen.CategoryTransactions.route}/${it.id}")
             })
         }
@@ -96,10 +96,12 @@ private fun HomeScreen(
 }
 
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, showSystemUi = true)
 @Composable
 private fun HomeScreenPreview() {
     NavProvider {
-        HomeScreen(TransactionPeriod.DAY, 0, mockCatTransactions, false)
+        HomeScreen(
+            period = TransactionPeriod.DAY, currentDate = LocalDateTime.now(), tabIndex = 0, transactionsByCategory = mockCatTransactions
+        )
     }
 }

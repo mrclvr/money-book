@@ -14,7 +14,7 @@ enum class ScreenName {
 }
 
 sealed class Screen(
-    val route: String, val label: String, val icon: ImageVector = defaultIcon, val bottomBar: Boolean = true, val fab: Boolean = true
+    val route: String, val label: String, val icon: ImageVector = defaultIcon
 ) {
     data object Home : Screen(ScreenName.HOME.name, "Home", Icons.Filled.Savings)
     data object Transaction : Screen(ScreenName.TRANSACTION_EDIT.name, "Transaction")
@@ -32,24 +32,4 @@ sealed class Screen(
     data object IconsLibrary : Screen(
         ScreenName.ICONS_LIBRARY.name, "Icons library", Icons.Outlined.EmojiSymbols
     )
-
-//    companion object {
-//        fun hasNavbar(route: String?): Boolean {
-//            return Screen::class.sealedSubclasses.map { it.objectInstance as Screen }.singleOrNull { it.route == route }.let {
-//                when (it) {
-//                    null -> false
-//                    else -> it.bottomBar
-//                }
-//            }
-//        }
-//
-//        fun hasFAB(route: String?): Boolean {
-//            return Screen::class.sealedSubclasses.map { it.objectInstance as Screen }.singleOrNull { it.route == route }.let {
-//                when (it) {
-//                    null -> false
-//                    else -> it.fab
-//                }
-//            }
-//        }
-//    }
 }

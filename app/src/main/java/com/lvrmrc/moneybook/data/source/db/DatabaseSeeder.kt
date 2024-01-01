@@ -3,6 +3,7 @@ package com.lvrmrc.moneybook.data.source.db
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.lvrmrc.moneybook.data.expenseCategoryEntities
+import com.lvrmrc.moneybook.data.incomeCategoryEntities
 import com.lvrmrc.moneybook.data.mockTransactionEntities
 import com.lvrmrc.moneybook.data.source.db.dao.CategoryDao
 import com.lvrmrc.moneybook.data.source.db.dao.TransactionDao
@@ -32,16 +33,24 @@ class DatabaseSeeder(
      */
     private fun seedAll() {
         appScope.launch(Dispatchers.IO) {
-            seedCategories()
+            seedExpenseCategories()
+            seedIncomeCategories()
             seedTransactions()
         }
     }
 
     /**
-     * Seeds default categories
+     * Seeds default expense categories
      */
-    private suspend fun seedCategories() {
+    private suspend fun seedExpenseCategories() {
         categoryProvider.get().insert(*expenseCategoryEntities.toTypedArray())
+    }
+
+    /**
+     * Seeds default income categories
+     */
+    private suspend fun seedIncomeCategories() {
+        categoryProvider.get().insert(*incomeCategoryEntities.toTypedArray())
     }
 
     /**

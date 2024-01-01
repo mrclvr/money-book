@@ -28,8 +28,8 @@ fun IconsLibraryScreen(
     var selected by remember { mutableStateOf<ImageVector?>(null) }
 
     Column {
-        ScreenHeader(stringResource(R.string.icons), colorScheme.secondary)
-        Column(Modifier.padding(15.dp)) {
+        ScreenHeader(stringResource(R.string.icons), colorScheme.primary)
+        Column(Modifier.padding(0.dp, 15.dp)) {
             IconsGrid(outlinedIcons.toList(), selected = selected, onSelected = {
                 val previousEntry = navController.previousBackStackEntry
                 if (previousEntry?.destination?.route?.startsWith(Screen.Category.route) == true) {

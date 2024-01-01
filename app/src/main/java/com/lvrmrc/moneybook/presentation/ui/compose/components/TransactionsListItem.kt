@@ -1,7 +1,9 @@
 package com.lvrmrc.moneybook.presentation.ui.compose.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,9 +11,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.Icon
@@ -47,57 +48,59 @@ fun TransactionsListItem(
     transactions: List<TransactionWithCategory>,
     category: Category? = null,
     showCategoryIcon: Boolean = false,
+    outlined: Boolean = false,
     onDelete: (UUID) -> Unit = {}
 ) {
-    val navController = LocalNavController.current
-//    val gradient = Brush.verticalGradient(
-//        listOf(colorScheme.background, category.color.lighten(0.85f)), startY = 0.0f, endY = 100.0f
-//    )
-//    Card(
-//        shape = RoundedCornerShape(16.dp), elevation = CardDefaults.cardElevation(
-//            defaultElevation = 4.dp
-//        )
-//    ) {
-    LabeledSection(
-//        modifier = Modifier
-//            .background(gradient)
-//        .padding(8.dp),
-        sectionTitle = transactions[0].date.localFormat() ?: stringResource(R.string.undefined_date),
-        titleColor = category?.color?.darken(0.3f) ?: colorScheme.onBackground
-    ) {
-        LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            items(transactions) { transaction ->
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable { navController.navigateDefault("${Screen.Transaction.route}?transactionId=${transaction.id}") },
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                        if (showCategoryIcon) {
+    val titleColor = if (isSystemInDarkTheme() || category == null) colorScheme.onBackground else category.color.darken(0.3f)
+    val sectionTitle = transactions[0].date.localFormat() ?: stringResource(R.string.undefined_date)
 
-                            val iconColor = if (transaction.category.lightText) colorScheme.background else colorScheme.onBackground
+    LabeledSection(
+        sectionTitle = sectionTitle, titleColor = titleColor
+    ) {
+        Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            val navController = LocalNavController.current
+
+            transactions.forEach() {
+                val outlinedModifier = Modifier
+                    .border(1.dp, it.category.color, RoundedCornerShape(20))
+                    .padding(8.dp)
+
+                Row(modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { navController.navigateDefault("${Screen.Transaction.route}?transactionId=${it.id}") }
+                    .then(if (outlined) outlinedModifier else Modifier),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        if (showCategoryIcon) {
+                            val iconColor = if (it.category.lightText) colorScheme.background else colorScheme.onBackground
 
                             Box(
                                 modifier = Modifier
                                     .size(32.dp)
-                                    .background(transaction.category.color, CircleShape),
+                                    .background(it.category.color, CircleShape),
                                 contentAlignment = Alignment.Center
                             ) {
                                 Icon(
-                                    transaction.category.icon, transaction.category.label, Modifier.size(20.dp), iconColor
+                                    it.category.icon, it.category.label, Modifier.size(20.dp), iconColor
                                 )
                             }
                         }
+                        Column {
+                            if (showCategoryIcon) {
+                                Text(it.category.label, fontSize = 14.sp, color = it.category.color)
+                            }
+                            Text(it.notes, fontSize = 18.sp)
+                        }
 
-                        Text(transaction.notes, fontSize = 18.sp)
                     }
                     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
 
                         Text(
                             text = "${
-                                transaction.amount.removeDecimal()
+                                it.amount.removeDecimal()
                             }€", fontSize = 20.sp
                         )
 
@@ -117,10 +120,10 @@ fun TransactionsListItem(
 
                             if (showDialog) {
                                 CustomAlertDialog(title = stringResource(R.string.confirm_deletion),
-                                    text = stringResource(R.string.transaction_delete_msg, transaction.notes),
+                                    text = stringResource(R.string.transaction_delete_msg, it.notes),
                                     onDismissRequest = { showDialog = false },
                                     onConfirmation = {
-                                        onDelete(transaction.id)
+                                        onDelete(it.id)
                                         showDialog = false
                                     })
                             }
@@ -131,8 +134,6 @@ fun TransactionsListItem(
         }
     }
 }
-
-//}
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable

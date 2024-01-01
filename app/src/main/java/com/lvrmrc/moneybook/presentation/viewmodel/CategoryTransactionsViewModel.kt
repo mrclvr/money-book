@@ -17,6 +17,7 @@ import com.lvrmrc.moneybook.domain.usecase.GetTransactionsByPeriodAndCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.UUID
 import javax.inject.Inject
 
@@ -36,18 +37,18 @@ class CategoryTransactionsViewModel @Inject constructor(
 
     private var _transactions by mutableStateOf<List<Transaction>>(emptyList())
     val transactions: List<Transaction> get() = _transactions
-    
+
     val transactionsByDate by derivedStateOf<Map<LocalDate, List<Transaction>>> {
         _transactions.groupBy {
             it.date.toLocalDate()
         }
     }
 
-    suspend fun loadCategoryTransactions(period: TransactionPeriod, transType: TransactionType) {
+    suspend fun loadCategoryTransactions(period: TransactionPeriod, transType: TransactionType, date: LocalDateTime) {
         viewModelScope.launch {
             val id = UUID.fromString(categoryId)
             _category = categoryRepo.getById(id)
-            _transactions = getTransactionsByPeriodAndCategory(id, period, transType)
+            _transactions = getTransactionsByPeriodAndCategory(id, period, transType, date)
         }
     }
 
