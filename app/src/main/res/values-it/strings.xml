@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="confirm">Conferma</string>
+    <string name="dismiss">Indietro</string>
+    <string name="day">Giorno</string>
+    <string name="month">Mese</string>
+    <string name="year">Anno</string>
+    <string name="expense">Uscite</string>
+    <string name="income">Entrate</string>
+    <string name="categories">Categorie</string>
+    <string name="category">Categoria</string>
+    <string name="notes">Note</string>
+    <string name="update">Aggiorna</string>
+    <string name="add_transaction">Aggiungi transazione</string>
+    <string name="date">Data</string>
+    <string name="undefined_date">Data indefinita</string>
+    <string name="delete_transaction">Elimina transazione</string>
+    <string name="confirm_deletion">Conferma eliminazione</string>
+    <string name="transaction_delete_msg">Vuoi davvero eliminare la transazione \"%1$s\" ?</string>
+    <string name="open_date_picker">Apri calendario</string>
+    <string name="no_transactions">Nessuna transazione</string>
+    <string name="open_categories_screen">Apri schermata categorie</string>
+    <string name="add_category">Aggiungi categoria</string>
+    <string name="label">Etichetta</string>
+    <string name="color">Colore</string>
+    <string name="icon">Icona</string>
+    <string name="type">Tipologia</string>
+    <string name="icons">Icone</string>
+    <string name="open_icons_screen">Apri libreria icone</string>
+    <string name="open_home_screen">Apri schermata home</string>
+    <string name="add_new_category">Nuova categoria</string>
+    <string name="update_category">Aggiorna categoria</string>
+    <string name="update_transaction">Aggiorna transazione</string>
+    <string name="add_new_transaction">Nuova transazione</string>
+    <string name="more_categories">Altre categorie</string>
+    <string name="delete_category">Elimina categoria</string>
+    <string name="category_delete_msg">Vuoi davvero eliminare la categoria \"%1$s\" ?</string>
+    <string name="all_transactions">Tutte le transazioni</string>
+</resources>
