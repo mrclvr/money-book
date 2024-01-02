@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -62,14 +63,13 @@ private fun CategoryTransactionsScreen(
 
     if (category != null) {
         Column() {
-            ScreenHeader(category.label, category.color, category.icon)
+            ScreenHeader(title = category.label, color = category.color, icon = category.icon, textColor = colorScheme.background)
             LazyColumn(
                 modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(16.dp), verticalArrangement = Arrangement.spacedBy(15.dp)
             ) {
                 transactionsByDate.entries.forEach() { group ->
                     item {
-                        TransactionsListItem(transactions = group.value.map { it.toTransactionWithCategory(category) },
-                            category,
+                        TransactionsListItem(transactions = group.value.map { it.toTransactionWithCategory(category) }, category,
 //                        outlined = true,
                             onDelete = { id -> onDelete(id) })
                     }

@@ -1,7 +1,6 @@
 package com.lvrmrc.moneybook.presentation.ui.compose.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -68,7 +67,7 @@ fun TabsCard(
 
         val cardScope: CoroutineScope = rememberCoroutineScope()
 
-        Column(Modifier.background(colorScheme.background)) {
+        Column() {
             TabRow(
                 selectedTabIndex = pagerState.currentPage,
             ) {
@@ -87,9 +86,7 @@ fun TabsCard(
 
             Box {
                 HorizontalPager(
-                    state = pagerState, modifier = Modifier
-                        .fillMaxWidth()
-                        .background(colorScheme.background)
+                    state = pagerState, modifier = Modifier.fillMaxWidth()
                 ) {
 //                    when (cardContent) {
 //                        {} -> tabs[pagerState.currentPage].content()

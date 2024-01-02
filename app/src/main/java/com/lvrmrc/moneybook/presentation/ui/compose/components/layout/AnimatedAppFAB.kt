@@ -33,8 +33,8 @@ fun AppFAB(modifier: Modifier = Modifier, onClick: () -> Unit = {}) {
 
     FloatingActionButton(
         modifier = modifier,
-        containerColor = colorScheme.secondaryContainer,
-        contentColor = colorScheme.onSecondaryContainer,
+        containerColor = colorScheme.secondary,
+        contentColor = colorScheme.onSecondary,
         shape = CircleShape,
         onClick = {
             onClick()

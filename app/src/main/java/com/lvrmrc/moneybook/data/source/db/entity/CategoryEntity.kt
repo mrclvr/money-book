@@ -11,7 +11,7 @@ import com.lvrmrc.moneybook.domain.model.Category
 import com.lvrmrc.moneybook.domain.model.ColorName
 import com.lvrmrc.moneybook.domain.model.IconLabel
 import com.lvrmrc.moneybook.domain.model.TransactionType
-import com.lvrmrc.moneybook.presentation.ui.theme.primary
+import com.lvrmrc.moneybook.presentation.ui.theme.purple3
 import java.util.UUID
 
 /**
@@ -45,7 +45,7 @@ data class CategoryEntity(
             id,
             label,
             outlinedIcons.getOrDefault(icon, Icons.Outlined.QuestionMark),
-            colorsMap.getOrDefault(color, primary),
+            colorsMap.getOrDefault(color, purple3),
             type,
             lightText
         )

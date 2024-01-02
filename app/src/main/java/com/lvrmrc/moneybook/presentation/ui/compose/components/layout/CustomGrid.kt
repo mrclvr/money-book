@@ -20,16 +20,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.lvrmrc.moneybook.LocalNavController
-import com.lvrmrc.moneybook.R
 import com.lvrmrc.moneybook.data.expenseCategories
 import com.lvrmrc.moneybook.domain.model.Category
 import com.lvrmrc.moneybook.presentation.ui.compose.components.CategoryGridItem
 import com.lvrmrc.moneybook.presentation.ui.compose.navigation.navigateDefault
-import com.lvrmrc.moneybook.presentation.ui.compose.screens.Screen
 
 @Composable
 fun CustomGrid(
@@ -77,21 +74,23 @@ enum class GridButtonType {
 }
 
 @Composable
-fun MoreButton(type: GridButtonType = GridButtonType.SHOW_MORE) {
+fun GridMoreButton(
+    modifier: Modifier = Modifier,
+    contentAlignment: Alignment = Alignment.Center,
+    type: GridButtonType = GridButtonType.SHOW_MORE,
+    contentDescription: String,
+    route: String
+) {
     val navController = LocalNavController.current
-    val isShowMore = type == GridButtonType.SHOW_MORE
-
-    val containerColor = if (isShowMore) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.primaryContainer
-    val contentColor = if (isShowMore) MaterialTheme.colorScheme.onSecondaryContainer else MaterialTheme.colorScheme.background
-    val route = if (isShowMore) Screen.CategoriesLibrary.route else Screen.Category.route
-    val icon = if (isShowMore) Icons.Outlined.MoreHoriz else Icons.Outlined.Add
-    val contentDescription = if (isShowMore) stringResource(R.string.more_categories) else stringResource(R.string.add_new_category)
+    val containerColor = MaterialTheme.colorScheme.primaryContainer
+    val contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+    val icon = if (type == GridButtonType.SHOW_MORE) Icons.Outlined.MoreHoriz else Icons.Outlined.Add
 
     Box(
         modifier = Modifier
             .fillMaxSize()
             .aspectRatio(1f)
-            .padding(4.dp), contentAlignment = Alignment.TopCenter
+            .then(modifier), contentAlignment = contentAlignment
     ) {
         FilledIconButton(modifier = Modifier.size(56.dp), shape = CircleShape, colors = IconButtonDefaults.filledIconButtonColors(
             containerColor = containerColor, contentColor = contentColor
@@ -110,7 +109,9 @@ fun MoreButton(type: GridButtonType = GridButtonType.SHOW_MORE) {
 fun CustomGridPreview() {
     NavProvider {
         val categories = expenseCategories.slice(0..6)
-        CustomGrid(columns = 4, itemsCount = categories.size, button = { MoreButton() }) {
+        CustomGrid(columns = 4,
+            itemsCount = categories.size,
+            button = { GridMoreButton(Modifier.padding(4.dp), Alignment.TopCenter, GridButtonType.ADD_NEW, "null", "null") }) {
             val category: Category = categories[it]
             CategoryGridItem(category, false, onClick = { })
         }

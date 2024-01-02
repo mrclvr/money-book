@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.sp
 fun LabeledSection(
     modifier: Modifier = Modifier,
     sectionTitle: String = "",
-    titleColor: Color = colorScheme.primary,
+    titleColor: Color = colorScheme.onBackground,
     horizontalArrangement: Arrangement.Horizontal = Arrangement.SpaceBetween,
     topRightContent: @Composable () -> Unit = {},
     content: @Composable () -> Unit = {},

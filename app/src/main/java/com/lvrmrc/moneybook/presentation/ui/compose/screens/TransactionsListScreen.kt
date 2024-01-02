@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -84,7 +83,7 @@ private fun TransactionsListScreen(
 ) {
     println(currentDate)
     Column() {
-        ScreenHeader(stringResource(R.string.all_transactions), colorScheme.primary, Screen.TransactionsList.icon)
+        ScreenHeader(title = stringResource(R.string.all_transactions), icon = Screen.TransactionsList.icon)
 
         LazyColumn(
             modifier = Modifier

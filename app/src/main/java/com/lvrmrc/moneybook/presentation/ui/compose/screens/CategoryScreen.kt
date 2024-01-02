@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.Icon
@@ -32,7 +34,7 @@ import com.lvrmrc.moneybook.domain.model.IconStyle
 import com.lvrmrc.moneybook.domain.model.TransactionType
 import com.lvrmrc.moneybook.domain.model.getIconByName
 import com.lvrmrc.moneybook.domain.model.getIconLabel
-import com.lvrmrc.moneybook.presentation.ui.compose.components.ColorsRow
+import com.lvrmrc.moneybook.presentation.ui.compose.components.ColorsGrid
 import com.lvrmrc.moneybook.presentation.ui.compose.components.CustomAlertDialog
 import com.lvrmrc.moneybook.presentation.ui.compose.components.IconsGrid
 import com.lvrmrc.moneybook.presentation.ui.compose.components.LabeledSection
@@ -112,11 +114,13 @@ private fun CategoryScreen(
         ScreenHeader(
             title = stringResource(
                 headerText
-            ), color = colorScheme.primary
+            )
         )
     }, fabText = stringResource(fabText), fabEnabled = fabEnabled, onFabAction = { onUpdate() }) {
         Column(
-            modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(16.dp)
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
 
             // Label
@@ -172,7 +176,7 @@ private fun CategoryScreen(
             LabeledSection(
                 sectionTitle = stringResource(R.string.color)
             ) {
-                ColorsRow(selected = color, onSelected = { onSetColor(it) })
+                ColorsGrid(selected = color, onSelected = { onSetColor(it) })
             }
 
         }

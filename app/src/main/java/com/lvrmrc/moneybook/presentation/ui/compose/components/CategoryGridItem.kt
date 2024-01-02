@@ -30,7 +30,7 @@ import com.lvrmrc.moneybook.data.outlinedIcons
 import com.lvrmrc.moneybook.domain.model.Category
 import com.lvrmrc.moneybook.domain.model.IconLabel
 import com.lvrmrc.moneybook.domain.model.TransactionType
-import com.lvrmrc.moneybook.presentation.ui.theme.primary200
+import com.lvrmrc.moneybook.presentation.ui.theme.orange3
 import java.util.UUID
 
 /**
@@ -90,9 +90,9 @@ fun CategoryGridItemPreview() {
                 id = UUID.fromString("5757edd4-4ea0-4a5c-936b-d094c2a9bb28"),
                 label = "Test",
                 icon = outlinedIcons[IconLabel.ReceiptLong]!!,
-                color = primary200,
+                color = orange3,
                 type = TransactionType.EXPENSE,
-                lightText = false,
+                lightText = true,
             )
         )
     }

@@ -31,10 +31,10 @@ import com.lvrmrc.moneybook.domain.model.Category
 import com.lvrmrc.moneybook.domain.model.TransactionType
 import com.lvrmrc.moneybook.presentation.ui.compose.components.CategoriesGrid
 import com.lvrmrc.moneybook.presentation.ui.compose.components.DatePickerDialog
-import com.lvrmrc.moneybook.presentation.ui.compose.components.GridButtonType
 import com.lvrmrc.moneybook.presentation.ui.compose.components.LabeledSection
 import com.lvrmrc.moneybook.presentation.ui.compose.components.TransactionTypeRadio
 import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.FABLayout
+import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.GridButtonType
 import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.NavProvider
 import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.ScreenHeader
 import com.lvrmrc.moneybook.presentation.viewmodel.AppViewModel
@@ -121,14 +121,13 @@ private fun TransactionScreen(
         ScreenHeader(
             title = stringResource(
                 headerText
-            ), color = colorScheme.primary
+            )
         )
     }, fabText = stringResource(fabText), fabEnabled = fabEnabled, onFabAction = { onUpdate() }) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+                .verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
 
             // Amount
@@ -147,7 +146,6 @@ private fun TransactionScreen(
                     colors = TextFieldDefaults.colors(
                         focusedContainerColor = Color.Transparent,
                         unfocusedContainerColor = Color.Transparent,
-
                         focusedIndicatorColor = colorScheme.primary,
                         unfocusedIndicatorColor = colorScheme.primary,
                     )

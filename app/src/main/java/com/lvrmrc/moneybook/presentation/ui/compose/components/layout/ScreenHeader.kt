@@ -24,12 +24,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.lvrmrc.moneybook.presentation.ui.theme.primary400
+import com.lvrmrc.moneybook.presentation.ui.theme.MoneyBookTheme
 
 
 @Composable
 fun ScreenHeader(
-    title: String, color: Color, icon: ImageVector? = null
+    title: String, color: Color = colorScheme.primaryContainer, textColor: Color = colorScheme.onPrimaryContainer, icon: ImageVector? = null
 ) {
     Row(
         Modifier
@@ -40,7 +40,7 @@ fun ScreenHeader(
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (icon != null) {
-            Icon(icon, "Header icon", Modifier.size(24.dp), colorScheme.background)
+            Icon(icon, "Header icon", Modifier.size(24.dp), textColor)
         }
         Text(
             modifier = Modifier.padding(10.dp),
@@ -48,7 +48,7 @@ fun ScreenHeader(
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             textAlign = TextAlign.Center,
-            color = colorScheme.background,
+            color = textColor,
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp
         )
@@ -60,5 +60,7 @@ fun ScreenHeader(
 @Composable
 private fun ScreenHeaderPreview(
 ) {
-    ScreenHeader("Title", primary400, Icons.Outlined.Movie)
+    MoneyBookTheme {
+        ScreenHeader(title = "Title", icon = Icons.Outlined.Movie)
+    }
 }

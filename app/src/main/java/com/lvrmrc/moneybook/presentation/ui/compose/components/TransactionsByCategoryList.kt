@@ -29,7 +29,6 @@ import androidx.compose.ui.unit.dp
 import com.lvrmrc.moneybook.data.mockCatTransactions
 import com.lvrmrc.moneybook.domain.model.CategoryWithTransactions
 import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.AppLayout
-import com.lvrmrc.moneybook.presentation.ui.theme.MoneyBookTheme
 import com.lvrmrc.moneybook.utils.removeDecimal
 import com.lvrmrc.moneybook.utils.toFloatPercentage
 import kotlin.math.roundToInt
@@ -45,7 +44,6 @@ fun TransactionsByCategoryList(
         modifier = Modifier
             .fillMaxSize()
             .then(modifier),
-//            .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(10.dp),
 
@@ -54,19 +52,22 @@ fun TransactionsByCategoryList(
         val periodTotal = catTransactions.sumOf { it.total }
 
         items(catTransactions) { cat ->
-            val textColor = if (cat.lightText) colorScheme.background else colorScheme.onBackground
+            val textColor = if (cat.lightText) colorScheme.background else colorScheme.onSurface
             val percentage = cat.total.toFloatPercentage(periodTotal).roundToInt()
             Card(
-                shape = RoundedCornerShape(8.dp), elevation = CardDefaults.cardElevation(
+                shape = RoundedCornerShape(8.dp),
+                elevation = CardDefaults.cardElevation(
                     defaultElevation = 6.dp
-                )
+                ),
+                colors = CardDefaults.cardColors(containerColor = colorScheme.surface, contentColor = textColor),
             ) {
                 Row(modifier = Modifier
                     .fillMaxWidth()
                     .height(50.dp)
-                    .background(colorScheme.background)
                     .clickable { onSetCategory(cat) }
-                    .padding(10.dp), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+                    .padding(10.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically) {
                     Row(
                         modifier = Modifier.weight(0.6f),
                         horizontalArrangement = Arrangement.spacedBy(8.dp),

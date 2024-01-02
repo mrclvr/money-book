@@ -61,6 +61,6 @@ fun FABLayout(
 @Composable
 fun FABLayoutPreview() {
     AppLayout {
-        FABLayout(topBar = { ScreenHeader(title = "Top bar", color = MaterialTheme.colorScheme.primary) })
+        FABLayout(topBar = { ScreenHeader(title = "Top bar") })
     }
 }

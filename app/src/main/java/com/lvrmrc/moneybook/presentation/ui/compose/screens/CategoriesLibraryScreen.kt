@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -22,8 +21,8 @@ import com.lvrmrc.moneybook.data.expenseCategories
 import com.lvrmrc.moneybook.data.incomeCategories
 import com.lvrmrc.moneybook.domain.model.Category
 import com.lvrmrc.moneybook.presentation.ui.compose.components.CategoriesGrid
-import com.lvrmrc.moneybook.presentation.ui.compose.components.GridButtonType
 import com.lvrmrc.moneybook.presentation.ui.compose.components.LabeledSection
+import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.GridButtonType
 import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.NavProvider
 import com.lvrmrc.moneybook.presentation.ui.compose.components.layout.ScreenHeader
 import com.lvrmrc.moneybook.presentation.ui.compose.navigation.navigateDefault
@@ -67,7 +66,7 @@ private fun CategoriesLibraryScreen(
 
     Column {
         // Header
-        ScreenHeader(stringResource(R.string.categories), colorScheme.primary)
+        ScreenHeader(stringResource(R.string.categories))
         Column(
             Modifier
                 .padding(8.dp)
@@ -75,10 +74,9 @@ private fun CategoriesLibraryScreen(
         ) {
             // Expense categories
             LabeledSection(sectionTitle = stringResource(R.string.expense)) {
-                CategoriesGrid(expenseCategories,
-                    selected = selected, onSelected = {
-                        handleNavigation(it)
-                    })
+                CategoriesGrid(expenseCategories, selected = selected, onSelected = {
+                    handleNavigation(it)
+                })
             }
 
             // Income categories

@@ -40,4 +40,5 @@
     <string name="all_transactions">All transactions</string>
     <string name="open_transactions_screen">Open transactions screen</string>
     <string name="transaction_deleted">Transaction deleted</string>
+    <string name="more_icons">More icons</string>
 </resources>

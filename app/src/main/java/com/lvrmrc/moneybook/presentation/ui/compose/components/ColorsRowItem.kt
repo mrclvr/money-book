@@ -18,7 +18,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.lvrmrc.moneybook.presentation.ui.theme.primary500
 
 @Composable
 fun ColorsRowItem(
@@ -41,5 +40,5 @@ fun ColorsRowItem(
 @Composable
 @Preview
 fun ColorsRowItemPreview() {
-    ColorsRowItem(primary500, true)
+    ColorsRowItem(colorScheme.primary, true)
 }
