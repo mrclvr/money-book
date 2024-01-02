@@ -1,12 +1,15 @@
 package com.lvrmrc.moneybook.presentation.ui.compose.navigation
 
+import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -33,8 +36,6 @@ fun NavGraph() {
 
     NavHost(navController = navController, startDestination = innerRootRoute) {
 
-//        navigation(startDestination = Screen.Home.route, route = rootRoute) {
-
         /**
          * Home (Expense/Income)
          */
@@ -45,16 +46,10 @@ fun NavGraph() {
         /**
          * Transaction
          */
-        composable(route = "${Screen.Transaction.route}?transactionId={transactionId}",
-            arguments = listOf(navArgument("transactionId") { nullable = true }),
-            enterTransition = {
-                slideIntoContainer(towards = AnimatedContentTransitionScope.SlideDirection.Up, animationSpec = tween(300))
-            },
-            popExitTransition = {
-                slideOutOfContainer(
-                    towards = AnimatedContentTransitionScope.SlideDirection.Down, animationSpec = tween(300)
-                )
-            }) { entry ->
+        composableFromBottom(
+            route = "${Screen.Transaction.route}?transactionId={transactionId}",
+            arguments = listOf(navArgument("transactionId") { nullable = true })
+        ) { entry ->
             val categoryId = entry.savedStateHandle.get<UUID>("categoryId")
             val appVm = entry.viewModel<AppViewModel>(navController)
             TransactionScreen(categoryId, appVm)
@@ -63,7 +58,9 @@ fun NavGraph() {
         /**
          * Transactions list
          */
-        composable(route = Screen.TransactionsList.route) { entry ->
+        composableFromRight(
+            route = Screen.TransactionsList.route
+        ) { entry ->
             val appVm = entry.viewModel<AppViewModel>(navController)
             TransactionsListScreen(appVm)
         }
@@ -71,7 +68,9 @@ fun NavGraph() {
         /**
          * Category Details
          */
-        composable(route = "${Screen.CategoryTransactions.route}/{categoryId}") { entry ->
+        composableFromBottom(
+            route = "${Screen.CategoryTransactions.route}/{categoryId}"
+        ) { entry ->
             val appVm = entry.viewModel<AppViewModel>(navController)
             CategoryTransactionsScreen(appVm)
         }
@@ -79,25 +78,8 @@ fun NavGraph() {
         /**
          * Categories Library
          */
-        composable(
-            route = Screen.CategoriesLibrary.route,
-//            enterTransition = {
-//            slideIntoContainer(
-//                AnimatedContentTransitionScope.SlideDirection.Left, animationSpec = tween(700)
-//            )
-//        }, exitTransition = {
-//            slideOutOfContainer(
-//                AnimatedContentTransitionScope.SlideDirection.Left, animationSpec = tween(700)
-//            )
-//        }, popEnterTransition = {
-//            slideIntoContainer(
-//                AnimatedContentTransitionScope.SlideDirection.Right, animationSpec = tween(700)
-//            )
-//        }, popExitTransition = {
-//            slideOutOfContainer(
-//                AnimatedContentTransitionScope.SlideDirection.Right, animationSpec = tween(700)
-//            )
-//        }
+        composableFromRight(
+            route = Screen.CategoriesLibrary.route
         ) { entry ->
             val appVm = entry.viewModel<AppViewModel>(navController)
             CategoriesLibraryScreen(appVm)
@@ -106,7 +88,7 @@ fun NavGraph() {
         /**
          * Category
          */
-        composable(
+        composableFromBottom(
             route = "${Screen.Category.route}?categoryId={categoryId}", arguments = listOf(navArgument("categoryId") { nullable = true })
         ) { entry ->
             val selectedIcon = entry.savedStateHandle.get<IconLabel>("iconLabel")
@@ -116,12 +98,66 @@ fun NavGraph() {
         /**
          * Icons library
          */
-        composable(route = Screen.IconsLibrary.route) {
+        composableFromRight(
+            route = Screen.IconsLibrary.route
+        ) {
             IconsLibraryScreen()
         }
     }
-//    }
+}
 
+/**
+ * Extended composable function with transition from bottom to top
+ */
+fun NavGraphBuilder.composableFromBottom(
+    route: String, arguments: List<NamedNavArgument> = emptyList(), content: @Composable AnimatedContentScope.(NavBackStackEntry) -> Unit
+) {
+    composable(route = route, enterTransition = {
+        slideIntoContainer(towards = AnimatedContentTransitionScope.SlideDirection.Up, animationSpec = tween(300))
+    }, exitTransition = {
+        slideOutOfContainer(
+            AnimatedContentTransitionScope.SlideDirection.Up, animationSpec = tween(300)
+        )
+    }, popEnterTransition = {
+        slideIntoContainer(
+            AnimatedContentTransitionScope.SlideDirection.Down, animationSpec = tween(300)
+        )
+    }, popExitTransition = {
+        slideOutOfContainer(
+            towards = AnimatedContentTransitionScope.SlideDirection.Down, animationSpec = tween(300)
+        )
+    }, arguments = arguments
+    ) {
+        content(it)
+    }
+}
+
+/**
+ * Extended composable function with transition from right to left
+ */
+fun NavGraphBuilder.composableFromRight(
+    route: String, arguments: List<NamedNavArgument> = emptyList(), content: @Composable AnimatedContentScope.(NavBackStackEntry) -> Unit
+) {
+    composable(route = route, enterTransition = {
+        slideIntoContainer(
+            AnimatedContentTransitionScope.SlideDirection.Left, animationSpec = tween(300)
+        )
+    }, exitTransition = {
+        slideOutOfContainer(
+            AnimatedContentTransitionScope.SlideDirection.Left, animationSpec = tween(300)
+        )
+    }, popEnterTransition = {
+        slideIntoContainer(
+            AnimatedContentTransitionScope.SlideDirection.Right, animationSpec = tween(300)
+        )
+    }, popExitTransition = {
+        slideOutOfContainer(
+            AnimatedContentTransitionScope.SlideDirection.Right, animationSpec = tween(300)
+        )
+    }, arguments = arguments
+    ) {
+        content(it)
+    }
 }
 
 /**

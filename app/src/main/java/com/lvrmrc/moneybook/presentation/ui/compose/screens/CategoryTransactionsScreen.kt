@@ -76,21 +76,6 @@ private fun CategoryTransactionsScreen(
                 }
             }
         }
-
-//            Column(
-//                modifier = Modifier
-//                    .fillMaxSize()
-//                    .padding(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)
-//            ) {
-//
-//                transactionsByDate.entries.forEach() { group ->
-//                    TransactionsListItem(transactions = group.value.map { it.toTransactionWithCategory(category) },
-//                        category,
-////                        outlined = true,
-//                        onDelete = { id -> onDelete(id) })
-//                }
-//
-//            }
     }
 }
 
